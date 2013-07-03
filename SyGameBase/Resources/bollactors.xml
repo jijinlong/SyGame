@@ -1,0 +1,93 @@
+<Config>
+  <cobineactions>
+    <!--组合拳-->
+    <actions name="yunqiu">
+      <action nexttype="0" needtime="0.8" actiontype="4" frametype="times" cartoontype="self">
+        <!--先播放一号动作 紧接着播放2号动作-->
+        <dir id="0" framesname="" framestype="frames" >
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_3.png"/>
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_4.png"/>
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_5.png"/>
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_6.png"/>
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_7.png"/>
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_8.png"/>
+			<frame name="Anim\TapBallWait\field_TapBallWait_1_2_9.png"/>
+        </dir>
+      </action>
+    </actions>
+  </cobineactions>
+  <steps name="start">
+	<step lasttime="2" > <!--2秒内静止 布局-->
+		<action actiontype="idle" cartoonname="yunqiu" playerid="0">
+			<destination x="55" y="77"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="1">
+			<destination x="155" y="77"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="2">
+			<destination x="265" y="77"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="3">
+			<destination x="365" y="89"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="4">
+			<destination x="477" y="100"/>
+		</action>
+		<!---->
+		<action actiontype="idle" cartoonname="yunqiu" playerid="5">
+			<destination x="255" y="377"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="6">
+			<destination x="355" y="377"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="7">
+			<destination x="365" y="377"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="8">
+			<destination x="465" y="389"/>
+		</action>
+		<action actiontype="idle" cartoonname="yunqiu" playerid="9">
+			<destination x="577" y="300"/>
+		</action>
+	</step>
+	<step lasttime="3" > <!--3秒内抢球-->
+		<action actiontype="walk" cartoonname="yunqiu" playerid="0" x="" y="">
+			<destination x="55" y="677"/>
+		</action>
+		<action actiontype="walk" cartoonname="yunqiu" playerid="1">
+			<destination x="155" y="77"/>
+		</action>
+		<action actiontype="walk" cartoonname="yunqiu" playerid="2">
+			<destination x="55" y="177"/>
+		</action>
+		<action actiontype="walk" cartoonname="yunqiu" playerid="3">
+			<destination x="155" y="277"/>
+		</action>
+		<action actiontype="walk" cartoonname="yunqiu" playerid="4">
+			<destination x="55" y="477"/>
+		</action>
+	</step>
+	<step lasttime="5" >
+		<action actiontype="walk" cartoonname="yunqiu" playerid="1">
+			<destination x="550" y="477"/>
+		</action>
+	</step>
+  </steps>
+  <ticks tickcount="-1">
+	<step lasttime="1" > <!--3秒内抢球-->
+		<action actiontype="idle" cartoonname="yunqiu" playerid="9">
+			<destination x="577" y="300"/>
+		</action>
+	</step>
+  </ticks>
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+	<actor />
+</Config>

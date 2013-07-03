@@ -1,0 +1,13 @@
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<start x="0" y="0" width="0" height="0"  local="34" backimg="Img\Bg\DL_BG.png" moveable="false" >
+		<button uniquename="login" x="" y="-240" name="" downimg="Img\Btn\XZBS_Denglu01.png" upimg="Img\Btn\XZBS_Denglu02.png" moveimg="Img\Btn\XZBS_Denglu01.png" r="255" g="0" b="" desc="" fontsize="53"/>
+	
+		<button uniquename="register" x="-300" y="-240" name="" downimg="Img\Btn\XZBS_Zhuce01.png" upimg="Img\Btn\XZBS_Zhuce02.png" moveimg="Img\Btn\XZBS_Zhuce02.png" r="255" g="" b="" desc=""/>
+    <button uniquename="bind" x="300" y="-240" name="" downimg="Img\Btn\XZBS_Bangding01.png" upimg="Img\Btn\XZBS_Bangding02.png" moveimg="Img\Btn\XZBS_Bangding02.png" r="255" g="" b="" desc=""/>
+    <image uniquename="mingzishou" x="-140" y="-60" pngname="Img\Font\XZBS_Zhanghao.png"/>
+    <image uniquename="mimashow" x="-140" y="-120" pngname="Img\Font\XZBS_Mima.png"/>
+    <editfield uniquename="mingzi" x="" y="-60" content="输入名字" width="400" height="32"/>
+    <editfield uniquename="mima" x="" y="-120" content="输入密码" width="400" height="32"/>
+  </start>
+</Config>

@@ -1,0 +1,12 @@
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<start x="0" y="0" width="0" height="0"  local="34" backimg="" moveable="false" >
+		<bag uniquename="bag" back="Img\ChatPage\XTGG_Gongaodi01.png" eachwidth="78" eachheight="178" width="4" height="1" leftspan="1" upspan="2" x="" y="">
+			<face viewx="-320" viewy="-20" vieww="300" viewh="64"/>
+			<item backimg="" x="20" y="43">
+				<button uniquename="login" x="" y="0" name="" downimg="Img\Btn\XZBS_Denglu01.png" upimg="Img\Btn\XZBS_Denglu02.png" moveimg="Img\Btn\XZBS_Denglu01.png" r="255" g="0" b="" desc="" fontsize="53"/>
+			</item>
+		</bag>
+	</start>
+	<!--item pngname="Img\CardRef\card_color_3.png"/--> <!--创建包裹中的内容-->
+</Config>
