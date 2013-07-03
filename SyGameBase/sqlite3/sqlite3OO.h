@@ -207,6 +207,7 @@ namespace data{
 	class TableObject:public Sqlite3Table,public vCoreData{
 	public:
 	};
+
 }; // end namespace data
 
 #define BIND_VALUE(dname,dvalue){\
