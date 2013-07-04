@@ -21,6 +21,7 @@ bool UIImage::init(const char *imgName)
 	image = CCSprite::create(imgName);
 	if (image)
 	{
+		this->imgName = imgName;
         this->addChild(image);
 		return true;
 	}
@@ -54,6 +55,8 @@ void UIImage::setPosition(float x,float y)
 {
 	if (image)
 	{
+		this->x = x;
+		this->y = y;
 		image->setPosition(ccp(x,y));
 	}
 	return ;
@@ -66,9 +69,25 @@ void UIImage::setSize(float w,float h)
 {
 	if (image)
 	{
+		this->w = w;
+		this->h = h;
 		image->setScaleX(w / image->getContentSize().width);
 		image->setScaleY(h / image->getContentSize().height);
 	}
 	return ;
+}
+/**
+ * 创建父节点下的子节点
+ */
+TiXmlElement * UIImage::makeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement * imgNode = UIBase::makeNode(parent,"image");
+	if (imgNode)
+	{
+		imgNode->SetAttribute("pngname",imgName);
+		imgNode->SetAttribute("width",w);
+		imgNode->SetAttribute("height",h);
+	}
+	return imgNode;
 }
 NS_CC_END

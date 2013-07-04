@@ -3,6 +3,7 @@
 #include "vector"
 #include <string>
 #include "cocos2d.h"
+#include "tinyxml.h"
 NS_CC_BEGIN
 class UIBase;
 typedef void (UIBase::*UI_EVENT_HANDLE)(UIBase*);
@@ -43,6 +44,7 @@ class UIBase:public CCNode,public serialize::Object{
 public:
 	int uniqueId; // 唯一编号
 	std::string name; // 控件名字
+	std::string uniqueName;
 	enum{
 		UI_LABEL = 0, // 静态文本框
 		UI_IMAGE_BUTTON = 1, // 图像按钮
@@ -148,6 +150,10 @@ public:
 		CCNode::visit();
 	}
 	static std::string toUTF8(const std::wstring& ); 
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
 public:
 	float x;
 	float y;

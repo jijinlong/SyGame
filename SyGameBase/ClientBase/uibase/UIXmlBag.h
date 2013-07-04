@@ -74,12 +74,23 @@ public:
 	bool isVisible();
 	void addToParent(CCNode *node);
 	void takeNode(script::tixmlCodeNode *node);
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
 	bool doTouch(int touchType,const CCPoint &touchPoint);
 	UIViewBag()
 	{
 		view = NULL;
+		viewx = viewy = viewh = vieww = 0;
 	}
 	UIBase *view;
+	std::string backName;
+	float viewx;
+	float viewy;
+	float vieww;
+	float viewh;
+	std::string scrollTypeStr;
 };
 
 class XmlBagItem:public UIItem{

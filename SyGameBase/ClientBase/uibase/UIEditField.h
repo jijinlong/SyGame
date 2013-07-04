@@ -56,11 +56,16 @@ public:
 	}
 	static UIEditField * create();
 	void beLoaded();
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
 private:
 	bool _editable;
 	bool _touchIn;
 	CursorTextField *_field;
 	CCPoint nowTouchPoint;
+	std::string defaultContent;
 	UIEditField()
 	{
 		_touchIn = false;

@@ -161,7 +161,8 @@ bool UIViewBag::initWithNode(script::tixmlCodeNode *node)
 {
 	if (node->equal("bag"))
 	{
-		CCSprite *back = CCSprite::create(node->getAttr("back"));
+		backName = node->getAttr("back");
+		CCSprite *back = CCSprite::create(backName.c_str());
 		if (back)
 		{
 			this->addChild(back);
@@ -176,12 +177,12 @@ bool UIViewBag::initWithNode(script::tixmlCodeNode *node)
 		script::tixmlCodeNode viewNode = node->getFirstChildNode("face");
 		if (viewNode.isValid())
 		{
-			float viewx = viewNode.getFloat("viewx");
-			float viewy = viewNode.getFloat("viewy");
-			float vieww = viewNode.getFloat("vieww");
-			float viewh = viewNode.getFloat("viewh");
+			viewx = viewNode.getFloat("viewx");
+			viewy = viewNode.getFloat("viewy");
+			vieww = viewNode.getFloat("vieww");
+			viewh = viewNode.getFloat("viewh");
 			view = UIScrollView::create(viewx,viewy,vieww,viewh);
-			std::string scrollTypeStr = node->getAttr("scrollable");
+			scrollTypeStr = node->getAttr("scrollable");
 			if (view)
 			{
 				((UIScrollView*)view)->addContent(this);
@@ -195,6 +196,32 @@ bool UIViewBag::initWithNode(script::tixmlCodeNode *node)
 	}
 	show();
 	return true;
+}
+/**
+ * 创建父节点下的子节点
+ */
+TiXmlElement * UIViewBag::makeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement * bagNode = UIBase::makeNode(parent,"bag");
+	if (bagNode)
+	{
+		bagNode->SetAttribute("back",backName);
+		bagNode->SetAttribute("width",_width);
+		bagNode->SetAttribute("height",_height);
+		bagNode->SetAttribute("leftspan",_eachLeftSpan);
+		bagNode->SetAttribute("upspan",_eachUpSpan);
+		bagNode->SetAttribute("eachheight",_eachHeight);
+		bagNode->SetAttribute("eachwidth",_eachWidth);
+		
+		TiXmlElement *faceNode = new TiXmlElement("face");
+		bagNode->LinkEndChild(faceNode);
+		faceNode->SetAttribute("viewx",viewx);
+		faceNode->SetAttribute("viewy",viewy);
+		faceNode->SetAttribute("vieww",vieww);
+		faceNode->SetAttribute("viewh",viewh);
+		faceNode->SetAttribute("scrollable",scrollTypeStr);
+	}
+	return bagNode;
 }
 bool UIViewBag::init(const char*bagName)
 {

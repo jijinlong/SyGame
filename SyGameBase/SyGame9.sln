@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite3", "sqlite3\sqlite3.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testSqlite3", "testSqlite3\testSqlite3.vcproj", "{32C67BD1-144C-4ADB-9424-FD168A4B2AC7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UIEdit", "UIEdit\UIEdit.vcproj", "{97E0BC85-491A-419A-9508-F01E991C374B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -67,6 +69,10 @@ Global
 		{32C67BD1-144C-4ADB-9424-FD168A4B2AC7}.Debug|Win32.Build.0 = Debug|Win32
 		{32C67BD1-144C-4ADB-9424-FD168A4B2AC7}.Release|Win32.ActiveCfg = Release|Win32
 		{32C67BD1-144C-4ADB-9424-FD168A4B2AC7}.Release|Win32.Build.0 = Release|Win32
+		{97E0BC85-491A-419A-9508-F01E991C374B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{97E0BC85-491A-419A-9508-F01E991C374B}.Debug|Win32.Build.0 = Debug|Win32
+		{97E0BC85-491A-419A-9508-F01E991C374B}.Release|Win32.ActiveCfg = Release|Win32
+		{97E0BC85-491A-419A-9508-F01E991C374B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

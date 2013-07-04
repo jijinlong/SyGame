@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <test.xml back="Img\Bg\DL_BG.png" width="1136" height="640">
+        <button x="0" w="0" y="-240" h="0" uniqueid="0" name="button" uniquename="login" downimg="Img\Btn\XZBS_Denglu01.png" upimg="Img\Btn\XZBS_Denglu02.png" />
+        <button x="-300" w="0" y="-240" h="0" uniqueid="0" name="button" uniquename="register" downimg="Img\Btn\XZBS_Zhuce01.png" upimg="Img\Btn\XZBS_Zhuce02.png" />
+        <button x="300" w="0" y="-240" h="0" uniqueid="0" name="button" uniquename="bind" downimg="Img\Btn\XZBS_Bangding01.png" upimg="Img\Btn\XZBS_Bangding02.png" />
+        <image x="-140" w="0" y="-60" h="0" uniqueid="0" name="image" uniquename="" pngname="Img\Font\XZBS_Zhanghao.png" width="0" height="0" />
+        <image x="-140" w="0" y="-120" h="0" uniqueid="0" name="image" uniquename="" pngname="Img\Font\XZBS_Mima.png" width="0" height="0" />
+        <editfield x="0" w="400" y="-60" h="32" uniqueid="0" name="editfield" uniquename="mingzi" content="输入名字" width="400" height="32" />
+        <editfield x="0" w="400" y="-120" h="32" uniqueid="0" name="editfield" uniquename="mima" content="输入密码" width="400" height="32" />
+    </test.xml>
+</Config>

@@ -113,6 +113,10 @@ public:
 	static UIPanel* create();
 
 	static UIPanel * createFromNode(script::tixmlCodeNode *node);
+	/**
+	 * 创建父节点下的子节点
+	 */
+	void makeXmlFile(const std::string &name);
 	bool initXFromNode(script::tixmlCodeNode *node);
 	UIPanel()
 	{
@@ -195,7 +199,7 @@ protected:
 	CCSprite *back;
 	UIBase *_nowTouchUI;
 	bool _onlyMe;
-
+	std::string backimg;
 	static int const ALIGN_TOP = 1 << 0;
 	static int const ALIGN_X_CENTER = 1 << 1;
 	static int const ALIGN_DOWN = 1 << 2;

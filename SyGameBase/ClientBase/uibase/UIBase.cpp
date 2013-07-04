@@ -96,6 +96,24 @@ std::string UIBase::toUTF8(const std::wstring& str)
 	return result;
 }
 /**
+ * 创建父节点下的子节点
+ */
+TiXmlElement * UIBase::makeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement *baseNode=new TiXmlElement(name.c_str());
+	if (parent)
+		parent->LinkEndChild(baseNode);
+	//添加属性
+	baseNode->SetAttribute("x",x);
+	baseNode->SetAttribute("w",w);
+	baseNode->SetAttribute("y",y);
+	baseNode->SetAttribute("h",h);
+	baseNode->SetAttribute("uniqueid",uniqueId);
+	baseNode->SetAttribute("name",name);
+	baseNode->SetAttribute("uniquename",uniqueName);
+	return baseNode;
+}
+/**
  * 处理点击
  * \parma touchType 点击类型
  * \param touchPoint 点击点

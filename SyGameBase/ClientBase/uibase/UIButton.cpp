@@ -35,6 +35,8 @@ UIButton* UIButton::createWithPngNames(const char *upName,const char *downName,c
 		node->_down = CCSprite::create(downName);
 		node->_move = CCSprite::create();
 		node->_textLabel = CCLabelTTF::create(text, "Arial", fontSize);
+		node->upPngName = upName;
+		node->downPngName = downName;
 		if (node->_up && node->_down && node->_move)
 		{
 			node->addChild(node->_up);
@@ -76,6 +78,16 @@ void UIButton::beLoaded()
 		setSize(w,h);
 		setContent(content);
 	}
+}
+TiXmlElement * UIButton::makeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement * btnNode = UIBase::makeNode(parent,"button");
+	if (btnNode)
+	{
+		btnNode->SetAttribute("downimg",downPngName);
+		btnNode->SetAttribute("upimg",upPngName);
+	}
+	return btnNode;
 }
 /** 
  * 检查是否在区域里

@@ -56,8 +56,6 @@ public:
 		_down = NULL;
 		_touchIn = false;
 		uiType = UIBase::UI_IMAGE_BUTTON;
-	//	_textLabel = CCLabelTTF::create("default", "Arial", 12);
-	//	this->addChild(_textLabel,2);
 	}
 public:
 	std::string upPngName;
@@ -79,6 +77,7 @@ public:
 		SERIALIZE_DATA(downPngName,8);
 		SERIALIZE_DATA(content,9);
 	}
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="");
 	//SERIALIZE_KIND(UIBase::UI_IMAGE_BUTTON);
 private:
 	bool _editable; // ÊÇ·ñ¿ÉÑ¡

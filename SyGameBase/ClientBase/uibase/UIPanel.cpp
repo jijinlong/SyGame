@@ -10,7 +10,6 @@
 #include "UILineValue.h"
 #include "UIWindow.h"
 #include "UIXmlBag.h"
-//#include "TFActionManager.h"
 NS_CC_BEGIN
 
 UIPanel * UIPanel::createFromNode(script::tixmlCodeNode *snode)
@@ -24,7 +23,29 @@ UIPanel * UIPanel::createFromNode(script::tixmlCodeNode *snode)
 	CC_SAFE_DELETE(node);
 	return NULL;
 }
+void UIPanel::makeXmlFile(const std::string &name)
+{
+	TiXmlDocument *pDoc=new TiXmlDocument; //定义一个文档的指针
+	//添加一个xml头。
+	TiXmlDeclaration *pDeclaration=new TiXmlDeclaration("1.0","UTF-8","");
+	pDoc->LinkEndChild(pDeclaration);
+	//添加XMl的根节点
+	TiXmlElement *configNode= new TiXmlElement("Config");
+	pDoc->LinkEndChild(configNode);
 
+	TiXmlElement *panelNode= new TiXmlElement(name);
+	configNode->LinkEndChild(panelNode);
+	panelNode->SetAttribute("back",this->backimg.c_str());
+	panelNode->SetAttribute("width",this->_width);
+	panelNode->SetAttribute("height",this->_height);
+	for (CHILD_UIS_ITER iter = childuis.begin() ; iter != childuis.end();++iter)
+	{
+		{
+			(*iter)->makeNode(panelNode,"base");
+		}
+	}
+	pDoc->SaveFile(name);
+}
 UIBase * UIPanel::createButton(const CCPoint &position,const CCSize &size,const char * upImgName,const char *downImgName,UIPanel *parent ,int uniqueId)
 {
 	UIButton * btn = UIButton::create(upImgName,downImgName);
@@ -478,6 +499,7 @@ UIButton * UIPanel::createBtn(script::tixmlCodeNode &btnNode)
 		if (btn)
 		{
 			btn->uniqueId = uniqueId;
+			btn->uniqueName = uniquename;
 			this->addUI(btn);
 			if (w && h)
 				setSize(w,h);
@@ -556,6 +578,7 @@ UIEditField *UIPanel::createFieldFromNode(script::tixmlCodeNode *node)
 	UIEditField *field = UIEditField::create(position,size,defaultContent.c_str());
 	if (field)
 	{
+		field->uniqueName = uniqueName;
 		field->uniqueId = uniqueId;
 		field->setPosition(position.x,position.y);
 		field->setSize(size.width,size.height);
@@ -639,7 +662,7 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	// 处理界面的参数
 	float width = 0;
 	float height = 0;
-	std::string backimg = node->getAttr("backimg");
+	backimg = node->getAttr("backimg");
 	node->getAttr("width",width);
 	node->getAttr("height",height);
 	std::string moveable = node->getAttr("moveable");
