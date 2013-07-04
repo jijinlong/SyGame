@@ -248,10 +248,16 @@ public:
  			// 加载Label TextArea Button 生成界面系统
 			// 创建欢迎动画
 			script::tixmlCodeNode mainNode = node->getFirstChildNode("start");
+			std::string root = mainNode.getAttr("root");
 			if (mainNode.isValid())
 			{
 				this->initXFromNode(&mainNode);
-				window->addPanel(this);
+				if (root != "")
+				{
+					window->addUI(this);
+				}
+				else
+					window->addPanel(this);
 				this->setZOrder(12);
 			}
 		}

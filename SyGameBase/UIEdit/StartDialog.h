@@ -17,28 +17,24 @@ public:
 	virtual void doInitEvent();
 };
 
+class DefaultDialog:public BaseDialog<DefaultDialog>{
+public:
+};
 
+/**
+ * 定义操作Button 和 sysui
+ */
 class MainDialog:public BaseDialog<MainDialog>{
 public:
 	virtual void doInitEvent();
 };
 
-class GameItem:public UIItem{
-public:
-	static GameItem *create(script::tixmlCodeNode *node);
-	void initWithNode(script::tixmlCodeNode *node);
-	virtual void setSize(float w,float h);
-	GameItem()
-	{
-		back = NULL;
-	}
-private:
-	CCSprite *back;
-};
-
-class GameDialog:public BaseDialog<GameDialog>{
+/**
+ * 定义Panel 
+ */
+class PropDialog :public BaseDialog<PropDialog>
+{
 public:
 	virtual void doInitEvent();
-	void vTakeNode(script::tixmlCodeNode *node);
 };
 NS_CC_END

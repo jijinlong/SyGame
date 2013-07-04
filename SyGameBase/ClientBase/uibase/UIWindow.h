@@ -8,7 +8,6 @@
 NS_CC_BEGIN
 class UIWindow:public CCNode{
 public:
-	static UIWindow& getMe();
 
 	static UIWindow * create();
 	/**
@@ -29,8 +28,6 @@ public:
 	 */
 	bool touchEnd(float x,float y);
 
-	void attachParent(CCNode *node);
-
 	UIPanel * getNowTouchPanel(){return _nowTouchPanel;}
 	/**
 	 * 删除当前活动Panel
@@ -45,16 +42,10 @@ public:
 	 */
 	void addUI(UIBase *base);
 
-	void setNowTouchPanel(UIPanel * pan)
-	{
-		if (_nowTouchPanel) _nowTouchPanel->setZOrder(0);
-		_nowTouchPanel = pan;
-		if (pan)
-			pan->setZOrder(3);
-	}
+	void setNowTouchPanel(UIPanel * pan);
 	static bool isClose()
 	{
-		return !window;
+		return false;
 	}
 	CCPoint getCursorPoint();
 	static void release();
@@ -86,6 +77,5 @@ private:
 		_cursor = NULL;
 		_nowTouchPanel = NULL;
 	}
-	static UIWindow * window;
 };
 NS_CC_END

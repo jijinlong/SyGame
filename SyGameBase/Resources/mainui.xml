@@ -1,21 +1,17 @@
 <Config>
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
-	<start x="0" y="0" width="0" height="0"  local="34" backimg="Img\MainPage\main_bg.png" moveable="false" >
-		<button uniquename="qiudui" x="20" y="-180" name="" downimg="Img\MainPage\main_team1.png" upimg="Img\MainPage\main_team.png" moveimg="" r="255" g="0" b="" desc="" fontsize="53"/>
-		<image uniquename="qiuduiname" x="20" y="-130" pngname="Img\MainPage\main_team_mane.png"/>
-		
-		<button uniquename="tiyuchang" x="-260" y="-40" name="" downimg="Img\MainPage\main_field1.png" upimg="Img\MainPage\main_field.png" moveimg="" r="255" g="0" b="" desc="" fontsize="53"/>
-		<image uniquename="tiyuchangname" x="-260" y="10" pngname="Img\MainPage\main_field_mane.png"/>
-		
-		<button uniquename="keji" x="-20" y="120" name="" downimg="Img\MainPage\main_science-center.png" upimg="Img\MainPage\main_science-center1.png" moveimg="" r="255" g="0" b="" desc="" fontsize="53"/>
-		<image uniquename="kejiname" x="-20" y="60" pngname="Img\MainPage\main_science_name.png"/>
-		
-		<button uniquename="rongyao" x="280" y="40" name="" downimg="Img\MainPage\main_honor-roll1.png" upimg="Img\MainPage\main_honor-roll.png" moveimg="" r="255" g="0" b="" desc="" fontsize="53"/>
-		<image uniquename="rongyaoname" x="280" y="-20" pngname="Img\MainPage\main_honor_name.png"/>
-		
-		<button uniquename="beibao" x="330" y="-260" downimg="Img\MainPage\ZJM_Beibao01.png" upimg="Img\MainPage\ZJM_Beibao02.png"/>
-		<button uniquename="shezhi" x="350" y="-180" downimg="Img\MainPage\ZJM_Shezhi01.png" upimg="Img\MainPage\ZJM_Shezhi02.png"/>
-		<button uniquename="shangcheng" x="400" y="-120" downimg="Img\MainPage\ZJM_Shop01.png" upimg="Img\MainPage\ZJM_Shop02.png"/>
-		<image uniquename="" x="500" y="-240" pngname="Img\MainPage\ZJM_Lanqiu.png"/>
+	<start x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true" root="true">
+		<button uniquename="editfield" x="0" y="64" name="编辑框" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		<button uniquename="button" x="0" y="0" name="按钮" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		<button uniquename="text" x="0" y="-60" name="文字" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		<button uniquename="image" x="0" y="-180" name="图像" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		<button uniquename="panel" x="0" y="-120" name="面板" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		<button uniquename="close" x="180" y="260" name="" downimg="close_common_down.png"
+		upimg="close_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 	</start>
 </Config>

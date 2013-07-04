@@ -36,22 +36,19 @@ bool UILabel::initWithContent(const char *content,float fontSize)
 	text = CCLabelTTF::create(content, "Arial", fontSize);
 	this->addChild(text);
 	this->content = content;
-	//text->setColor(ccc3(255,0,0));
 	return true;
 }
 void UILabel::setColor(const ccColor3B &color)
 {
 	if (text)
 		text->setColor(color);
+	this->color = color;
 }
 void UILabel::setPosition(float x,float y)
 {
-	if (text)
-	{
-		text->setPosition(ccp(x,y));
-	}
 	this->x = x;
 	this->y = y;
+	CCNode::setPosition(ccp(x,y));
 }
 void UILabel::setSize(float x,float y)
 {
@@ -95,7 +92,7 @@ bool UILabel::touchMove(float x,float y)
 	CCPoint pos = ccp(x,y);
 	if (_editable && _touchIn)
 	{
-		CCPoint nowPoint = text->getPosition();
+		CCPoint nowPoint = getPosition();
         setPosition(nowPoint.x + pos.x - nowTouchPoint.x,
                                       nowPoint.y + pos.y - nowTouchPoint.y);
 		nowTouchPoint = pos;
@@ -142,5 +139,21 @@ void UILabel::setContent(const char *content)
 		text->setString(content);
 	}
 	this->content = content;
+}
+/**
+ * 创建父节点下的子节点
+ */
+TiXmlElement * UILabel::makeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement * lblNode = UIBase::makeNode(parent,"label");
+	if (lblNode)
+	{
+		lblNode->SetAttribute("content",text->getString());
+		lblNode->SetAttribute("fontsize",text->getFontSize());
+		lblNode->SetAttribute("r",color.r);
+		lblNode->SetAttribute("g",color.g);
+		lblNode->SetAttribute("b",color.b);
+	}
+	return lblNode;
 }
 NS_CC_END

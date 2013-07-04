@@ -101,12 +101,17 @@ void UIImage::setPosition(float x,float y)
 */
 void UIImage::setSize(float w,float h)
 {
-	if (image)
+	if (image && w && h)
 	{
 		this->w = w;
 		this->h = h;
 		image->setScaleX(w / image->getContentSize().width);
 		image->setScaleY(h / image->getContentSize().height);
+	}
+	else if (image)
+	{
+		this->w = image->getContentSize().width;
+		this->h = image->getContentSize().height;
 	}
 	return ;
 }

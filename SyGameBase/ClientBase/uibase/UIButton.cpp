@@ -100,12 +100,7 @@ bool UIButton::touchDown(float x,float y)
 	nowTouchPoint = ccp(x,y);
 	if (_up && _down)
 	{
-		CCRect rect = CCRectMake(
-			_up->getPosition().x - (_up->getContentSize().width/2),
-			_up->getPosition().y - (_up->getContentSize().height/2),
-			_up->getContentSize().width,
-			_up->getContentSize().height);
-		if (rect.containsPoint(pos))
+		if (checkIn(pos))
 		{
 			if (!_editable)
 			{
@@ -138,12 +133,7 @@ bool UIButton::touchMove(float x,float y)
 	}
 	if (_up && _down)
 	{
-		CCRect rect = CCRectMake(
-			_up->getPosition().x - (_up->getContentSize().width/2),
-			_up->getPosition().y - (_up->getContentSize().height/2),
-			_up->getContentSize().width,
-			_up->getContentSize().height);
-		if (rect.containsPoint(pos))
+		if (checkIn(pos))
 		{
 			if (_move)
 			{
@@ -172,18 +162,13 @@ bool UIButton::touchEnd(float x,float y)
 	pos = this->convertToNodeSpace(pos);
 	if (_up && _down && _touchIn)
 	{
-		CCRect rect = CCRectMake(
-			_up->getPosition().x - (_up->getContentSize().width/2),
-			_up->getPosition().y - (_up->getContentSize().height/2),
-			_up->getContentSize().width,
-			_up->getContentSize().height);
 		_up->setVisible(true);
 		_down->setVisible(false);
 		if (_move)
 		{
 			_move->setVisible(false);
 		}
-		if (rect.containsPoint(pos))
+		if (checkIn(pos))
 		{
 			// ´¥·¢ÊÂ¼þ
 			doEvent(UIBase::EVENT_CLICK_DOWN,this);
@@ -194,6 +179,15 @@ bool UIButton::touchEnd(float x,float y)
 	}
 	_touchIn = false;
 	return tag;
+}
+bool UIButton::checkIn(const CCPoint &pos)
+{
+	float width = _up->getContentSize().width * _up->getScaleX();
+	float height = _up->getContentSize().height * _up->getScaleY();
+	float x = _up->getPositionX() - (width/2);
+	float y = _up->getPositionY() - (height/2);
+	CCRect rect = CCRectMake(x,y,width,height);
+	return rect.containsPoint(pos);
 }
 void UIButton::setPosition(float x,float y)
 {

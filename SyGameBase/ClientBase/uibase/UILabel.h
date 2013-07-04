@@ -58,13 +58,17 @@ public:
 		text = NULL;
 		uiType = UIBase::UI_LABEL;
 	}
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
 private:
 	CCLabelTTF *text;
 	CCPoint nowTouchPoint;
 	bool _editable;
 	bool _touchIn;
 	std::string content;
-	
+	ccColor3B color;
 };
 
 NS_CC_END

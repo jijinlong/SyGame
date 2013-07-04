@@ -12,5 +12,6 @@
 	<storebag uniquename="sysui" x="" y="" width="64" height="64" upname="Img\Btn\XZBS_Bangding01.png" downname="Img\Btn\XZBS_Bangding02.png">
 		<position id="" x="" y="" dir="left"/>
 	</storebag>
+	<label x="" y="" content="哈哈" fontsize="32" r="" g="255" b="" />
   </start>
 </Config>

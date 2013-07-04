@@ -26,7 +26,7 @@ public:
 	 * Í£Ö¹ÍÏ¶¯
 	 */
 	bool touchEnd(float x,float y);
-	
+	bool checkIn(const CCPoint &pos);
 	void setEditable(bool tag){
 		_editable = tag;
 	}

@@ -1,7 +1,6 @@
 #include "UIWindow.h"
 
 NS_CC_BEGIN
-UIWindow * UIWindow::window = NULL;
 FunctionInfo exitFunction; // 退出函数
 UIWindow * UIWindow::create()
 {
@@ -33,7 +32,7 @@ void UIWindow::setCursor(CCSprite *cursor)
 void UIWindow::addPanel(UIPanel *panel)
 {
 	if (!panel) return;
-	insertBase(panel);
+	_panels.push_back(panel);
 	this->addChild(panel);
 }
 /**
@@ -50,6 +49,15 @@ void UIWindow::addUI(UIBase *base)
 	}
 	insertBase(base);
 	this->addChild(base);
+}
+void UIWindow::setNowTouchPanel(UIPanel * pan)
+{
+	//if (_nowTouchPanel) _nowTouchPanel->setZOrder(0);
+	_nowTouchPanel = pan;
+	if (pan)
+	{
+		//pan->setZOrder(3);
+	}
 }
 /** 
  * 检查是否在区域里
@@ -72,7 +80,7 @@ bool UIWindow::touchDown(float x,float y)
 			return true;
 		}
 	}
-	_nowTouchPanel = NULL;
+//	_nowTouchPanel = NULL;
 	PANELS temps = _panels;
 	for (PANELS_ITER iter = temps.begin(); iter != temps.end(); ++iter)
 	{
@@ -88,25 +96,7 @@ bool UIWindow::touchDown(float x,float y)
 }
 void UIWindow::release()
 {
-	if (window)
-	{
-		window->_bases.clear();
-		window->_panels.clear();
-		
-		window->_nowTouchPanel = NULL;
-		window->_nowTouchUI = NULL;
-		window->removeAllChildrenWithCleanup(true);
-		FunctionInfo& func = exitFunction;
-		if (func.handle && func.object)
-		{
-			UIBase *o = func.object;
-			
-			o->release();
-			func.object = NULL;
-			(o->*func.handle)(NULL);
-		}
-	}
-	window = NULL;
+	
 }
 
 void UIWindow::setEndFunction(const FunctionInfo &function)
@@ -127,10 +117,11 @@ bool UIWindow::touchMove(float x,float y)
 	}
 	if (_nowTouchPanel && _nowTouchPanel->isModel())
 	{
-		//return true;
+		return true;
 	}
 	if (_nowTouchPanel && _nowTouchPanel->touchMove(x,y))
 		return true;
+	
 	if (_nowTouchUI)
 	{
 		if (_nowTouchUI->touchMove(x,y))
@@ -172,7 +163,7 @@ bool UIWindow::touchEnd(float x,float y)
 		}
 		return false;
 	}
-	if (_nowTouchPanel)_nowTouchPanel->setZOrder(0);
+	//if (_nowTouchPanel)_nowTouchPanel->setZOrder(0);
 	_nowTouchUI = NULL;
 	BASES tbases = _bases;
 	for (BASES_ITER iter = tbases.begin() ; iter != tbases.end();++iter)
@@ -183,7 +174,7 @@ bool UIWindow::touchEnd(float x,float y)
 			tag = true;
 		}
 	}
-	_nowTouchPanel = NULL;
+//	_nowTouchPanel = NULL;
 	PANELS temps = _panels;
 	for (PANELS_ITER iter = temps.begin(); iter != temps.end(); ++iter)
 	{
@@ -193,29 +184,9 @@ bool UIWindow::touchEnd(float x,float y)
 			tag = true;
 		}
 	}
-	
-	if (endFlag)
-	{
-		FunctionInfo& func = exitFunction;
-		if (func.handle && func.object)
-		{
-			UIBase *o = func.object;
-			(o->*func.handle)(NULL);
-			o->release();
-			func.object = NULL;
-		}
-	}
 	return tag;
 }
-UIWindow& UIWindow::getMe()
-{
-	if (!window) window= UIWindow::create();
-	return *window;
-}
-void UIWindow::attachParent(CCNode *node)
-{	
-	node->addChild(window);
-}
+
 CCPoint UIWindow::getCursorPoint()
 {
 	return nowCursorPoint;
@@ -251,7 +222,7 @@ void  UIWindow::insertBase(UIBase *base)
 			return;
 		}
 	}
-	_bases.push_back(base);//push_back(base);
+	_bases.push_back(base);
 }
 void UIWindow::showErr(const std::string& info)
 {

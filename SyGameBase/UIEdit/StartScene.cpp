@@ -77,12 +77,12 @@ bool StartScene::init()
    
 	startDialog = StartDialog::create(window,"startui.xml");
 	
-/*
 	MainDialog *mainDialog = MainDialog::create(window,"mainui.xml");
 
 
-	
-	GameDialog *gameDialog = GameDialog::create(window,"games.xml");*/
+	/*
+	GameDialog *gameDialog = GameDialog::create(window,"games.xml");
+	*/
 	startDialog->makeXmlFile("test.xml");
 	this->schedule(schedule_selector(StartScene::step), 0.75f); 
 	return true;

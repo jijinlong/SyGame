@@ -40,61 +40,215 @@ void StartDialog::doInitEvent()
 		
 	} while (false);
 }
+/**
+ * 关闭当前panel
+ **/
+struct stClosePanel:public UICallback{
+	void callback(UIBase *base)
+	{
+		if (base && base->getParent())
+		{
+			base->getParent()->setVisible(false);
+		}
+	}
+	stClosePanel()
+	{
+	
+	}
+};
+/**
+ * 展示属性
+ */
+struct stShowProp:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+	
+	}
+
+};
+
+/**
+ * 创建按钮
+ */
+struct stCreateButton:public UICallback{
+public:
+	virtual void callback(UIBase *base)
+	{
+		if (dialog && window)
+		{
+			UIPanel *panel = window->getNowTouchPanel();
+			if (panel)
+			{
+				UIButton *btn = (UIButton*)panel->createButton(ccp(0,300),CCSizeMake(64,64),
+					"btn_common_down.png","btn_common_up.png",panel);
+				if (btn)
+				{
+					btn->setEditable(true);
+					btn->bind(UIBase::EVENT_EDIT_DOWN,new stShowProp());
+				}
+			}
+		}
+	}
+	stCreateButton(MainDialog *dialog,UIWindow *window):dialog(dialog),window(window)
+	{
+	
+	}
+protected:
+	MainDialog *dialog;
+	UIWindow *window;
+};
+/**
+ * 创建Panel
+ */
+struct stCreatePanel:public stCreateButton{
+public:
+	virtual void callback(UIBase *base)
+	{
+		if (dialog && window)
+		{
+			DefaultDialog * dialog = DefaultDialog::create(window,"defaultdialog.xml");
+		}
+	}
+	stCreatePanel(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
+	{}
+};
+
+/**
+ * 创建图片
+ */
+struct stCreateImage:public stCreateButton{
+public:
+	virtual void callback(UIBase *base)
+	{
+		if (dialog && window)
+		{
+			// 创建图片
+			UIPanel *panel = window->getNowTouchPanel();
+			if (panel)
+			{
+				UIImage *image = (UIImage*) panel->createImage(ccp(0,300),CCSizeMake(0,0),"defaultimg.png",panel);
+				if (image)
+				{
+					image->setEditable(true);
+					image->bind(UIBase::EVENT_EDIT_DOWN,new stShowProp());
+				}
+			}
+		}
+	}
+	stCreateImage(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
+	{}
+};
+/**
+ * 创建文本
+ */
+struct stCreateText:public stCreateButton{
+public:
+	virtual void callback(UIBase *base)
+	{
+		if (dialog && window)
+		{
+			// 创建图片
+			UIPanel *panel = window->getNowTouchPanel();
+			if (panel)
+			{
+				UILabel * label = (UILabel*)panel->createLabel(ccp(0,0),CCSizeMake(0,0),"default",32,panel);
+				if (label)
+				{
+					label->setEditable(true);
+					label->bind(UIBase::EVENT_EDIT_DOWN,new stShowProp());
+				}
+			}
+		}
+	}
+	stCreateText(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
+	{}
+};
+
+/**
+ * 创建输入框
+ */
+struct stCreateEditField :public stCreateButton{
+public:
+	virtual void callback(UIBase *base)
+	{
+		if (dialog && window)
+		{
+			// 创建图片
+			UIPanel *panel = window->getNowTouchPanel();
+			if (panel)
+			{
+				UIEditField *editField = (UIEditField*) panel->createTextField(ccp(0,0),CCSizeMake(100,32),"hello,world",panel);
+				if (editField)
+				{
+					editField->setEditable(true);
+					editField->bind(UIBase::EVENT_EDIT_DOWN,new stShowProp());
+				}
+			}
+		}
+	}
+	stCreateEditField(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
+	{}
+};
+/**
+ * 创建数字
+ */
+
+
+
+/**
+ * 创建包裹
+ */
+
+/**
+ * 创建收纳BAG
+ */
+
+/**
+ * 创建界面动画
+ */
 
 void MainDialog::doInitEvent()
 {	
-	
-}
-GameItem *GameItem::create(script::tixmlCodeNode *snode)
-{
-	GameItem *node = new GameItem();
-	if (node)
-	{
-		node->initWithNode(snode);
-		node->autorelease();
-		return node;
-	}
-	CC_SAFE_DELETE(node);
-}
-void GameItem::initWithNode(script::tixmlCodeNode *node)
-{
-	if (node->equal("item"))
-	{
-		back = CCSprite::create(node->getAttr("pngname"));
-		if (back)
+	do{
+		GET_UI_BYNAME(this,UIButton,closeBtn,"close");
+		if (closeBtn)
 		{
-			back->setAnchorPoint(ccp(0,0));
-			this->addChild(back);
+			closeBtn->bind(UIBase::EVENT_CLICK_DOWN,new stClosePanel());
 		}
-	}
+		GET_UI_BYNAME(this,UIButton,crtBtnBtn,"button");
+		if (crtBtnBtn)
+		{
+			crtBtnBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreateButton(this,this->window));
+		}
+		GET_UI_BYNAME(this,UIButton,crtImageBtn,"image");
+		if (crtImageBtn)
+		{
+			crtImageBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreateImage(this,this->window));
+		}
+		GET_UI_BYNAME(this,UIButton,crtTextBtn,"text");
+		if (crtTextBtn)
+		{
+			crtTextBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreateText(this,this->window));
+		}
+		GET_UI_BYNAME(this,UIButton,crtEditBtn,"editfield");
+		if (crtEditBtn)
+		{
+			crtEditBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreateEditField(this,this->window));
+		}
+		GET_UI_BYNAME(this,UIButton,crtPanelBtn,"panel");
+		if (crtPanelBtn)
+		{
+			crtPanelBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreatePanel(this,this->window));
+		}
+	}while(false);
 }
-void GameItem::setSize(float w,float h)
-{
-	if (back)
-	{
-		back->setScaleX(w / back->getContentSize().width);
-		back->setScaleY(h / back->getContentSize().height);
-	}
-}
-void GameDialog::doInitEvent()
+
+/**
+ * 创建的属性界面
+ */
+void PropDialog::doInitEvent()
 {
 	
-}
-void GameDialog::vTakeNode(script::tixmlCodeNode *node)
-{
-	if (node->equal("Config"))
-	{
-		int count = 0;
-		script::tixmlCodeNode itemNode = node->getFirstChildNode("item");
-		GET_UI_BYNAME(this,UIViewBag,bag,"bag");
-		if (!bag) return;
-		while (itemNode.isValid())
-		{
-			GameItem *item = GameItem::create(&itemNode);
-			bag->setItem(item,count++);
-			itemNode = itemNode.getNextNode("item");
-		}
-		bag->show();
-	}
 }
 NS_CC_END

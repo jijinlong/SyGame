@@ -543,6 +543,7 @@ UILabel * UIPanel::createLblFromNode(script::tixmlCodeNode * node)
 	UILabel *label = UILabel::create(content.c_str(),fontSize);
 	
 	std::string uniquename = node->getAttr("uniquename");
+	label->uniqueName = uniquename;
 	if (locper == 1)
 	{
 		x *= 	visibleSize.width / 100;
