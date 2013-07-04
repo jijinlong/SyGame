@@ -1,5 +1,7 @@
 #pragma once
 #include "cocos2d.h"
+#include "UIBase.h"
+#include "xmlScript.h"
 NS_CC_BEGIN
 /**
  * 事件处理器
@@ -26,6 +28,7 @@ class UICenterItem:public CCSprite{
 public:
 	bool disable;
 	bool up;
+	std::string uniqueName;
 	UICenterItem *parent;
 	/**
 	 * 创建一个条目
@@ -59,8 +62,10 @@ public:
 	CCSize itemSize;
 	CCPoint nowTouchPoint;
 	bool canMove; // 标识是否可移动
+	bool choiceAble; // 选择标识
 	UICenterItem()
 	{
+		choiceAble = false;
 		disable = false;
 		up = true;
 		canMove = false;
@@ -74,6 +79,7 @@ public:
 		eventOn = true;
 		valid = true;
 	}
+	std::string dirStr;
 	~UICenterItem()
 	{
 		if (upShow) upShow->release();
@@ -216,17 +222,54 @@ public:
 	 */
 	virtual bool checkIn(const CCPoint & touchPoint);
 };
-
 /**
- * 技能界面
+ * 从配置文件中获取节点位置信息
  */
-class UISkillBag:public UICenterBag{
+class UIXmlStoreBag:public UICenterBag{
 public:
-	static UISkillBag * create(const char *upName,const char * downName,const CCSize & rect);
+	static UIXmlStoreBag *create(script::tixmlCodeNode *node);
+	bool init(script::tixmlCodeNode *node);
 	/**
 	 * 展示条目
 	 * \param item 待展示的item
 	 */
 	virtual void showItem(int dirType,UICenterItem *item);
+	std::string upImg;
+	std::string downImg;
+	int width;
+	int height;
+	UIXmlStoreBag()
+	{
+		width = height = 0;
+	}
+	std::vector<std::vector<CCPoint> > pointList;
+
+	void makeNode(TiXmlElement *parent);
+};
+/**
+ * 适配于UIBase系统
+ */
+class UIStoreBag:public UIBase{
+public:
+	static UIStoreBag *create(script::tixmlCodeNode *node);
+	bool init(script::tixmlCodeNode *node);
+	/**
+	 * 处理touch 事件
+	 * \param touchType 点击类型
+	 * \param touchPoint 点击的点
+	 */
+	virtual bool doTouch(int touchType,const CCPoint &touchPoint);
+	UIStoreBag()
+	{
+		_bag = NULL;
+	}
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
+
+	void setEditable(bool tag);
+private:
+	UIXmlStoreBag *_bag;
 };
 NS_CC_END

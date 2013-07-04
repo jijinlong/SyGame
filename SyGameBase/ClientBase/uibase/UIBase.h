@@ -115,6 +115,10 @@ public:
 	 * \param touchPoint 点击点
 	 */
 	virtual bool doTouch(int touchType,const CCPoint &touchPoint);
+	virtual bool doTouch(int touchType,CCTouch* touch)
+	{
+		return false;
+	}
 	/**
 	 * 设置大小
 	 */

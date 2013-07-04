@@ -19,7 +19,11 @@ bool UICenterItem::init(const char *upName,const char * downName,const CCSize & 
 {
 	downShow = getFrameByFileName(downName);//theUIPack->getFrame(downName);
 	upShow = getFrameByFileName(upName);//theUIPack->getFrame(upName);
+    if (!downShow || !upShow) return false;
 	CCSprite::initWithSpriteFrame(upShow);
+	this->setScaleX(size.width / this->getContentSize().width);
+	this->setScaleY(size.height / this->getContentSize().height);
+	//this->setAnchorPoint(ccp(0,0));
 	downShow->retain();
 	this->itemSize = size;
 	upShow->retain();
@@ -28,7 +32,7 @@ bool UICenterItem::init(const char *upName,const char * downName,const CCSize & 
 CCSpriteFrame * UICenterItem::getFrameByFileName(const char *pngName)
 {
 	CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(pngName);
-		
+    if (!texture) return NULL;
 	CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
 	return frame;
 }
@@ -100,8 +104,8 @@ bool UICenterItem::checkIn(const CCPoint & touchPoint)
 	if (disable) return false;
 	if (!this->isVisible()) return false;
 	CCPoint target = this->convertToNodeSpace(touchPoint);
-	float width = itemSize.width;
-	float height = itemSize.height;
+	float width = this->getContentSize().width;
+	float height = this->getContentSize().height;
 	CCPoint pos = getPosition();
 	CCRect rect = CCRectMake(
 			 0,
@@ -130,14 +134,31 @@ bool  UICenterItem::onTouch(int touchType,const CCPoint &touchPoint)
 			{
 				inTouch = true;
 				nowTouchPoint = touchPoint;
-				initWithSpriteFrame(downShow);
+				if (!choiceAble)
+					initWithSpriteFrame(downShow);
 			}
 		}break;
 		case UICenterItem::TOUCH_END:
 		{
 			if (inTouch)
 			{
-				initWithSpriteFrame(upShow);
+				if (choiceAble)
+				{
+					if (up)
+					{
+						up = false;
+						initWithSpriteFrame(downShow);
+					}
+					else
+					{
+						up = true;
+						initWithSpriteFrame(upShow);
+					}
+				}
+				else
+				{
+					initWithSpriteFrame(upShow);
+				}
 				if (checkIn(touchPoint))
 					onClick();
 			}
@@ -145,6 +166,7 @@ bool  UICenterItem::onTouch(int touchType,const CCPoint &touchPoint)
 			inTouch = false;
 		}break;
 	}
+	//this->setAnchorPoint(ccp(0,0));
 	return inTouch;
 }
 
@@ -159,7 +181,8 @@ bool UICenterItem::doTouchCanMove(int touchType,const CCPoint &touchPoint)
 			{
 				inTouch = true;
 				nowTouchPoint = touchPoint;
-			//	initWithSpriteFrame(downShow);
+				if (!choiceAble)
+					initWithSpriteFrame(downShow);
 				return  true;
 			}
 		}break;
@@ -178,14 +201,21 @@ bool UICenterItem::doTouchCanMove(int touchType,const CCPoint &touchPoint)
 		{
 			if (inTouch)
 			{
-				if (up)
+				if (choiceAble)
 				{
-					up = false;
-					initWithSpriteFrame(downShow);
+					if (up)
+					{
+						up = false;
+						initWithSpriteFrame(downShow);
+					}
+					else
+					{
+						up = true;
+						initWithSpriteFrame(upShow);
+					}
 				}
 				else
 				{
-					up = true;
 					initWithSpriteFrame(upShow);
 				}
 				if (checkIn(touchPoint))
@@ -196,6 +226,7 @@ bool UICenterItem::doTouchCanMove(int touchType,const CCPoint &touchPoint)
 			
 		}break;
 	}
+	//this->setAnchorPoint(ccp(0,0));
 	return false;
 }
 void UICenterItem::setText(const std::string& textContent)
@@ -481,79 +512,193 @@ bool UICenterBag::checkIn(const CCPoint & touchPoint)
 }
 
 /**
- * 展示条目
- * \param item 待展示的item
+ * 从配置文件中获取节点位置信息
  */
- void UISkillBag::showItem(int dirType,UICenterItem *item)
- {
-	 {
-		const float PI = 3.1415926;
-		CCPoint dir[4] = {
-			CCPoint(PI/2,PI/2), // 右边设置
-			CCPoint(0,0),// 左边设置
-			CCPoint(PI,PI), // 向下设置
-			CCPoint(3*PI/2,3*PI/2),// 向上设置
-		};
-		int loops[] = {3,1,1,1};
-		int loopCount = 0;
-		int tap = loops[0];
-		int count = item->itemId;
-		while (count >= 0 )
-		{
-			if (count - tap < 0)
-			{
-				break;
-			}
-			else
-			{
-				count = count - tap;
-				loopCount++;
-				if (loopCount >= sizeof(loops) / sizeof(int)) return; // 多余的不展示
-				tap += loops[loopCount];
-			}
-		}
-		int r = (eachSpan + eachWidth+16)* (loopCount + 1);
-		int index = count;
-		CCPoint dest = 
-			ccp(
-			cos(dir[dirType].x + (PI/2) * index / (tap - 1)) * (r) + 32,
-			sin(dir[dirType].y + (PI/2) * index / (tap - 1)) * (r) + 32
-			);
-		item->setPosition(dest);
-		return;
-	 }
-	const float PI = 3.1415926;
-	CCPoint dir[4] = {
-		CCPoint(PI/2,PI/2), // 右边设置
-		CCPoint(0,0),// 左边设置
-		CCPoint(PI,PI), // 向下设置
-		CCPoint(3*PI/2,3*PI/2),// 向上设置
-	};
-	
-	CCPoint dest = 
-		ccp(
-		cos(dir[dirType].x + PI * item->itemId / 4) * (eachSpan + eachWidth+16) + 32,
-		sin(dir[dirType].y + PI * item->itemId / 4) * (eachSpan + eachHeight+16) + 32);
-	item->setPosition(dest);
-	return;
-	item->setPosition(ccp(32,32));
-	int index = 1;//_items[dirType].size() - item->itemId;
-	CCFiniteTimeAction *action1 = CCSequence::create(CCDelayTime::create(0.3f*index),CCMoveTo::create(0.3f,dest),NULL);
-	CCFiniteTimeAction * action2 = CCSequence::create(CCHide::create(),CCDelayTime::create(0.3f*index),CCShow::create(),CCFadeIn::create(0.5),NULL);
-	CCFiniteTimeAction *spawn = CCSpawn::create(action1,action2,NULL);
-	item->runAction(spawn);
- }
 
-UISkillBag * UISkillBag::create(const char *upName,const char * downName,const CCSize & rect)
+UIXmlStoreBag *UIXmlStoreBag::create(script::tixmlCodeNode *node)
 {
-	UISkillBag *pRet = new UISkillBag();
-    if (pRet && pRet->init(upName, downName,rect))
+	UIXmlStoreBag *pRet = new UIXmlStoreBag();
+    if (pRet && pRet->init(node))
     {
-		pRet->setExchange();
         pRet->autorelease();
         return pRet;
     }
     CC_SAFE_DELETE(pRet);
     return NULL;
 }
+bool UIXmlStoreBag::init(script::tixmlCodeNode *node)
+{
+	// 创建包裹 并且创建内容
+	upImg = node->getAttr("upname");
+	downImg = node->getAttr("downname");
+	width = node->getInt("width");
+	height = node->getInt("height");
+	int x = node->getInt("x");
+	int y = node->getInt("y");
+	this->setPosition(ccp(x,y));
+	std::string moveable = node->getAttr("moveable");
+	if (moveable == "false")
+	{
+		this->setMovable(false);
+	}
+	if (moveable == "true")
+	{
+		this->setMovable(true);
+	}
+	if (UICenterBag::init(upImg.c_str(),downImg.c_str(),CCSizeMake(width,height)))
+	{
+		// 创建一些条目	
+		script::tixmlCodeNode itemNode = node->getFirstChildNode("item");
+		while (itemNode.isValid())
+		{
+			std::string upImg = node->getAttr("upname");
+			std::string downImg = node->getAttr("downname");
+			int width = node->getInt("width");
+			int height = node->getInt("height");
+		
+			int dirType = UICenterBag::LEFT_SET;
+
+			UICenterItem *item = UICenterItem::create(upImg.c_str(),downImg.c_str(),CCSizeMake(width,height));
+			item->dirStr = node->getAttr("dir");
+			if (item->dirStr == "left")
+			{
+				dirType = UICenterBag::LEFT_SET;
+			}
+			if (item->dirStr == "right")
+			{
+				dirType = UICenterBag::RIGHT_SET;
+			}
+			if (item->dirStr == "up")
+			{
+				dirType = UICenterBag::UP_SET;
+			}
+			if (item->dirStr == "down")
+			{
+				dirType = UICenterBag::DOWN_SET;
+			}
+			addItem(dirType,item);
+			itemNode = itemNode.getNextNode("item");
+		}
+		script::tixmlCodeNode posNode = node->getFirstChildNode("position");
+		while(posNode.isValid())
+		{
+			int id = 0;
+			CCPoint pos;
+			posNode.getAttr("id",id);
+			posNode.getAttr("x",pos.x);
+			posNode.getAttr("y",pos.y);
+			int dirType = 0;
+			std::string dirStr = node->getAttr("dir");
+			if (dirStr == "left")
+			{
+				dirType = UICenterBag::LEFT_SET;
+			}
+			if (dirStr == "right")
+			{
+				dirType = UICenterBag::RIGHT_SET;
+			}
+			if (dirStr == "up")
+			{
+				dirType = UICenterBag::UP_SET;
+			}
+			if (dirStr == "down")
+			{
+				dirType = UICenterBag::DOWN_SET;
+			}
+			if (dirType >= pointList.size())
+			{
+				pointList.resize(dirType + 1);
+			}
+			if (id >= pointList[dirType].size())
+			{
+				pointList[dirType].resize(id + 1);
+			}
+			pointList[dirType][id] = pos;
+			posNode = posNode.getNextNode("position");
+		}
+	}
+	show();
+	return true;
+}
+void UIXmlStoreBag::makeNode(TiXmlElement *parent)
+{
+	parent->SetAttribute("upname",upImg);
+	parent->SetAttribute("downname",downImg);
+	parent->SetAttribute("x",(int)this->getPositionX());
+	parent->SetAttribute("y",(int)this->getPositionY());
+	parent->SetAttribute("width",width);
+	parent->SetAttribute("height",height);
+}
+/**
+* 展示条目
+* \param item 待展示的item
+*/
+void UIXmlStoreBag::showItem(int dirType,UICenterItem *item)
+{
+	if (dirType < pointList.size())
+	{
+		if (item->itemId < pointList[dirType].size())
+		{
+			item->setPosition(pointList[dirType][item->itemId]);
+		}
+	}
+}
+/**
+ * 创建父节点下的子节点
+ */
+TiXmlElement * UIStoreBag::makeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement * storeBag = UIBase::makeNode(parent,"storebag");
+	if (storeBag)
+	{
+		storeBag->SetAttribute("uniquename",uniqueName);
+		_bag->makeNode(storeBag);
+	}
+	return storeBag;
+}
+/**
+ * 适配于UIBase系统
+ */
+
+UIStoreBag *UIStoreBag::create(script::tixmlCodeNode *node)
+{
+	UIStoreBag *pRet = new UIStoreBag();
+    if (pRet && pRet->init(node))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    CC_SAFE_DELETE(pRet);
+    return NULL;
+}
+bool UIStoreBag::init(script::tixmlCodeNode *node)
+{
+	_bag = UIXmlStoreBag::create(node);
+	if (_bag)
+	{
+		this->addChild(_bag);
+	}
+	return true;
+}
+/**
+* 处理touch 事件
+* \param touchType 点击类型
+* \param touchPoint 点击的点
+*/
+bool UIStoreBag::doTouch(int touchType,const CCPoint &touchPoint)
+{
+	if (_bag)
+	{
+		return _bag->onTouch(touchType,touchPoint);
+	}
+	return false;
+}
+void UIStoreBag::setEditable(bool tag)
+{
+	if (_bag)
+	{
+		_bag->setMovable(tag);
+	}
+}
+
 NS_CC_END

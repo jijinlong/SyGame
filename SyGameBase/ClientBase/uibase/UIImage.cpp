@@ -32,6 +32,23 @@ bool UIImage::init(const char *imgName)
 */
 bool UIImage::touchDown(float x,float y)
 {
+	CCPoint pos = ccp(x,y);
+	_touchIn = false;
+	pos = this->convertToNodeSpace(pos);
+	nowTouchPoint = ccp(x,y);
+	if (image)
+	{
+		CCRect rect = CCRectMake(
+			image->getPosition().x - (image->getContentSize().width/2),
+			image->getPosition().y - (image->getContentSize().height/2),
+			image->getContentSize().width,
+			image->getContentSize().height);
+		if (rect.containsPoint(pos))
+		{
+			_touchIn = true;
+			return true;
+		}
+	}
 	return false;
 }
 /**
@@ -39,13 +56,30 @@ bool UIImage::touchDown(float x,float y)
 */
 bool UIImage::touchMove(float x,float y)
 {
-	 return false;
+	CCPoint pos = ccp(x,y);
+	if (_editable && _touchIn)
+	{
+		CCPoint nowPoint = getPosition();
+        setPosition(nowPoint.x + pos.x - nowTouchPoint.x,
+                                      nowPoint.y + pos.y - nowTouchPoint.y);
+		nowTouchPoint = pos;
+		return true;
+	}
+	return false;
 }
 /**
 * Í£Ö¹ÍÏ¶¯
 */
 bool UIImage::touchEnd(float x,float y)
 {
+	bool  tag = false;
+	if (_editable && _touchIn)
+	{
+		this->doEvent(UIBase::EVENT_EDIT_DOWN,this);
+		tag = true;
+	}
+	
+	if (_editable) return false;
 	 return false;
 }
 /**
@@ -57,7 +91,7 @@ void UIImage::setPosition(float x,float y)
 	{
 		this->x = x;
 		this->y = y;
-		image->setPosition(ccp(x,y));
+		CCNode::setPosition(ccp(x,y));
 	}
 	return ;
 }

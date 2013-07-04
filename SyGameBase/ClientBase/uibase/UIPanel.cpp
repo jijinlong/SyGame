@@ -10,6 +10,7 @@
 #include "UILineValue.h"
 #include "UIWindow.h"
 #include "UIXmlBag.h"
+#include "UICenterBag.h"
 NS_CC_BEGIN
 
 UIPanel * UIPanel::createFromNode(script::tixmlCodeNode *snode)
@@ -38,6 +39,8 @@ void UIPanel::makeXmlFile(const std::string &name)
 	panelNode->SetAttribute("back",this->backimg.c_str());
 	panelNode->SetAttribute("width",this->_width);
 	panelNode->SetAttribute("height",this->_height);
+	panelNode->SetAttribute("x",(int) this->getPositionX());
+	panelNode->SetAttribute("y",(int) this->getPositionY());
 	for (CHILD_UIS_ITER iter = childuis.begin() ; iter != childuis.end();++iter)
 	{
 		{
@@ -280,7 +283,7 @@ bool UIPanel::touchDown(float x,float y)
 	for (CHILD_UIS_ITER iter = childuis.begin() ; iter != childuis.end();++iter)
 	{
 		UIBase *base = *iter;
-		if (base && base->touchDown(x,y))
+		if (base && base->doTouch(UIBase::TOUCH_DOWN,ccp(x,y)))
 		{
 			_nowTouchUI = base;
 			CCLOG("can move child");
@@ -316,16 +319,17 @@ bool UIPanel::touchMove(float x,float y)
 			return true;
 		}
 	}
-	if (!_moveable) return false;
+	
 	for (CHILD_UIS_ITER iter = temps.begin() ; iter != temps.end();++iter)
 	{
 		UIBase *base = *iter;
-		if (base && base->touchMove(x,y))
+		if (base && base->doTouch(UIBase::TOUCH_MOVE,ccp(x,y)))
 		{
 			this->doEvent(EVENT_TOUCH_MOVE,this);
 			return true;
 		}
 	}
+	if (!_moveable) return false;
 	if (_moveable && _touchIn)
 	{
 		CCPoint nowPoint =getPosition();
@@ -356,7 +360,7 @@ bool UIPanel::touchEnd(float x,float y)
 	for (CHILD_UIS_ITER iter = temps.begin() ; iter != temps.end();++iter)
 	{
 		UIBase *base = *iter;
-		if (base && base->touchEnd(x,y))
+		if (base && base->doTouch(UIBase::TOUCH_END,ccp(x,y)))
 		{
 			tag = true;
 		}
@@ -670,6 +674,13 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	{
 		this->setMovable(false);
 	}
+	if (moveable == "true")
+	{
+		this->setMovable(true);
+	}
+
+	
+
 	std::string visible = node->getAttr("visible");
 	if (visible == "false")
 	{
@@ -801,6 +812,28 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		}
 		xmlBag->show();
 		bagNode = bagNode.getNextNode("bag");
+	}
+	script::tixmlCodeNode storeBagNode = node->getFirstChildNode("storebag");
+	while(storeBagNode.isValid())
+	{
+		UIStoreBag *storeBag = UIStoreBag::create(&storeBagNode);
+		if (storeBag)
+		{
+			childuis.push_back(storeBag);
+			storeBag->uniqueName = bagNode.getAttr("uniquename");
+			nameuis[storeBag->uniqueName] = storeBag;
+			this->addChild(storeBag);
+		}
+		storeBagNode = storeBagNode.getNextNode("storebag");
+	}
+	std::string editable = node->getAttr("editable");
+	if (editable == "false")
+	{
+		this->setEditable(false);
+	}
+	if (editable == "true")
+	{
+		this->setEditable(true);
 	}
 	return true;
 }

@@ -44,7 +44,10 @@ private:
 	{
 		_editable = false;
 		image = NULL;
+		_touchIn = false;
 	}
+	bool _touchIn;
+	CCPoint nowTouchPoint;
 };
 
 NS_CC_END
