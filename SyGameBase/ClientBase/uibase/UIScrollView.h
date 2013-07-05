@@ -72,6 +72,8 @@ public:
 			return child->makeNode(parent,name);
 		return NULL;
 	}
+	void setBack(const char *backName);
+	CCSprite *back;
 protected:
 	bool scrollTag;
 	int _scrollDir; // 设置滚动方向
@@ -85,6 +87,7 @@ protected:
 	float _height;
 	UIScrollView()
 	{
+		back = NULL;
 		scrollTag = true;
 		_editable = true;
 		_x = _y = _width = _height = 0;

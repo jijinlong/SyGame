@@ -14,15 +14,15 @@
 	</storebag>
 	<label x="" y="" content="哈哈" fontsize="32" r="" g="255" b="" />
 	<number pngname="numbers_1.png" x="" y="" w="41" h="81" tap="." number="100" r="" g="233" b=""/>
-	<list uniquename="listtest" back="Img\ChatPage\XTGG_Gongaodi01.png" scrollable="true" eachwidth="300" eachheight="178" leftspan="1" upspan="2" x="" y="">
-		<face viewx="-320" viewy="-20" vieww="300" viewh="600"/>
+	<list uniquename="listtest" scrollable="true" eachwidth="300" eachheight="178" leftspan="1" upspan="2" x="160" y="160">
+		<!--face viewx="-320" viewy="-220" vieww="300" viewh="400"/-->
 		<item backimg="panel_back.png" x="" y="">
-			<button uniquename="login" x="89" y="0" name="" 
+			<button uniquename="login" x="89" y="89" name="" 
 			downimg="Img\Btn\XZBS_Denglu01.png" upimg="Img\Btn\XZBS_Denglu02.png" 
 			moveimg="Img\Btn\XZBS_Denglu01.png" r="255" g="0" b="" desc="" fontsize="53"/>
 		</item>
 		<item backimg="panel_back.png" x="" y="">
-			<button uniquename="login" x="89" y="0" name="" 
+			<button uniquename="login" x="89" y="89" name="" 
 			downimg="Img\Btn\XZBS_Denglu01.png" upimg="Img\Btn\XZBS_Denglu02.png" 
 			moveimg="Img\Btn\XZBS_Denglu01.png" r="255" g="0" b="" desc="" fontsize="53"/>
 		</item>

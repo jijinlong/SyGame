@@ -808,7 +808,10 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		UIViewBag *xmlBag = UIViewBag::create(&bagNode);
 		if (xmlBag)
 		{
-			childuis.push_back(xmlBag->view);
+			if (xmlBag->view)
+				childuis.push_back(xmlBag->view);
+			else
+				childuis.push_back(xmlBag);
 			xmlBag->addToParent(this);
 			std::string uniqueName = bagNode.getAttr("uniquename");
 			nameuis[uniqueName] = xmlBag;
@@ -849,7 +852,10 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		UIViewList *xmlList = UIViewList::create(&listNode);
 		if (xmlList)
 		{
-			childuis.push_back(xmlList->view);
+			if (xmlList->view)
+				childuis.push_back(xmlList->view);
+			else
+				childuis.push_back(xmlList);
 			xmlList->addToParent(this);
 			std::string uniqueName = listNode.getAttr("uniquename");
 			nameuis[uniqueName] = xmlList;

@@ -164,4 +164,16 @@ bool UIScrollView::checkIn(float x,float y)
 	}
 	return false;
 }
+void UIScrollView::setBack(const char *backName)
+{
+	if (!back)
+	{
+		back = CCSprite::create(backName);
+		this->addChild(back,-10);
+		back->setAnchorPoint(ccp(0,0));
+	}
+	else back->initWithFile(backName);
+	back->setScaleX(_width/back->getContentSize().width);
+	back->setScaleY(_height/ back->getContentSize().height);
+}
 NS_CC_END

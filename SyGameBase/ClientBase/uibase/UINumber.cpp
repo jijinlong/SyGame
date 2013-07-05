@@ -65,7 +65,7 @@ bool UINumber::touchDown(float x,float y)
 	pos = this->convertToNodeSpace(pos);
 	nowTouchPoint = ccp(x,y);
 	_touchIn = false;
-	if (labelAtlas)
+	if (labelAtlas && _editable)
 	{
 		if (checkIn(pos))
 		{

@@ -139,6 +139,7 @@ public:
 	UIChoice * createChoiceFromNode(script::tixmlCodeNode *node);
     UIEditField *createFieldFromNode(script::tixmlCodeNode *node);
 	void showByAction(int actionId);
+	CCSprite *back;
 protected:
 	CCPoint nowTouchPoint;
 	bool _moveable;
@@ -153,7 +154,6 @@ protected:
 	typedef std::map<std::string,UIBase*>::iterator NAME_UIS_ITER;
 	float _width;
 	float _height;
-	CCSprite *back;
 	UIBase *_nowTouchUI;
 	bool _onlyMe;
 	std::string backimg;

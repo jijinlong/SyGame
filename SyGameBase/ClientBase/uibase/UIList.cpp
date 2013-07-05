@@ -36,14 +36,14 @@ bool UIList::setItem(UIItem *item,int id)
 CCPoint UIList::getPixelPosition(int id)
 {
 	int x = 0;
-	int y = id ; // y 轴向下
+	int y = id; // y 轴向下
 	return getPixelPosition(x,y);
 }
 
 CCPoint UIList::getPixelPosition(int x,int y)
 {
 	CCPoint pos = ccp( x * (_eachWidth + _eachLeftSpan) + _eachLeftSpan,
-	- y  * (_eachUpSpan + _eachHeight) + _eachUpSpan);
+	1 - y  * (_eachUpSpan + _eachHeight) + _eachUpSpan);
 	return pos;
 }
 const CCSize & UIList::getContentSize()
@@ -53,12 +53,16 @@ const CCSize & UIList::getContentSize()
 int UIList::getNowTouchBagIdByCursorPosition(const CCPoint& point)
 {
 	CCPoint pos = this->convertToNodeSpace(point);
-	if ( pos.x >= 0 && pos.y <= 0 && pos.x <= getViewWidth() && pos.y >= -getViewHeight())
+	if ( pos.x >= 0 && pos.y <= _eachUpSpan + _eachHeight  && pos.x <= getViewWidth() && pos.y >= -getViewHeight())
 	{
-		int dx = (pos.x) / (_eachWidth + _eachLeftSpan);
-		int dy = (pos.y) / (_eachUpSpan + _eachHeight);
+		if (pos.y >= 0)
+			return 0;
+		else
+		{
+			int dy = (pos.y) / (_eachUpSpan + _eachHeight) ;
 
-		return - dy ;
+			return 1 - dy ;
+		}
 	}
 	return -1;
 }
@@ -75,7 +79,7 @@ float UIList::getViewHeight()
 */
 bool UIList::checkIn(int x,int y)
 {
-	if ( x >= 0 && y <= 0 && x <= getViewWidth() && y >= -getViewHeight())
+	if ( x >= 0 && y <= _eachUpSpan + _eachHeight && x <= getViewWidth() && y >= -getViewHeight())
 	{
 		return true;
 	}
@@ -121,16 +125,22 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 	if (node->equal("list"))
 	{
 		backName = node->getAttr("back");
-		CCSprite *back = CCSprite::create(backName.c_str());
-		if (back)
+		if (backName != "")
 		{
-			this->addChild(back);
+			CCSprite *back = CCSprite::create(backName.c_str());
+			if (back)
+			{
+				this->addChild(back,-10);
+				back->setAnchorPoint(ccp(0,0));
+			}
 		}
+		this->setAnchorPoint(ccp(0,0));
 		this->_eachHeight = node->getInt("eachheight");
 		this->_eachWidth = node->getInt("eachwidth");
 		this->_width = node->getInt("width");
 		_eachLeftSpan =  node->getInt("leftspan");
 		_eachUpSpan =  node->getInt("upspan");
+		this->setPosition(node->getInt("x"),node->getInt("y"));
 		script::tixmlCodeNode viewNode = node->getFirstChildNode("face");
 		if (viewNode.isValid())
 		{
@@ -144,6 +154,7 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 			{
 				((UIScrollView*)view)->addContent(this);
 				((UIScrollView*)view)->setScrollType(UIScrollView::UP_DOWN);
+				((UIScrollView*)view)->setBack("panel_back.png");
 				view->setEditable(false);
 				if (scrollTypeStr == "true")
 				((UIScrollView*)view)->setScrollAble(true);
@@ -207,6 +218,8 @@ bool UIViewList::isVisible()
 	{
 		return view->isVisible();
 	}
+	else
+		return CCNode::isVisible();
 	return false;
 }
 void UIViewList::addToParent(CCNode *node)

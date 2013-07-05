@@ -69,7 +69,7 @@ bool UILabel::touchDown(float x,float y)
 	pos = this->convertToNodeSpace(pos);
 	nowTouchPoint = ccp(x,y);
 	_touchIn = false;
-	if (text)
+	if (text && _editable)
 	{
 		CCRect rect = CCRectMake(
 			text->getPosition().x - (text->getContentSize().width/2),
