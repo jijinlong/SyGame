@@ -37,4 +37,21 @@ class PropDialog :public BaseDialog<PropDialog>
 public:
 	virtual void doInitEvent();
 };
+
+/**
+ * 一个Label 
+ * 一个文本框
+ * 两个按钮[Sure] [Cancel]
+ */
+class SavePanelDialog:public BaseDialog<SavePanelDialog>
+{
+public:
+	virtual void doInitEvent();
+	void savePanel(const std::string &name);
+	UIPanel *nowPanel;
+	SavePanelDialog()
+	{
+		nowPanel = NULL;
+	}
+};
 NS_CC_END

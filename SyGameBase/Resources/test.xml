@@ -9,6 +9,10 @@
         <image x="-140" w="0" y="-120" h="0" uniqueid="0" name="image" uniquename="" pngname="Img\Font\XZBS_Mima.png" width="0" height="0" />
         <editfield x="0" w="400" y="-60" h="32" uniqueid="0" name="editfield" uniquename="mingzi" content="输入名字" width="400" height="32" />
         <editfield x="0" w="400" y="-120" h="32" uniqueid="0" name="editfield" uniquename="mima" content="输入密码" width="400" height="32" />
+        <number x="0" w="41" y="0" h="81" uniqueid="0" name="number" uniquename="" pngname="numbers_1.png" tap="." number="100" r="0" g="233" b="0" />
         <storebag x="0" w="0" y="0" h="0" uniqueid="0" name="storebag" uniquename="" upname="Img\Btn\XZBS_Bangding01.png" downname="Img\Btn\XZBS_Bangding02.png" width="64" height="64" />
+        <list x="160" w="0" y="160" h="0" uniqueid="0" name="list" uniquename="" back="" width="0" height="0" leftspan="1" upspan="2" eachheight="178" eachwidth="300">
+            <face viewx="0" viewy="0" vieww="0" viewh="0" scrollable="" />
+        </list>
     </test.xml>
 </Config>

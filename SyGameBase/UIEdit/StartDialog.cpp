@@ -113,7 +113,26 @@ public:
 	stCreatePanel(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
 	{}
 };
-
+/**
+ * 创建Panel
+ */
+struct stSavePanel:public stCreateButton{
+public:
+	virtual void callback(UIBase *base)
+	{
+		if (dialog && window)
+		{
+			SavePanelDialog *savePanel = (SavePanelDialog*)window->getPanel("save");
+			if (savePanel)
+			{
+			savePanel->nowPanel = window->getNowTouchPanel();
+			savePanel->setVisible(true);
+			}
+		}
+	}
+	stSavePanel(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
+	{}
+};
 /**
  * 创建图片
  */
@@ -241,6 +260,11 @@ void MainDialog::doInitEvent()
 		{
 			crtPanelBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreatePanel(this,this->window));
 		}
+		GET_UI_BYNAME(this,UIButton,saveBtn,"save");
+		if (saveBtn)
+		{
+			saveBtn->bind(UIBase::EVENT_CLICK_DOWN,new stSavePanel(this,this->window));
+		}
 	}while(false);
 }
 
@@ -250,5 +274,46 @@ void MainDialog::doInitEvent()
 void PropDialog::doInitEvent()
 {
 	
+}
+struct stSurePanel:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		if (base && base->getParent())
+		{
+			base->getParent()->setVisible(false);
+			GET_UI_BYNAME(saveDialog,UIEditField,txtField,"filename");
+			if (txtField)
+			{
+				saveDialog->savePanel(txtField->getContent());
+			}
+		}
+	}
+	stSurePanel(SavePanelDialog *saveDialog):saveDialog(saveDialog)
+	{
+	
+	}
+	SavePanelDialog* saveDialog;
+};
+void SavePanelDialog::doInitEvent()
+{
+	do{
+		GET_UI_BYNAME(this,UIButton,cancelBtn,"canel");
+		if (cancelBtn)
+		{
+			cancelBtn->bind(UIBase::EVENT_CLICK_DOWN,new stClosePanel());
+		}
+		GET_UI_BYNAME(this,UIButton,sureBtn,"sure");
+		if (sureBtn)
+		{
+			sureBtn->bind(UIBase::EVENT_CLICK_DOWN,new stSurePanel(this)); // 确定保存
+		}
+	}while(false);
+}
+
+void SavePanelDialog::savePanel(const std::string &name)
+{
+	if (nowPanel)
+		nowPanel->makeXmlFile(name);
 }
 NS_CC_END

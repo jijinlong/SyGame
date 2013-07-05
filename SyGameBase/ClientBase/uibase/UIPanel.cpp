@@ -643,6 +643,7 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	// 处理界面的参数
 	float width = 0;
 	float height = 0;
+	this->name = node->getAttr("name");
 	backimg = node->getAttr("backimg");
 	node->getAttr("width",width);
 	node->getAttr("height",height);

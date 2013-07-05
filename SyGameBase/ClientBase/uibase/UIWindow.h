@@ -55,6 +55,7 @@ public:
 	 * 展示当前出错信息
 	 */
 	void showErr(const std::string& info);
+	UIPanel *getPanel(const std::string &name);
 private:
 	CCLabelTTF * _errLbl;
 	void insertBase(UIBase *base);

@@ -35,6 +35,27 @@ void UIWindow::addPanel(UIPanel *panel)
 	_panels.push_back(panel);
 	this->addChild(panel);
 }
+UIPanel *UIWindow::getPanel(const std::string &name)
+{
+	PANELS temps = _panels;
+	for (PANELS_ITER iter = temps.begin(); iter != temps.end(); ++iter)
+	{
+		UIPanel * panel = *iter;
+		if (panel && panel->name == name)
+			return panel;
+	}
+	for (BASES_ITER iter = _bases.begin() ; iter != _bases.end();++iter)
+	{
+		UIBase *base =*iter;
+		if (base && base->uiType == UIBase::UI_PANEL)
+		{
+			UIPanel *pan = (UIPanel*) base;
+			if (pan && pan->name == name)
+				return pan;
+		}
+	}
+	return NULL;
+}
 /**
  * 增加ui
  */
@@ -52,12 +73,25 @@ void UIWindow::addUI(UIBase *base)
 }
 void UIWindow::setNowTouchPanel(UIPanel * pan)
 {
-	//if (_nowTouchPanel) _nowTouchPanel->setZOrder(0);
 	_nowTouchPanel = pan;
-	if (pan)
+	PANELS temps = _panels;
+	for (PANELS_ITER iter = temps.begin(); iter != temps.end(); ++iter)
 	{
-		//pan->setZOrder(3);
+		UIPanel * panel = *iter;
+		if (panel)
+		{
+			panel->setZOrder(0);
+		}
 	}
+	for (BASES_ITER iter = _bases.begin() ; iter != _bases.end();++iter)
+	{
+		UIBase *base =*iter;
+		if (base)
+		{
+			base->setZOrder(0);
+		}
+	}
+	pan->setZOrder(1);
 }
 /** 
  * 检查是否在区域里
@@ -163,7 +197,7 @@ bool UIWindow::touchEnd(float x,float y)
 		}
 		return false;
 	}
-	//if (_nowTouchPanel)_nowTouchPanel->setZOrder(0);
+	//if (_nowTouchPanel)_nowTouchPanel->setZOrder(100);
 	_nowTouchUI = NULL;
 	BASES tbases = _bases;
 	for (BASES_ITER iter = tbases.begin() ; iter != tbases.end();++iter)

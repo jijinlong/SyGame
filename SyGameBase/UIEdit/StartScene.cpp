@@ -80,10 +80,9 @@ bool StartScene::init()
 	MainDialog *mainDialog = MainDialog::create(window,"mainui.xml");
 
 
-	/*
-	GameDialog *gameDialog = GameDialog::create(window,"games.xml");
-	*/
-	startDialog->makeXmlFile("test.xml");
+	SavePanelDialog *saveDialog = SavePanelDialog::create(window,"savedialog.xml");
+	saveDialog->setVisible(false);
+	//startDialog->makeXmlFile("test.xml");
 	this->schedule(schedule_selector(StartScene::step), 0.75f); 
 	return true;
 }
