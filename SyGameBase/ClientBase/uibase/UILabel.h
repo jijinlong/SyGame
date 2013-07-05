@@ -13,7 +13,7 @@ public:
 	void setPosition(float x,float y);
 
 	void setSize(float x,float y);
-//	SERIALIZE_KIND(UIBase::UI_LABEL);
+
 	 /** 
 	 * 检查是否在区域里
 	 */
@@ -37,20 +37,7 @@ public:
 	}
 	std::string getContent(){if (text) return text->getString();return "";}
 	void setColor(const ccColor3B &color); 
-	/**
-	 * 序列化
-	 */
-	IMP_SERIALIZE_DATA_FUNC()
-	{
-		SERIALIZE_DATA(x,0);
-		SERIALIZE_DATA(y,1);
-		SERIALIZE_DATA(w,2);
-		SERIALIZE_DATA(h,3);
-		SERIALIZE_DATA(uniqueId,4);
-		SERIALIZE_DATA(name,5);
-		SERIALIZE_DATA(uiType,6);
-		SERIALIZE_DATA(content,7);
-	}
+	
 	UILabel()
 	{
 		_touchIn = false;

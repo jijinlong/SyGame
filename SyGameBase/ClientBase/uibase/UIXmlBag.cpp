@@ -72,7 +72,7 @@ CCPoint UIRectBag::getPixelPosition(int x,int y)
 }
 const CCSize & UIRectBag::getContentSize()
 {
-	return CCSizeMake(4 * 65,4*65);
+	return CCSizeMake(_width * (_eachWidth + _eachLeftSpan),_height*(_eachUpSpan + _eachHeight));
 }
 int UIRectBag::getNowTouchBagIdByCursorPosition(const CCPoint& point)
 {
@@ -293,6 +293,7 @@ bool XmlBagItem::initWithNode(script::tixmlCodeNode *node)
 {
 	panel = UIPanel::createFromNode(node);
 	this->addChild(panel);
+	panel->setAnchorPoint(ccp(0,0));
 	return true;
 }
 bool XmlBagItem::doTouch(int touchType,const CCPoint &touchPoint)
@@ -302,5 +303,12 @@ bool XmlBagItem::doTouch(int touchType,const CCPoint &touchPoint)
 		panel->doTouch(touchType,touchPoint);
 	}
 	return true;
+}
+void XmlBagItem::setSize(float width,float height)
+{
+	if (panel)
+	{
+		panel->setSize(width,height);
+	}
 }
 NS_CC_END

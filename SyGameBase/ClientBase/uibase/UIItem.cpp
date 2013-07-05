@@ -42,26 +42,6 @@ void UIItem::setPosition(float x,float y)
 	
 void UIItem::visit()
 {
-#if (0)
-	if (showInView)
-	{
-		CCRect oldRect = CCRectMake(this->getPositionX(),this->getPositionY(),_oldRect.size.width,_oldRect.size.height);
-		CCPoint pos;
-		CCRect textR;
-		CCRect viewRect = CCRectMake(_viewRect.origin.x,_viewRect.origin.y,_viewRect.size.width / this->getScaleX(),_viewRect.size.height / this->getScaleY());
-		if (RectIntesect::calcTexture(oldRect,viewRect,pos,textR))
-		{
-			CCSprite::setPosition(pos);
-			this->setTextureRect(textR);
-			setVisible(true);
-		}
-		else
-		{
-			setVisible(false);
-		}
-	}
-	CCSprite::visit();
-#else
 	if (showInView)
 	{
 		CCSize szLimitSize= CCSizeMake(_viewRect.size.width ,_viewRect.size.height);
@@ -89,8 +69,6 @@ void UIItem::visit()
 	}
 	else
 		CCNode::visit();  
-#endif
-	
 }
 /**
  * 检查点是否在Item 中

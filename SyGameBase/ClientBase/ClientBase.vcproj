@@ -248,14 +248,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\uibase\UIBag.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\uibase\UIBag.h"
-				>
-			</File>
-			<File
 				RelativePath=".\uibase\UIBase.cpp"
 				>
 			</File>
@@ -285,14 +277,6 @@
 			</File>
 			<File
 				RelativePath=".\uibase\UIChoice.h"
-				>
-			</File>
-			<File
-				RelativePath=".\uibase\UIChoiceList.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\uibase\UIChoiceList.h"
 				>
 			</File>
 			<File
@@ -376,14 +360,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\uibase\UIScrollBag.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\uibase\UIScrollBag.h"
-				>
-			</File>
-			<File
 				RelativePath=".\uibase\UIScrollView.cpp"
 				>
 			</File>
@@ -405,14 +381,6 @@
 			</File>
 			<File
 				RelativePath=".\uibase\UITextArea.h"
-				>
-			</File>
-			<File
-				RelativePath=".\uibase\UIUpBag.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\uibase\UIUpBag.h"
 				>
 			</File>
 			<File

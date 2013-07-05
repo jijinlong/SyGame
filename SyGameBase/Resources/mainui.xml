@@ -11,7 +11,7 @@
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 		<button uniquename="panel" x="0" y="-120" name="面板" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<button uniquename="close" x="180" y="260" name="" downimg="close_common_down.png"
+		<button uniquename="close11" x="180" y="260" name="" downimg="close_common_down.png"
 		upimg="close_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 	</start>
 </Config>

@@ -10,7 +10,7 @@
 #include "UINumber.h"
 #include "UIImage.h"
 #include "UIEditField.h"
-
+#include "UIChoice.h"
 NS_CC_BEGIN
 class UIWindow;
 struct stExecPanelEach{
@@ -18,17 +18,6 @@ struct stExecPanelEach{
 };
 class UIPanel:public UIBase{
 public:
-/**
- * 辅助创建函数 使用函数
- * UIButton * btn  = this->createButton();
- * this->addUI(btn);
- * btn->bind(EVENT_CLICK,ui_function(&doClick));
- * function doClick(UIBase *button)
- * {
- *		for (UIItem* item : choiceList.content)
- *			for (int i = 0; i < 8;i++) model:setFrame(dir,i,imgName);
- * }
- **/
 	/**
 	* 创建Button
 	*/
@@ -51,24 +40,10 @@ public:
 	static UIBase *createImage(const CCPoint& position,const CCSize &size,const char *pngName,UIPanel *parent = NULL,int uniqueId = -1);
 
 	/**
-	 * 创建ChoiceList
-	 */
-	static UIBase* createChoiceList(const CCPoint &position,const CCRect &size,const CCSize &eachSize,int startId,UIPanel *parent = NULL,int uniqueId = -1);
-	
-	/**
-	 * 创建List
-	 */
-	static UIBase* createList(const CCPoint &position,const CCRect &size,const CCSize &eachSize,int startId,UIPanel *parent = NULL,int uniqueId = -1);
-	/**
 	 * 创建选择框
 	 */
 	static UIBase *createChoice(const CCPoint &position,const CCSize &size,const char * upImgName,const char *downImgName,UIPanel *parent = NULL,int uniqueId = -1);
 
-	/**
-	 * 创建Bag
-	 */
-	static UIBase *createBag(const CCPoint &position,const CCSize & bagContent,const CCSize &eachBag,int eachLeftSpan,int eachUpSpan,UIPanel *parent = NULL,int uniqueId = -1);
-	
 	/**
 	 * 创建lineValue
 	 */
@@ -125,9 +100,6 @@ public:
 		_height = 500;
 		_touchIn = false;
 		back = NULL;
-		//back = CCSprite::create("panel_back.png");
-		//if (back)
-		//	this->addChild(back);
 		_nowTouchUI = NULL;
 		uiType = UIBase::UI_PANEL;
 		_onlyMe = false; // 只响应自己的时间
@@ -137,23 +109,7 @@ public:
 	{
 		_moveable = tag;
 	}
-	/**
-	 * 序列化
-	 */
-	IMP_SERIALIZE_DATA_FUNC()
-	{
-		SERIALIZE_DATA(x,0);
-		SERIALIZE_DATA(y,1);
-		SERIALIZE_DATA(w,2);
-		SERIALIZE_DATA(h,3);
-		SERIALIZE_DATA(uniqueId,4);
-		SERIALIZE_DATA(name,5);
-		SERIALIZE_DATA(uiType,6);
-		SERIALIZE_DATA(_width,7);
-		SERIALIZE_DATA(_height,8);
-		SERIALIZE_DATA_CONDITION(childuis,9,childuis.size());
-	}
-	//SERIALIZE_KIND(UIBase::UI_PANEL);
+	
 
 	void beLoaded();
 	void loadFromFile(const char *fileName);
@@ -180,6 +136,7 @@ public:
 	UILabel * createLblFromNode(script::tixmlCodeNode * node);
 	UINumber *createNumFromNode(script::tixmlCodeNode *node);
     UIImage * createImgFromNode(script::tixmlCodeNode *node);
+	UIChoice * createChoiceFromNode(script::tixmlCodeNode *node);
     UIEditField *createFieldFromNode(script::tixmlCodeNode *node);
 	void showByAction(int actionId);
 protected:

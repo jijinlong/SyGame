@@ -61,22 +61,6 @@ public:
 	std::string upPngName;
 	std::string downPngName;
 	std::string content;
-	/**
-	 * –Ú¡–ªØ
-	 */
-	IMP_SERIALIZE_DATA_FUNC()
-	{
-		SERIALIZE_DATA(x,0);
-		SERIALIZE_DATA(y,1);
-		SERIALIZE_DATA(w,2);
-		SERIALIZE_DATA(h,3);
-		SERIALIZE_DATA(uniqueId,4);
-		SERIALIZE_DATA(name,5);
-		SERIALIZE_DATA(uiType,6);
-		SERIALIZE_DATA(upPngName,7);
-		SERIALIZE_DATA(downPngName,8);
-		SERIALIZE_DATA(content,9);
-	}
 	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="");
 	//SERIALIZE_KIND(UIBase::UI_IMAGE_BUTTON);
 private:

@@ -40,7 +40,7 @@ struct UICallback{
 /**
  * UI 的基础类
  */
-class UIBase:public CCNode,public serialize::Object{
+class UIBase:public CCNode{
 public:
 	int uniqueId; // 唯一编号
 	std::string name; // 控件名字
@@ -163,20 +163,6 @@ public:
 	float y;
 	float w;
 	float h;
-
-	/**
-	 * 序列化对象
-	 */
-	IMP_SERIALIZE_DATA_FUNC()
-	{
-		SERIALIZE_DATA(x,0);
-		SERIALIZE_DATA(y,1);
-		SERIALIZE_DATA(w,2);
-		SERIALIZE_DATA(h,3);
-		SERIALIZE_DATA(uniqueId,4);
-		SERIALIZE_DATA(name,5);
-		SERIALIZE_DATA(uiType,6);
-	}
 };
 
 NS_CC_END

@@ -40,20 +40,7 @@ public:
 	virtual void setEditable(bool tag);
 	std::string getContent();
 	void setContent(const char *content);
-//	SERIALIZE_KIND(UIBase::UI_TEXT_FIELD);
-	/**
-	 * –Ú¡–ªØ
-	 */
-	IMP_SERIALIZE_DATA_FUNC()
-	{
-		SERIALIZE_DATA(x,0);
-		SERIALIZE_DATA(y,1);
-		SERIALIZE_DATA(w,2);
-		SERIALIZE_DATA(h,3);
-		SERIALIZE_DATA(uniqueId,4);
-		SERIALIZE_DATA(name,5);
-		SERIALIZE_DATA(uiType,6);
-	}
+
 	static UIEditField * create();
 	void beLoaded();
 	/**

@@ -43,6 +43,7 @@ void UIPanel::makeXmlFile(const std::string &name)
 	panelNode->SetAttribute("y",(int) this->getPositionY());
 	for (CHILD_UIS_ITER iter = childuis.begin() ; iter != childuis.end();++iter)
 	{
+		if (*iter)
 		{
 			(*iter)->makeNode(panelNode,"base");
 		}
@@ -160,66 +161,6 @@ UIBase *UIPanel::createImage(const CCPoint& position,const CCSize &size,const ch
 	return img;
 }
 
-/**
-* 创建ChoiceList
-*/
-UIBase* UIPanel::createChoiceList(const CCPoint &position,const CCRect &rect, const CCSize &eachSize,int startId,UIPanel *parent,int uniqueId )
-{
-	UIChoiceList *clist = UIChoiceList::create(rect,eachSize.width,eachSize.height);
-	if (clist)
-	{
-		clist->uniqueId = uniqueId;
-		clist->setPosition(position.x,position.y);
-//		clist->setSize(size.width,size.height);
-		clist->setStartId(startId);
-		if (parent)
-		{
-			parent->addUI(clist);
-			parent->addGloabUI(clist);
-		}
-		
-	}
-
-	return clist;
-}
-/**
-* 创建List
-*/
-UIBase* UIPanel::createList(const CCPoint &position,const CCRect &rect,const CCSize &eachSize,int startId,UIPanel *parent ,int uniqueId )
-{
-	UIList *list = UIList::create(rect,eachSize.width,eachSize.height);
-	if (list)
-	{
-		list->uniqueId = uniqueId;
-		list->setPosition(position.x,position.y);
-		list->setStartId(startId);
-		if (parent)
-		{
-			parent->addUI(list);
-			parent->addGloabUI(list);
-		}
-	}
-
-	return list;
-}
-/**
-* 创建Bag
-*/
-UIBase *UIPanel::createBag(const CCPoint &position,const CCSize & bagContent,const CCSize &eachBag,int eachLeftSpan,int eachUpSpan,UIPanel *parent ,int uniqueId)
-{
-	UIBag * bag = UIBag::create(position.x,position.y,bagContent.width,bagContent.height,eachBag.width,eachBag.height, eachLeftSpan, eachUpSpan);
-	if (bag)
-	{
-		bag->uniqueId = uniqueId;
-		if (parent)
-		{
-			parent->addUI(bag);
-			parent->addGloabUI(bag);
-		}
-		
-	}
-	return bag;
-}
 /**
 * 创建选择框
 */
@@ -427,16 +368,12 @@ UIPanel* UIPanel::create()
 
 void UIPanel::loadFromFile(const char *fileName)
 {
-	serialize::Stream stream;
-	stream.readFromFile(fileName);
-	this->parseRecord(stream);
+	
 }
 
 void UIPanel::saveToFile(const char *fileName)
 {
-	serialize::Stream stream;
-	stream = toRecord();
-	stream.writeToFile(fileName);
+	
 }
 void UIPanel::beLoaded()
 {
@@ -516,6 +453,45 @@ UIButton * UIPanel::createBtn(script::tixmlCodeNode &btnNode)
 		}
 	}
 	return btn;
+}
+UIChoice *  UIPanel::createChoiceFromNode(script::tixmlCodeNode *node)
+{
+	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
+    CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
+
+	float x =0,y = 0,w =0,h =0;
+	node->getAttr("x",x);
+	node->getAttr("y",y);
+	node->getAttr("w",w);
+	node->getAttr("h",h);
+	
+	int locper = 0;
+	int uniqueId = 0;
+	node->getAttr("loctype",locper);
+	node->getAttr("uniqueid",uniqueId);
+	std::string upName = node->getAttr("upname");
+	std::string downName = node->getAttr("downname");
+	UIChoice *choice = UIChoice::create(upName.c_str(),downName.c_str());
+	
+	std::string uniquename = node->getAttr("uniquename");
+	choice->uniqueName = uniquename;
+	if (locper == 1)
+	{
+		x *= 	visibleSize.width / 100;
+		y *= 	visibleSize.height / 100;
+		w *=	visibleSize.width / 100;
+		h *=	visibleSize.height / 100;
+	}
+	if (choice)
+	{
+		choice->setPosition(x,y);
+		if (w && h)
+			choice->setSize(w,h);
+		choice->uniqueId = uniqueId;
+		addGloabUI(choice);
+		nameuis[uniquename] = choice;
+	}
+	return choice;
 }
 UILabel * UIPanel::createLblFromNode(script::tixmlCodeNode * node)
 {
@@ -641,7 +617,7 @@ UINumber *UIPanel::createNumFromNode(script::tixmlCodeNode *node)
 	node->getAttr("y",y);
 	node->getAttr("w",w);
 	node->getAttr("h",h);
-	node->getAttr("tap",tap);
+	//node->getAttr("tap",tap);
 	float fontSize = 16;
 	node->getAttr("fontsize",fontSize);
 	int r = 0,g = 0,b = 0;
@@ -649,14 +625,14 @@ UINumber *UIPanel::createNumFromNode(script::tixmlCodeNode *node)
 	node->getAttr("r",r);
 	node->getAttr("g",g);
 	node->getAttr("b",b);
-	UINumber *numui = UINumber::create(number,pngName.c_str(),12,32,tap);
+	UINumber *numui = UINumber::create(number,pngName.c_str(),w,h,tap);
 	if (numui)
 	{
 		if ( w && h)
 			numui->setSize(w,h);
 		numui->setPosition(x,y);
 		numui->setColor(ccc3(r,g,b));
-		numui->setScale(fontSize / 12);
+	//	numui->setScale(fontSize / 12);
 		addGloabUI(numui);
 		nameuis[uniquename] = numui;
 	}
@@ -747,12 +723,11 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		this->setSize(w,h);
 	this->setPosition(x,y);
     /**
-     * create btn 
+     * 创建按钮
      **/
 	script::tixmlCodeNode btnNode = node->getFirstChildNode("button");
 	while (btnNode.isValid())
 	{
-		//<button uniqueid="" offsetx="" offsety="" name="" downimg="" upimg="" moveimg="" r="" g="" b=""/>
 		UIButton * btn = createBtn(btnNode);
         if (btn)
         {
@@ -761,7 +736,7 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		btnNode = btnNode.getNextNode("button");
 	}
     /**
-     * create label
+     * 创建文本
      */
     script::tixmlCodeNode lblNode = node->getFirstChildNode("label");
     while (lblNode.isValid()) {
@@ -772,6 +747,22 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
         }
         lblNode = lblNode.getNextNode("label");
     }
+	/**
+	 * 创建单选框
+	 */
+	script::tixmlCodeNode choiceNode = node->getFirstChildNode("choice");
+	while (choiceNode.isValid())
+	{
+		UIChoice *choice = createChoiceFromNode(&choiceNode);
+		if (choice)
+		{
+			addUI(choice);
+		}
+		choiceNode = choiceNode.getNextNode("choice");
+	}
+	/**
+	 * 创建图片
+	 */
     script::tixmlCodeNode imgNode = node->getFirstChildNode("image");
     while(imgNode.isValid())
     {
@@ -782,6 +773,9 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
         }
         imgNode = imgNode.getNextNode("image");
     }
+	/**
+	 * 创建输入框
+	 */
 	script::tixmlCodeNode editNode = node->getFirstChildNode("editfield");
 	while(editNode.isValid())
 	{
@@ -792,6 +786,22 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		}
 		editNode = editNode.getNextNode("editfield");
 	}
+	/**
+	 * 创建数字
+	 */
+	script::tixmlCodeNode numNode = node->getFirstChildNode("number");
+	while (numNode.isValid())
+	{
+		UINumber * number = createNumFromNode(&numNode);
+		if (number)
+		{
+			addUI(number);
+		}
+		numNode = numNode.getNextNode("number");
+	}
+	/**
+	 * 创建包裹
+	 */
 	script::tixmlCodeNode bagNode = node->getFirstChildNode("bag");
 	while(bagNode.isValid())
 	{
@@ -814,6 +824,9 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		xmlBag->show();
 		bagNode = bagNode.getNextNode("bag");
 	}
+	/**
+	 * 创建收纳包裹
+	 */
 	script::tixmlCodeNode storeBagNode = node->getFirstChildNode("storebag");
 	while(storeBagNode.isValid())
 	{
@@ -827,6 +840,34 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		}
 		storeBagNode = storeBagNode.getNextNode("storebag");
 	}
+	/**
+	 * //TODO 创建带视图的List
+	 */
+	script::tixmlCodeNode listNode = node->getFirstChildNode("list");
+	while(listNode.isValid())
+	{
+		UIViewList *xmlList = UIViewList::create(&listNode);
+		if (xmlList)
+		{
+			childuis.push_back(xmlList->view);
+			xmlList->addToParent(this);
+			std::string uniqueName = listNode.getAttr("uniquename");
+			nameuis[uniqueName] = xmlList;
+		}
+		int count = 0;
+		script::tixmlCodeNode itemNode = listNode.getFirstChildNode("item");
+		while(itemNode.isValid())
+		{
+			XmlBagItem *item = XmlBagItem::create(&itemNode);
+			xmlList->setItem(item,count++);
+			itemNode = itemNode.getNextNode("item");
+		}
+		xmlList->show();
+		listNode = listNode.getNextNode("bag");
+	}
+	/**
+	 * //TODO 创建带富文本框
+	 */
 	std::string editable = node->getAttr("editable");
 	if (editable == "false")
 	{

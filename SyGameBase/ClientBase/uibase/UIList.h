@@ -3,126 +3,88 @@
 #include "cocos2d.h"
 #include "UIItem.h"
 #include "UIBase.h"
+#include "UISuperBag.h"
+#include "UIScrollView.h"
+#include "xmlScript.h"
 NS_CC_BEGIN
-struct stExecListItem{
-	virtual void exec(UIItem *item) = 0;
-};
 /**
- * List空间 容纳竖向的物体
- */
-class UIList:public UIBase{
+ * 包裹
+ **/
+class UIList:public UISuperBag{
 public:
-	static UIList* create(const CCRect & viewRect,int eachWidth,int eachHeight);
+	static UIList* create();
+	bool init();
+	int nowItemId;
+	virtual bool setItem(UIItem *item,int id);
 	/**
-	 * 静止的隐藏每个条目
+	 * 获取当前可视的宽
 	 */
-	void hideEach();
+	float getPixelWidth();
 	/**
-	 * 展示每个条目
-	 */
-	void showEach();
-	/**
-	 * 动态的隐藏每个条目
-	 */
-	void hideEachDynamic();
-	/**
-	 * 可以使每个物体动态的展示出来
-	 */
-	void showEachDynamic();
-	/**
-	 * 设置位置
-	 */
-	virtual void setPosition(float x,float y);
+	 * 获取当前可视的高
+	 **/
+	float getPixelHeight();
 	
 	/**
-	 * 设置大小
+	 * 通过bagid获取zpos
 	 */
-	virtual void setSize(float w,float h) {}
+	//zPos getZPosByBagId(int bagId);
+	CCPoint getPixelPosition(int x,int y);
+	const CCSize & getContentSize();
+public:
 	/**
-	 * 在尾巴增加一个条目
+	 * 获取当前id 的像素位置
 	 */
-	bool pushItem(UIItem *item);
-	/**
-	 * 删除一个条目
-	 */
-	bool removeItem(UIItem *item);
+	virtual CCPoint getPixelPosition(int id);
 
-	void setStartId(int id){
-		startId = id;
-	}
-	/** 
-	 * 检查是否在区域里
-	 */
-	virtual bool touchDown(float x,float y);
+	virtual int getNowTouchBagIdByCursorPosition(const CCPoint& pos);
 	/**
-	 * 更新位置
+	 * 检查坐标是否在区域内
 	 */
-	virtual bool touchMove(float x,float y);
-	/**
-	 * 停止拖动
-	 */
-	virtual bool touchEnd(float x,float y);
-	
-	void setEditable(bool tag){
-		editable = tag;
-	}
-	void execEach(stExecListItem *exec);
-	UIItem * getNowItem();
-protected:
-	/**
-	 * 处理条目按下
-	 */
-	virtual void doItemDown(UIItem *item);
-	int nowDragItemId; // 当前拖动的物体ID
+	virtual bool checkIn(int x,int y);
 
-	bool editable; // 是否在编辑状态
-
-	CCPoint nowTouchPoint;
-	/**
-	 * 内容集合
-	 */
-	std::vector<UIItem*> _items;
-	typedef std::vector<UIItem*>::iterator ITEMS_ITER;
-	int _viewx; // 起始横坐标
-	int _viewy; // 起始纵坐标
-	int _viewWidth; // 视图宽
-	int _viewHeight; // 视图高
-
-	int _contentx; // 内容的初始横坐标
-	int _contenty;  // 内容的初始纵坐标
-	int _contentWidth; // 内容宽
-	int _contentHeight; // 内容高
-
-	int _leftItemSpan; // 左边边框的距离
-	int _downItemSpan; // 每个边框的距离
-	int _eachItemWidth; // 每个条目的宽
-	int _eachItemHeight; // 每个条目的高
-	/**
-	 * 展示当前条目
-	 */
-	void showItem(UIItem *item);
-	/**
-	 * 获取横向能容纳的条目
-	 */
-	int getWidthItemCount();
-	int getHeightItemCount();
-	CCPoint getRightHidenPosition(int itemId);
-	CCPoint getShowPosition(int itemId);
-	CCPoint getShowMidPosition(int itemId);
-	CCPoint getLeftHidenPosition();
-	CCPoint getUpHidenPosition();
-	void moveEnded();
+	float _width; // 宽
+	float _height; // 高
+	float _eachUpSpan; // 每个高 span
+	float _eachLeftSpan; // 每个左span
 	UIList()
 	{
-		_leftItemSpan = _downItemSpan = _eachItemWidth = _eachItemHeight = 0;
-		nowId = startId = 0;
-		touchIn = false;
-		editable = false;
-		uiType = UIBase::UI_LIST;
+		_width = _height = 0;
+		_eachUpSpan = _eachLeftSpan = 0;
+		nowItemId = -1;
 	}
-	int nowId;
-	int startId;
-	bool touchIn;
+	float getViewWidth();
+	float getViewHeight();
+};
+/**
+ * 创建带视图的List
+ */
+class UIViewList:public UIList,public script::tixmlCode{
+public:
+	static UIViewList *create(script::tixmlCodeNode *node);
+	bool initWithNode(script::tixmlCodeNode *node);
+	const CCSize & getContentSize();
+	void show();
+	void hide();
+	bool isVisible();
+	void addToParent(CCNode *node);
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
+	bool doTouch(int touchType,const CCPoint &touchPoint);
+	UIViewList()
+	{
+		view = NULL;
+		viewx = viewy = viewh = vieww = 0;
+	}
+	UIBase *view;
+	std::string backName;
+	float viewx;
+	float viewy;
+	float vieww;
+	float viewh;
+	std::string scrollTypeStr;
 };
 
 NS_CC_END

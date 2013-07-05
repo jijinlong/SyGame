@@ -63,6 +63,15 @@ public:
 		_editable = tag;
 	}
 	UIBase* child;
+	/**
+	 * 创建父节点下的子节点
+	 */
+	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base")
+	{
+		if (child)
+			return child->makeNode(parent,name);
+		return NULL;
+	}
 protected:
 	bool scrollTag;
 	int _scrollDir; // 设置滚动方向

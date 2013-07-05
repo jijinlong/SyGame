@@ -1,294 +1,224 @@
 #include "UIList.h"
+#include "UIPanel.h"
 NS_CC_BEGIN
-UIList* UIList::create(const CCRect & viewRect,int eachWidth,int eachHeight)
+//////////////////////////// 包裹 /////////////////////////////////////
+UIList* UIList::create()
 {
-	UIList *bag = new UIList();
-	bag->_viewx= viewRect.origin.x;
-	bag->_viewy = viewRect.origin.y;
-	bag->_viewWidth = viewRect.size.width;
-	bag->_viewHeight = viewRect.size.height;
-	bag->_eachItemWidth = eachWidth;
-	bag->_eachItemHeight = eachHeight;
-    if (bag)
-    {
-        bag->autorelease();
-        return bag;
-    }
-    CC_SAFE_DELETE(bag);
-    return NULL;
-}
-/**
-* 静止的隐藏每个条目
-*/
-void UIList::hideEach()
-{
-	for (ITEMS_ITER iter = _items.begin(); iter != _items.end(); ++iter)
+	UIList *node = new UIList();
+	if (node && node->init())
 	{
-		UIItem * item = *iter;
-		if (item)
-		{
-			CCPoint rightHiddenPos = getRightHidenPosition(item->bagId - startId);
-			item->setPosition(rightHiddenPos.x,rightHiddenPos.y);
-			item->setVisible(false);
-		}
+		node->autorelease();
+		return node;
 	}
+	CC_SAFE_DELETE(node);
+	return NULL;
 }
-/**
-* 动态的隐藏每个条目
-*/
-void UIList::hideEachDynamic()
+bool UIList::init()
 {
-	
-}
-/**
-* 可以使每个物体动态的展示出来
-*/
-void UIList::showEachDynamic()
-{
-	hideEach();
-	nowId = startId;
-	if (nowId < _items.size() && nowId - startId < getHeightItemCount())
-	{
-		UIItem * item = _items.at(nowId);
-		
-		if (item)
-		{
-			item->show();
-			CCPoint pos = getShowMidPosition(item->bagId - startId);
-			CCMoveTo *action = CCMoveTo::create(0.1f,pos);
-			item->runAction(CCSequence::create(action,
-					CCCallFunc::create(this, callfunc_selector(UIList::moveEnded)),NULL));
-		}
-	}
-}
-/**
- * 展示每个条目
- */
-void UIList::showEach()
-{
-	hideEach();
-	for ( int nowId = startId; nowId - startId < getHeightItemCount() && nowId < _items.size(); nowId++)
-	{
-		UIItem * item = _items.at(nowId);
-		if (item)
-		{
-			item->show();
-			CCPoint pos = getShowPosition(item->bagId - startId);
-			item->setPosition(pos.x,pos.y);
-		}
-	}
-}
-/**
-* 在尾巴增加一个条目
-*/
-bool UIList::pushItem(UIItem *item)
-{
-	if (!item) return false;
-	item->bagId = _items.size();
-	item->setSize(_eachItemWidth,_eachItemHeight);
-	_items.push_back(item);
-	item->hide();
-	item->show(CCRectMake(_viewx,_viewy,_viewWidth,_viewHeight));
-
-	this->addChild(item);
-
+	this->_eachHeight = 64;
+	this->_eachWidth = 64;
+	this->_width = 4;
+	this->_height = 4;
+	_items.resize(this->_width* this->_height);
+	_eachLeftSpan = 1;
+	_eachUpSpan = 1;
 	return true;
 }
-/**
-* 删除一个条目
-*/
-bool UIList::removeItem(UIItem *item)
+bool UIList::setItem(UIItem *item,int id)
 {
-	return false;
+	if (!item) return false;
+	return UISuperBag::setItem(item,id);
 }
 
 /**
-* 展示当前条目
+* 获取当前id 的像素位置
 */
-void UIList::showItem(UIItem *item)
+CCPoint UIList::getPixelPosition(int id)
 {
-
-}
-#define LIST_H _viewy + _viewHeight - (itemId + 1)* (_eachItemHeight + _downItemSpan)
-/**
-* 获取横向能容纳的条目
-*/
-int UIList::getWidthItemCount()
-{
-	return _contentWidth / ( _leftItemSpan + _eachItemWidth );
-}
-int UIList::getHeightItemCount()
-{
-	return _viewHeight / (_eachItemHeight + _downItemSpan );
-}
-CCPoint UIList::getRightHidenPosition(int itemId)
-{
-	return ccp(_viewWidth + _viewx,LIST_H);
-}
-CCPoint UIList::getShowPosition(int itemId)
-{
-	return ccp(_viewx,LIST_H);
-}
-CCPoint UIList::getShowMidPosition(int itemId)
-{
-	return ccp (_viewx + _viewWidth / 2 ,LIST_H);
-}
-CCPoint UIList::getLeftHidenPosition()
-{
-	return ccp(_viewx - _viewWidth ,0);
-}
-CCPoint UIList::getUpHidenPosition()
-{
-	return ccp(_viewx,_viewy + _viewHeight);
+	int x = 0;
+	int y = id ; // y 轴向下
+	return getPixelPosition(x,y);
 }
 
-void UIList::moveEnded()
+CCPoint UIList::getPixelPosition(int x,int y)
 {
-	if (nowId < _items.size() && nowId - startId < getHeightItemCount())
+	CCPoint pos = ccp( x * (_eachWidth + _eachLeftSpan) + _eachLeftSpan,
+	- y  * (_eachUpSpan + _eachHeight) + _eachUpSpan);
+	return pos;
+}
+const CCSize & UIList::getContentSize()
+{
+	return CCSizeMake(_eachWidth+_eachLeftSpan,_items.size()*(_height + _eachUpSpan));
+}
+int UIList::getNowTouchBagIdByCursorPosition(const CCPoint& point)
+{
+	CCPoint pos = this->convertToNodeSpace(point);
+	if ( pos.x >= 0 && pos.y <= 0 && pos.x <= getViewWidth() && pos.y >= -getViewHeight())
 	{
-		UIItem * item = _items.at(nowId);
-		if (item)
-		{
-			CCPoint pos = getShowPosition(item->bagId - startId);
-			CCMoveTo *action = CCMoveTo::create(0.1f,pos);
-			item->runAction(CCSequence::create(action,NULL));
-		}
+		int dx = (pos.x) / (_eachWidth + _eachLeftSpan);
+		int dy = (pos.y) / (_eachUpSpan + _eachHeight);
+
+		return - dy ;
 	}
-	nowId++;
-	if (nowId < _items.size() && nowId - startId < getHeightItemCount())
-	{
-		UIItem * item = _items.at(nowId);
-		if (item)
-		{
-			item->show();
-			CCPoint pos = getShowMidPosition(item->bagId - startId);
-			CCMoveTo *action = CCMoveTo::create(0.1f,pos);
-			item->runAction(CCSequence::create(action,
-					CCCallFunc::create(this, callfunc_selector(UIList::moveEnded)),NULL));
-		}
-	}
+	return -1;
 }
-
-/** 
- * 检查是否在区域里
- */
-bool UIList::touchDown(float x,float y)
+float UIList::getViewWidth()
 {
-	if (!this->isVisible()) return false;
-	CCPoint pos = ccp(x,y);
-	pos = this->convertToNodeSpace(pos);
-	nowDragItemId = -1;
-	touchIn = false;
-	nowTouchPoint = ccp(x,y);
-	if ( pos.x >= _viewx && pos.y >= _viewy && pos.x <= _viewx + _viewWidth && pos.y <= _viewy + _viewHeight)
+	return (_eachWidth + _eachLeftSpan);
+}
+float UIList::getViewHeight()
+{
+	return _items.size() * (_eachUpSpan + _eachHeight) ;
+}
+/**
+* 检查坐标是否在区域内
+*/
+bool UIList::checkIn(int x,int y)
+{
+	if ( x >= 0 && y <= 0 && x <= getViewWidth() && y >= -getViewHeight())
 	{
-		if (!editable)
-		{
-			nowDragItemId = (_viewy + _viewHeight - pos.y) / (_eachItemHeight + _downItemSpan) + startId;
-		}
-		touchIn = true;
 		return true;
 	}
 	return false;
 }
-/**
-* 设置位置
-*/
-void  UIList::setPosition(float x,float y)
+
+float UIList::getPixelWidth()
 {
-	CCNode::setPosition(ccp(x,y));
-	this->x = x;
-	this->y = y;
+	return (_eachWidth + _eachLeftSpan);
 }
-/**
- * 更新位置
- */
-bool UIList::touchMove(float x,float y)
+float UIList::getPixelHeight()
+{ 
+	return (_eachHeight + _eachUpSpan) * (_items.size());
+}
+///////////////////创建UIXmlList///////////////////////
+
+UIViewList *UIViewList::create(script::tixmlCodeNode *snode)
 {
-	if (!this->isVisible()) return false;
-	if (!touchIn) return false;
-	CCPoint pos = ccp(x,y);
-//	pos = this->convertToNodeSpace(pos);
-	if (editable)
+	UIViewList *node = new UIViewList();
+	if (node && node->initWithNode(snode))
 	{
-		CCPoint nowPoint = getPosition();
-        setPosition(nowPoint.x + pos.x - nowTouchPoint.x,
-                                      nowPoint.y + pos.y - nowTouchPoint.y);
-		nowTouchPoint = pos;
+		node->autorelease();
+		return node;
+	}
+	CC_SAFE_DELETE(node);
+	return NULL;
+}
+
+bool  UIViewList::doTouch(int touchType,const CCPoint &touchPoint)
+{
+	if (view)
+	{
+		return view->doTouch(touchType,touchPoint);
 	}
 	else
 	{
-		int up = -1;
-        int dt = pos.y - nowTouchPoint.y;
-		
-		if (dt < -(_eachItemHeight + _downItemSpan) )
-		{
-			up = dt / (_eachItemHeight + _downItemSpan);
-		}
-		else if (dt >= (_eachItemHeight + _downItemSpan))
-		{
-			up = dt / (_eachItemHeight + _downItemSpan);
-		}
-		else{
-			return true;
-		}
-		nowDragItemId = -1;
-		nowTouchPoint = pos;
-		//if (nowDragItemId < _items.size() && nowDragItemId >=0 )
-		{
-			if (startId > _items.size() && up > 0) return true;
-			if (up > 0) {startId += up;}
-			if (startId <= 0 && up < 0) return true;
-			if (up < 0) {startId += up;};
-			// 尝试递增 或者 减少startId
-			showEach();
-		}
+		return UIList::doTouch(touchType,touchPoint);
 	}
-	return true;
+	return false;
 }
-UIItem * UIList::getNowItem()
+bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 {
-	if (nowDragItemId >= 0 && nowDragItemId < _items.size())
+	if (node->equal("list"))
 	{
-		return _items.at(nowDragItemId);
-	}
-	return NULL;
-}
-void UIList::execEach(stExecListItem *exec)
-{
-	if (!exec) return;
-	for ( ITEMS_ITER iter = _items.begin(); iter != _items.end();++iter)
-	{
-		exec->exec(*iter);
-	}
-}
-/**
- * 停止拖动
- */
-bool UIList::touchEnd(float x,float y)
-{
-	if (!this->isVisible()) return false;
-	CCPoint pos = ccp(x,y);
-	if (!editable && touchIn)
-	{
-		if (nowDragItemId < _items.size() && nowDragItemId >=0)
+		backName = node->getAttr("back");
+		CCSprite *back = CCSprite::create(backName.c_str());
+		if (back)
 		{
-			UIItem * item = _items.at(nowDragItemId);
-			if (item)
+			this->addChild(back);
+		}
+		this->_eachHeight = node->getInt("eachheight");
+		this->_eachWidth = node->getInt("eachwidth");
+		this->_width = node->getInt("width");
+		_eachLeftSpan =  node->getInt("leftspan");
+		_eachUpSpan =  node->getInt("upspan");
+		script::tixmlCodeNode viewNode = node->getFirstChildNode("face");
+		if (viewNode.isValid())
+		{
+			viewx = viewNode.getFloat("viewx");
+			viewy = viewNode.getFloat("viewy");
+			vieww = viewNode.getFloat("vieww");
+			viewh = viewNode.getFloat("viewh");
+			view = UIScrollView::create(viewx,viewy,vieww,viewh);
+			scrollTypeStr = node->getAttr("scrollable");
+			if (view)
 			{
-				// 触发按下事件
-				doItemDown(item);
-				return true;
+				((UIScrollView*)view)->addContent(this);
+				((UIScrollView*)view)->setScrollType(UIScrollView::UP_DOWN);
+				view->setEditable(false);
+				if (scrollTypeStr == "true")
+				((UIScrollView*)view)->setScrollAble(true);
+				else
+				((UIScrollView*)view)->setScrollAble(false);
 			}
 		}
-		nowTouchPoint = pos;
 	}
-	nowDragItemId = -1;
-	touchIn = false;
+	show();
 	return true;
 }
-void UIList::doItemDown(UIItem *item)
+/**
+ * 创建父节点下的子节点
+ */
+TiXmlElement * UIViewList::makeNode(TiXmlElement *parent,const std::string &name)
 {
-	this->doEvent(UIBase::EVENT_CLICK_DOWN,this);
+	TiXmlElement * bagNode = UIBase::makeNode(parent,"list");
+	if (bagNode)
+	{
+		bagNode->SetAttribute("back",backName);
+		bagNode->SetAttribute("width",_width);
+		bagNode->SetAttribute("height",_height);
+		bagNode->SetAttribute("leftspan",_eachLeftSpan);
+		bagNode->SetAttribute("upspan",_eachUpSpan);
+		bagNode->SetAttribute("eachheight",_eachHeight);
+		bagNode->SetAttribute("eachwidth",_eachWidth);
+		
+		TiXmlElement *faceNode = new TiXmlElement("face");
+		bagNode->LinkEndChild(faceNode);
+		faceNode->SetAttribute("viewx",viewx);
+		faceNode->SetAttribute("viewy",viewy);
+		faceNode->SetAttribute("vieww",vieww);
+		faceNode->SetAttribute("viewh",viewh);
+		faceNode->SetAttribute("scrollable",scrollTypeStr);
+	}
+	return bagNode;
 }
+
+const CCSize & UIViewList::getContentSize()
+{
+	return CCSizeMake(this->_eachWidth ,this->_eachHeight * this->_height);
+}
+void UIViewList::show()
+{
+	UIList::show();
+	if (view)
+	{
+		view->setVisible(true);
+	}
+}
+void UIViewList::hide()
+{
+	if (view)
+	{
+		view->setVisible(false);
+	}
+}
+bool UIViewList::isVisible()
+{
+	if (view)
+	{
+		return view->isVisible();
+	}
+	return false;
+}
+void UIViewList::addToParent(CCNode *node)
+{
+	if (view)
+	{
+		node->addChild(view);
+	}
+	else
+	{
+		node->addChild(this);
+	}
+}
+
 NS_CC_END

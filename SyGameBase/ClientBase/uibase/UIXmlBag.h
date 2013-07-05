@@ -103,6 +103,7 @@ public:
 	}
 	virtual bool doTouch(int touchType,const CCPoint &touchPoint);
 	UIPanel * getPanel(){return panel;}
+	virtual void setSize(float width,float height);
 private:
 	UIPanel *panel;
 };
