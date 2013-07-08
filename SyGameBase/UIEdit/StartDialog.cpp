@@ -67,7 +67,25 @@ public:
 	}
 
 };
-
+/**
+ * 编辑消息Down
+ */
+struct stEditDown:public UICallback{
+public:
+	virtual  void callback(UIBase *base)
+	{
+		PropDialog *propPanel = (PropDialog*)window->getPanel("prop");
+		if (propPanel)
+		{
+			propPanel->show(base);
+		}
+	}
+	stEditDown(MainDialog *dialog,UIWindow *window): dialog(dialog),window(window)
+	{}
+protected:
+	MainDialog *dialog;
+	UIWindow *window;
+};
 /**
  * 创建按钮
  */
@@ -85,7 +103,7 @@ public:
 				if (btn)
 				{
 					btn->setEditable(true);
-					btn->bind(UIBase::EVENT_EDIT_DOWN,new stShowProp());
+					btn->bind(UIBase::EVENT_EDIT_DOWN,new stEditDown(dialog,window));
 				}
 			}
 		}
@@ -98,6 +116,7 @@ protected:
 	MainDialog *dialog;
 	UIWindow *window;
 };
+
 /**
  * 创建Panel
  */
@@ -107,7 +126,11 @@ public:
 	{
 		if (dialog && window)
 		{
-			DefaultDialog * dialog = DefaultDialog::create(window,"defaultdialog.xml");
+			DefaultDialog * ddialog = DefaultDialog::create(window,"defaultdialog.xml");
+			if (ddialog)
+			{
+				ddialog->bind(UIBase::EVENT_EDIT_DOWN,new stEditDown(dialog,window));
+			}
 		}
 	}
 	stCreatePanel(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
@@ -181,7 +204,9 @@ public:
 		}
 	}
 	stCreateText(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
-	{}
+	{
+		
+	}
 };
 
 /**
@@ -209,6 +234,7 @@ public:
 	stCreateEditField(MainDialog *dialog,UIWindow *window):stCreateButton(dialog,window)
 	{}
 };
+
 /**
  * 创建数字
  */
@@ -244,6 +270,7 @@ void MainDialog::doInitEvent()
 		if (crtImageBtn)
 		{
 			crtImageBtn->bind(UIBase::EVENT_CLICK_DOWN,new stCreateImage(this,this->window));
+			crtImageBtn->bind(UIBase::EVENT_EDIT_DOWN,new stEditDown(this,this->window));
 		}
 		GET_UI_BYNAME(this,UIButton,crtTextBtn,"text");
 		if (crtTextBtn)
@@ -269,11 +296,144 @@ void MainDialog::doInitEvent()
 }
 
 /**
+ * 展示基本数值
+ */
+void PropBaseShow::show(PropDialog *propDialog,UIBase *base)
+{
+	GET_UI_BYNAME(propDialog,UIEditField,ex,"x");
+	if (ex)
+	{
+		std::stringstream xstr;
+		xstr << base->x;
+		ex->setContent(xstr.str().c_str());
+	}
+	GET_UI_BYNAME(propDialog,UIEditField,ey,"y");
+	if (ey)
+	{
+		std::stringstream ystr;
+		ystr << base->y;
+		ey->setContent(ystr.str().c_str());
+	}
+	GET_UI_BYNAME(propDialog,UIEditField,ew,"w");
+	if (ew)
+	{
+		std::stringstream wstr;
+		wstr << base->w;
+		ew->setContent(wstr.str().c_str());
+	}
+	GET_UI_BYNAME(propDialog,UIEditField,eh,"h");
+	if (eh)
+	{
+		std::stringstream hstr;
+		hstr << base->h;
+		eh->setContent(hstr.str().c_str());
+	}
+}
+
+
+/**
+ * 展示Button的属性 设定应该展示的属性
+ */
+void PropButtonShow::show(PropDialog *propDialog,UIButton *button)
+{
+	PropBaseShow::show(propDialog,button);
+	GET_UI_BYNAME(propDialog,UILabel,lbtn_up_img,"1btn_up_name");
+	if (lbtn_up_img)
+	{
+		lbtn_up_img->setVisible(true);
+	}
+	GET_UI_BYNAME(propDialog,UILabel,lbtn_down_img,"lbtn_down_name");
+	if (lbtn_down_img)
+	{
+		lbtn_down_img->setVisible(true);
+	}
+	GET_UI_BYNAME(propDialog,UIEditField,ebtn_up_img,"btn_up_name");
+	if (ebtn_up_img)
+	{
+		ebtn_up_img->setVisible(true);
+	}
+	GET_UI_BYNAME(propDialog,UIEditField,ebtn_down_img,"btn_down_name");
+	if (ebtn_down_img)
+	{
+		ebtn_down_img->setVisible(true);
+	}
+}
+
+
+void PropPanelShow::show(PropDialog* propDialog,UIPanel *panel)
+{
+	PropBaseShow::show(propDialog,panel);
+}
+
+/**
+ * 隐藏属性
+ */
+void PropDialog::hideProps()
+{
+	
+	GET_UI_BYNAME(this,UILabel,lbtn_up_img,"1btn_up_name");
+	if (lbtn_up_img)
+	{
+		lbtn_up_img->setVisible(false);
+	}
+	GET_UI_BYNAME(this,UILabel,lbtn_down_img,"lbtn_down_name");
+	if (lbtn_down_img)
+	{
+		lbtn_down_img->setVisible(false);
+	}
+	GET_UI_BYNAME(this,UIEditField,ebtn_up_img,"btn_up_name");
+	if (ebtn_up_img)
+	{
+		ebtn_up_img->setVisible(false);
+	}
+	GET_UI_BYNAME(this,UIEditField,ebtn_down_img,"btn_down_name");
+	if (ebtn_down_img)
+	{
+		ebtn_down_img->setVisible(false);
+	}
+}
+/**
+ * 展示基本控件
+ */
+void PropDialog::show(UIBase *base)
+{
+	hideProps();
+	this->setVisible(true);
+	if (base->uiType == UIBase::UI_BUTTON)
+	{
+		show((UIButton*) base);
+	}
+	if (base->uiType == UIBase::UI_PANEL)
+	{
+		show((UIPanel*)base);
+	}
+}
+/**
+ * 展示button 的属性
+ */
+void PropDialog::show(UIButton *button)
+{
+	PropButtonShow bs;
+	bs.show(this,button);
+}
+/**
+ * 展示panel 的属性
+ */
+void PropDialog::show(UIPanel *panel)
+{
+	PropPanelShow ps;
+	ps.show(this,panel);
+}
+/**
  * 创建的属性界面
  */
 void PropDialog::doInitEvent()
 {
-	
+	GET_UI_BYNAME(this,UIButton,closeBtn,"close");
+	if (closeBtn)
+	{
+		closeBtn->bind(UIBase::EVENT_CLICK_DOWN,new stClosePanel());
+	}
 }
 struct stSurePanel:public UICallback{
 public:

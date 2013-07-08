@@ -28,7 +28,30 @@ class MainDialog:public BaseDialog<MainDialog>{
 public:
 	virtual void doInitEvent();
 };
+/**
+ * 处理当前元素属性的展示
+ **/
+class PropDialog;
+class PropBaseShow{
+public:
+	/**
+	 * 展示基本数值
+	 */
+	void show(PropDialog *propDialog,UIBase *base);
+};
 
+class PropButtonShow:public PropBaseShow{
+public:
+	/**
+	 * 展示Button的属性 设定应该展示的属性
+	 */
+	void show(PropDialog *propDialog,UIButton *button);
+};
+
+class PropPanelShow:public PropBaseShow{
+public:
+	void show(PropDialog* propDialog,UIPanel *panel);
+};
 /**
  * 定义Panel 
  */
@@ -36,8 +59,27 @@ class PropDialog :public BaseDialog<PropDialog>
 {
 public:
 	virtual void doInitEvent();
-};
+	/**
+	 * 隐藏属性
+	 */
+	void hideProps();
+	/**
+	 * 展示button 的属性
+	 */
+	void show(UIButton *button);
 
+	/**
+	 * 展示panel 的属性
+	 */
+	void show(UIPanel *panel);
+	/**
+	 * 展示基本控件
+	 */
+	void show(UIBase *base);
+};
+/**
+ * 结束 处理当前元素属性的展示
+ **/
 /**
  * 一个Label 
  * 一个文本框

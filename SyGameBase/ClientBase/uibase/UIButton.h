@@ -55,7 +55,7 @@ public:
 		_up = NULL;
 		_down = NULL;
 		_touchIn = false;
-		uiType = UIBase::UI_IMAGE_BUTTON;
+		uiType = UIBase::UI_BUTTON;
 	}
 public:
 	std::string upPngName;
