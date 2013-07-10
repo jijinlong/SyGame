@@ -140,6 +140,7 @@ public:
     UIEditField *createFieldFromNode(script::tixmlCodeNode *node);
 	void showByAction(int actionId);
 	CCSprite *back;
+	virtual bool isMovable(){return _moveable;}
 protected:
 	CCPoint nowTouchPoint;
 	bool _moveable;

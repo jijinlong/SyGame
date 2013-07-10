@@ -140,6 +140,7 @@ public:
 	 * 设置为可编辑模式
 	 */
 	virtual void setEditable(bool tag) {return ;}
+	virtual bool isMovable(){return true;}
 	/**
 	 * 设置 可见
 	 */

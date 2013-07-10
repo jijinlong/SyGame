@@ -78,7 +78,7 @@ void UIWindow::setNowTouchPanel(UIPanel * pan)
 	for (PANELS_ITER iter = temps.begin(); iter != temps.end(); ++iter)
 	{
 		UIPanel * panel = *iter;
-		if (panel)
+		if (panel && !panel->isMovable())
 		{
 			panel->setZOrder(0);
 		}
@@ -86,11 +86,12 @@ void UIWindow::setNowTouchPanel(UIPanel * pan)
 	for (BASES_ITER iter = _bases.begin() ; iter != _bases.end();++iter)
 	{
 		UIBase *base =*iter;
-		if (base)
+		if (base && base->isMovable())
 		{
 			base->setZOrder(0);
 		}
 	}
+	if (!pan->isMovable())
 	pan->setZOrder(1);
 }
 /** 

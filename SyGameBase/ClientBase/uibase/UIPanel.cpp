@@ -647,6 +647,8 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	backimg = node->getAttr("backimg");
 	node->getAttr("width",width);
 	node->getAttr("height",height);
+	int zOrder = node->getInt("zorder");
+	this->setZOrder(zOrder);
 	std::string moveable = node->getAttr("moveable");
 	if (moveable == "false")
 	{
