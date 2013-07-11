@@ -512,6 +512,42 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="map"
+			>
+			<File
+				RelativePath=".\map\MutiCaroon.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiCartoon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiImage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiImage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiMap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiObject.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

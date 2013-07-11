@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testSqlite3", "testSqlite3\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UIEdit", "UIEdit\UIEdit.vcproj", "{97E0BC85-491A-419A-9508-F01E991C374B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapEdit", "MapEdit\MapEdit.vcproj", "{A98EC759-16A0-408F-A8D9-5FDFC5675312}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -73,6 +75,10 @@ Global
 		{97E0BC85-491A-419A-9508-F01E991C374B}.Debug|Win32.Build.0 = Debug|Win32
 		{97E0BC85-491A-419A-9508-F01E991C374B}.Release|Win32.ActiveCfg = Release|Win32
 		{97E0BC85-491A-419A-9508-F01E991C374B}.Release|Win32.Build.0 = Release|Win32
+		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Debug|Win32.Build.0 = Debug|Win32
+		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Release|Win32.ActiveCfg = Release|Win32
+		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
