@@ -178,6 +178,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\netcom\AboutRequest_S.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>

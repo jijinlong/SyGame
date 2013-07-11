@@ -1,7 +1,7 @@
 #include "AboutRequest.h"
 #include "socket.h"
 #include "sstream"
-
+/*
 BEGIN_REMOTE_CLASS(AboutRequest)
 
 	REQ_FUNCTION(AboutRequest,getMapInfo); // 
@@ -9,3 +9,4 @@ BEGIN_REMOTE_CLASS(AboutRequest)
 	REQ_FUNCTION(AboutRequest,retMapInfo); //
 	REQ_FUNCTION(AboutRequest,retLogin);
 END_REMOTE_CLASS
+*/

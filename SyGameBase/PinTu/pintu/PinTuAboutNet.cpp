@@ -62,7 +62,7 @@ public:
 void DealCmd::doObjectCmd(Socket *socket,void *cmd,int size)
 {
 	ENTER_FUNCTION
-	theNet.handle(&theRequest,cmd,size,socket);
+	theMsgCenter.handle(&theRequest,cmd,size,socket);
 };
 
 
@@ -123,7 +123,6 @@ void AboutNet::init()
 	if (!init) // 确保初始化只走一次
 	{
 		// 登陆流程
-		theRequest.init(this);
 		init = true;
 		ConnectionSelectPool *pool = new ConnectionSelectPool();
 		pool->setDealCmdDelegate(&theDeal);

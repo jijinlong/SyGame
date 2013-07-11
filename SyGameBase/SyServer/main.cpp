@@ -81,7 +81,7 @@ public:
 	 */
 	void downFunction(std::string name)
 	{
-		theAboutNode.setFuncName(name,NULL,false);
+		theMsgCenter.setFuncName(name,NULL,false);
 	}
 	/**
 	 * 设置功能在仅在ip 的连接下使用
@@ -90,7 +90,7 @@ public:
 	 */
 	virtual void setFunctionInUseIp(std::string ip,std::string name)
 	{
-		theAboutNode.setFuncName(name,NULL,true,ip);
+		theMsgCenter.setFuncName(name,NULL,true,ip);
 	}
 };
 /**
@@ -112,7 +112,7 @@ public:
 #ifdef __LINUX__
 	 daemon(1,1);
 #endif
-	theAboutNode.init();
+	//theAboutNode.init();
 	Server server;
 	server.preLoad();
 	NetLib netlib;

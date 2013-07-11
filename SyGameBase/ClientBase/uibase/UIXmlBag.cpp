@@ -294,6 +294,7 @@ bool XmlBagItem::initWithNode(script::tixmlCodeNode *node)
 	panel = UIPanel::createFromNode(node);
 	this->addChild(panel);
 	panel->setAnchorPoint(ccp(0,0));
+	if (panel->back)
 	panel->back->setAnchorPoint(ccp(0,0));
 	return true;
 }

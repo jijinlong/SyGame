@@ -64,6 +64,29 @@ int cfunction(int argc,...)
             stream.set(content + sizeof(int),size-sizeof(int));\
         }\
 
+template<class CLASS>
+class AutoRegClass:public Function<CLASS>
+{
+public:
+	AutoRegClass(const std::string &className,const std::string &funcName,Handle1 handle,int (*setId)(int)):Function<CLASS>(handle)
+	{
+		unsigned int id = theMsgCenter.bind(className,funcName,this,setId);
+		this->setDelegateName(className);
+	}
+};
+#define IMP_REMOTE_FUNCTION2(CLASS,__function__)\
+	AutoRegClass<CLASS> CLASS##reg##__function__(#CLASS,#__function__,&CLASS::__function__,&CLASS::__function__);\
+	void CLASS::__function__(int size,Socket *socket,void *msg,eRemoteCallType callType)\
+    {\
+		int __function__id__ = __function__();\
+        CmdObject object(__function__id__);\
+        cmd::Stream stream;\
+		if (size >= sizeof(int))\
+        {\
+            char* content = (char*) msg;\
+            stream.set(content + sizeof(int),size-sizeof(int));\
+        }\
+
 #define PARAM(__type__,__name__)\
     __type__ __name__;\
     {\
@@ -81,7 +104,7 @@ int cfunction(int argc,...)
 
 #define MAKE_REMOTE_CLASS(className)\
 	className():CallDelegate(#className){}\
-	void init(MessageCenter *center);
+	
 #define BEGIN_REMOTE_CLASS(className) \
 	void className::init(MessageCenter *center)\
 	{\
@@ -314,7 +337,7 @@ private:
 #define DEC_REMOTE_FUNCTION_0(functionname)\
 	static int functionname(int id = 0){\
 	static int _functionid = 0; \
-	if (_functionid == 0) _functionid = id;return _functionid;}\
+	if (id != 0) _functionid = id;return _functionid;}\
 	void functionname(int size,Socket *socket,void *msg,eRemoteCallType callType=REMOTE_CALL_FUNCTION);\
 	void functionname(Socket *socket,eRemoteCallType tag = REMOTE_CALL_FUNCTION)
 

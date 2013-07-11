@@ -1,24 +1,26 @@
 #include "AboutRequest.h"
 #include "socket.h"
-/**
- * 请求场景的信息
- * \param mapWidth 地图的宽
- * \param mapHeight 地图的高
- */
-IMP_REMOTE_FUNCTION(AboutRequest::retCanPlay)
-	PARAM(std::vector<stBagInfo>,bags);
-	BODY
-	{
-		printf("服务器本地调用");
-	}
-REMOTE_FUNCTION_END
 
 /**
  * 请求场景的信息
  * \param mapWidth 地图的宽
  * \param mapHeight 地图的高
  */
-IMP_REMOTE_FUNCTION(AboutRequest::retMapInfo)
+/*
+IMP_REMOTE_FUNCTION2(AboutRequest,retCanPlay)
+	PARAM(std::vector<stBagInfo>,bags);
+	BODY
+	{
+		printf("服务器本地调用");
+	}
+REMOTE_FUNCTION_END
+*/
+/**
+ * 请求场景的信息
+ * \param mapWidth 地图的宽
+ * \param mapHeight 地图的高
+ */
+IMP_REMOTE_FUNCTION2(AboutRequest,retMapInfo)
 	PARAM(int,mapId);
 	PARAM(std::string ,mapName);
 	BODY
@@ -32,7 +34,7 @@ REMOTE_FUNCTION_END
  * \param mapWidth 地图的宽
  * \param mapHeight 地图的高
  */
-IMP_REMOTE_FUNCTION(AboutRequest::retLogin)
+ IMP_REMOTE_FUNCTION2(AboutRequest,retLogin)
 	PARAM(std::string ,uniqueStr);
 	BODY
 	{

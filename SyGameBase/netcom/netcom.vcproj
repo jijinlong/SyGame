@@ -157,10 +157,6 @@
 				RelativePath=".\AboutRequest_C.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\AboutRequest_S.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"

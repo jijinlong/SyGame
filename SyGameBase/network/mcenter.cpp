@@ -3,6 +3,8 @@
 #include "sys.h"
 #include "remotefunction.h"
 #include "socket.h"
+#include <sstream>
+//MessageCenter theMsgCenter;
  void CmdObject::parsecmd(void *cmd,int cmdLen)
 {
 	if (cmdLen < sizeof(int)) return;	
@@ -25,6 +27,7 @@ MessageCenter::MessageCenter()
 {
 	functions.resize(1024);
 	_mutex = new sys::Mutex();
+	funcInfos.clear();
 }
 bool MessageCenter::bind(unsigned int id,FuncCaller* func,CmdObject *cmd )
 {
@@ -173,7 +176,54 @@ bool MessageCenter::handle(CallDelegate *delegate,void *cmd,int cmdLen,Socket *s
 	_mutex->unlock();
 	return true;
 }
+bool MessageCenter::rebind(const std::string &className,const std::string &funcName,FuncCaller *func,int (*setId)(int))
+{
+	std::stringstream ss;
+	ss << className << funcName;
+	stFuncInfo info(ss.str());
+	info.setId = setId;
+	info.func = func;
+	bool tag = false;
+	if (funcInfos.size())
+	{
+		for (FUNCINFOS_ITER iter = funcInfos.begin(); iter != funcInfos.end(); ++iter)
+		{
+			if (*iter < info)
+			{
+				funcInfos.insert(iter,info);
+				tag = true;
+			}
+		}
+	}
+	if (!tag)
+		funcInfos.insert(funcInfos.end(),info);
+	unsigned int id = 1;
+	for (int i = 0; i <functions.size();i++)
+	{
+		functions[i].clear();
+	}
+	for (FUNCINFOS_ITER iter = funcInfos.begin(); iter != funcInfos.end(); ++iter)
+	{
+		if (id < functions.size())
+			functions.resize(id + 5);
+		(*iter->setId)(id);
+		functions[id].push_back(iter->func);
+		id ++;
+	}
+	return true;
+}
+bool MessageCenter::bind(const std::string &className,const std::string &funcName,FuncCaller *func,int (*setId)(int))
+{
+	return rebind(className,funcName,func,setId);
+}
 
+bool stFuncInfo::operator <(const stFuncInfo &info)
+{
+	int res = strncmp(uniqueName.c_str(),info.uniqueName.c_str(),info.uniqueName.size());
+	if (res == -1)
+		return true;
+	return false;
+}
 void MessageCenter::destroy()
 {
 	for (OBJECT_ITER iter= objects.begin(); iter != objects.end();++iter)
@@ -230,3 +280,4 @@ bool FuncCaller::checkInValidIp(Socket *socket)
 	}
 	return false;
 }
+

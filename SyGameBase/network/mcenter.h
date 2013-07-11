@@ -128,7 +128,7 @@ public:
 	{
 	
 	}
-private:
+protected:
 	typedef void (CLASS::*Handle1)(int size,Socket *socket,void *content,eRemoteCallType callType);
 	Handle1 handle1;
 	
@@ -153,12 +153,30 @@ public:
 	Function(Handle3 handle):handle3(handle){}
 };
 
+struct stFuncInfo{
+public:
+	std::string uniqueName;
+	unsigned int id;
+	FuncCaller *func;
+	stFuncInfo(const std::string &uniqueName):uniqueName(uniqueName)
+	{
+		id = 0;
+	}
+	int (*setId)(int);
+	bool operator < (const stFuncInfo &info);
+};
+
 /**
  * 消息中心
  */
 class MessageCenter{
 public:
 	DYNAMIC_API MessageCenter();
+	static MessageCenter&getMe()
+	{
+		static MessageCenter mc;
+		return mc;
+	}
 	/**
 	 * 将函数,CmdObject 绑定到id 上
 	 * \param id 唯一标示
@@ -167,6 +185,7 @@ public:
 	 * \return true 成功 false 绑定失败
 	 */
 	DYNAMIC_API bool bind(unsigned int id,FuncCaller* func,CmdObject *cmd = NULL);
+	DYNAMIC_API bool bind(const std::string &className,const std::string &funcName,FuncCaller *func,int (*setId)(int));
 	/**
 	 * 处理消息对象
 	 * \param delegate 代理对象,执行该对象的方法
@@ -204,12 +223,15 @@ public:
 	/**
 	 * 初始化
 	 */
-	DYNAMIC_API virtual void init() = 0;
+	DYNAMIC_API virtual void init(){};
 	~MessageCenter(){
-		destroy();
+	//	destroy();
 	}
+	bool rebind(const std::string &className,const std::string &funcName,FuncCaller *func,int (*setId)(int));
 private:
 	std::vector<std::list<FuncCaller*> > functions; // 方法池 
+	std::list<stFuncInfo> funcInfos;
+	typedef std::list<stFuncInfo>::iterator FUNCINFOS_ITER;
 	/**
 	 * 根据id 获取处理消息
 	 */
@@ -226,3 +248,6 @@ private:
 	std::map<std::string,FuncCaller*> namefuncs; // 函数名字与 FuncCaller 的绑定关系
 	typedef std::map<std::string,FuncCaller*>::iterator NAME_FUNCS_ITER;
 };
+
+#define theMsgCenter MessageCenter::getMe()
+//extern MessageCenter theMsgCenter; 

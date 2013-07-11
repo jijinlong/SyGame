@@ -5,7 +5,6 @@
 class AboutRequest:public RemoteFunction,public Singleton<AboutRequest>,public CallDelegate{
 public:
 	MAKE_REMOTE_CLASS(AboutRequest)
-
 	/**
 	 * 请求场景的信息
 	 * \param mapWidth 地图的宽

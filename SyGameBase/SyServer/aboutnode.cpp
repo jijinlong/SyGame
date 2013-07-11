@@ -11,7 +11,7 @@
 void DealCmd::doObjectCmd(Socket *socket,void *cmd,int size)
 {
 	ENTER_FUNCTION
-	if (theAboutNode.handle(&theRequest,cmd,size,socket))
+	if (theMsgCenter.handle(&theRequest,cmd,size,socket))
 	{}
 };
 
@@ -44,7 +44,7 @@ void DealClose::handleClose(Socket *socket)
 void DealCmd::doLocalCmd(Socket *socket,void *cmd,int size)
 {
 	ENTER_FUNCTION
-	if (theAboutNode.handle(&theRequest,cmd,size,socket,LOCAL_CALL_FUNCTION))
+	if (theMsgCenter.handle(&theRequest,cmd,size,socket,LOCAL_CALL_FUNCTION))
 	{}
 	
 };
@@ -67,7 +67,7 @@ void AboutNode::init()
 	static bool init = false;
 	if (!init) // 确保初始化只走一次
 	{
-		theRequest.init(this);
+//		theRequest.init(this);
 		init = true;
 	}
 }
