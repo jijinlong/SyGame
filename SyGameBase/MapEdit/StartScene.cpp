@@ -3,6 +3,7 @@
 #include "StartDialog.h"
 #include <pthread.h>
 #include "PngPack.h"
+#include "MapManager.h"
 USING_NS_CC;
 
 
@@ -50,6 +51,7 @@ void LoadProcess::setColor(const ccColor3B& color)
 CCScene* StartScene::scene()
 {
     CCScene *scene = CCScene::create();
+	MapManager::getMe().scene = scene;
     StartScene *layer = StartScene::create();
     scene->addChild(layer);
     return scene;
@@ -80,6 +82,9 @@ bool StartScene::init()
 	 */
 	MainDialog *mainDialog = MainDialog::create(window,"mainui.xml");
 	
+	
+	MapManager::getMe().window = window;
+
 	this->schedule(schedule_selector(StartScene::step), 0.75f); 
 	return true;
 }

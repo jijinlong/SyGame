@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
+				AdditionalIncludeDirectories=".\map;.\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

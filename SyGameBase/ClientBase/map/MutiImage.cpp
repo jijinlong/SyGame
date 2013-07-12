@@ -1,6 +1,6 @@
 #include "MutiImage.h"
 NS_CC_BEGIN
-static MutiImage * create(script::tixmlCodeNode *node)
+MutiImage * MutiImage::create(script::tixmlCodeNode *node)
 {
 	MutiImage *image = new MutiImage();
 	if (image)

@@ -2,6 +2,7 @@
 #include "UIButton.h"
 #include "UIWindow.h"
 #include "UIXmlBag.h"
+#include "MapManager.h"
 NS_CC_BEGIN
 
 
@@ -48,7 +49,11 @@ public:
 		{
 			std::string value = panel->getEditFieldValue("filename");
 			// 创建一个map
-
+			MutiMap *map = MutiMap::create(value.c_str());
+			if (map)
+			{
+				MapManager::getMe().addMap(map); // 增加地图
+			}
 			panel->setVisible(false); // 将自身隐藏
 		}
 	}

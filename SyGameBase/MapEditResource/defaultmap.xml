@@ -1,0 +1,5 @@
+<Config>
+	<map name="default">
+		<image src="panel_back.png" x="500" y="300"/>
+	</map>
+</Config>
