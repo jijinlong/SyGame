@@ -3,15 +3,15 @@
 	<start x="0" y="0" width="0" height="0"  local="40" backimg="" moveable="false" root="true" zorder="1">
 		<button uniquename="save" x="-84" y="128" name="保存" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<button uniquename="editfield" x="-84" y="64" name="编辑框" downimg="btn_common_down.png"
+		<button uniquename="open" x="-84" y="64" name="打开" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<button uniquename="button" x="-84" y="0" name="按钮" downimg="btn_common_down.png"
+		<button uniquename="cartoon" x="-84" y="0" name="动画" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<button uniquename="text" x="-84" y="-60" name="文字" downimg="btn_common_down.png"
+		<button uniquename="backgroud" x="-84" y="-60" name="底图" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 		<button uniquename="image" x="-84" y="-180" name="图像" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<button uniquename="panel" x="-84" y="-120" name="面板" downimg="btn_common_down.png"
+		<button uniquename="map" x="-84" y="-120" name="地图" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 	</start>
 </Config>

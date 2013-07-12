@@ -96,8 +96,8 @@ public:
 	UIPanel()
 	{
 		_moveable = true;
-		_width = 500;
-		_height = 500;
+		_width = 0;
+		_height = 0;
 		_touchIn = false;
 		back = NULL;
 		_nowTouchUI = NULL;
@@ -141,6 +141,9 @@ public:
 	void showByAction(int actionId);
 	CCSprite *back;
 	virtual bool isMovable(){return _moveable;}
+	UIWindow *getWindow();
+	void bindBtnClick(const std::string &btnName,UICallback *callback);
+	std::string getEditFieldValue(const std::string &name);
 protected:
 	CCPoint nowTouchPoint;
 	bool _moveable;
@@ -164,6 +167,7 @@ protected:
 	static int const ALIGN_RIGHT = 1 << 3;
 	static int const ALIGN_LEFT = 1 << 4;
 	static int const ALIGN_Y_CENTER = 1 << 5;
+	
 };
 
 template<class CHILD>
@@ -230,5 +234,4 @@ public:
 protected:
 	virtual void doInitEvent(){}
 };
-
 NS_CC_END

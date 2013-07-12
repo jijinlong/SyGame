@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName).win32"
+			IntermediateDirectory="$(ConfigurationName).win32"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories=".\;.\pintu;&quot;$(SolutionDir)ClientBase\zlib&quot;;&quot;$(SolutionDir)ClientBase\uibase&quot;;&quot;$(SolutionDir)ClientBase&quot;;&quot;$(SolutionDir)ClientBase\misc&quot;;&quot;$(SolutionDir)ClientBase\action&quot;;&quot;$(SolutionDir)ClientBase\tinyxml&quot;;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -60,7 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib glew32.lib libcocos2d.lib pthreadVCE2.lib ClientBase.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)Debug.win32&quot;;&quot;$(SolutionDir)Debug&quot;;&quot;$(SolutionDir)ClientBase&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -198,6 +201,10 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MapManager.h"
 				>
 			</File>
 			<File

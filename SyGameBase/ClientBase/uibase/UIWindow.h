@@ -6,6 +6,8 @@
 #include "cocos2d.h"
 #include "UIPanel.h"
 NS_CC_BEGIN
+class CommonPanel:public BaseDialog<CommonPanel>
+{};
 class UIWindow:public CCNode{
 public:
 
@@ -56,6 +58,7 @@ public:
 	 */
 	void showErr(const std::string& info);
 	UIPanel *getPanel(const std::string &name);
+	UIPanel *showPanel(const std::string &name);
 private:
 	CCLabelTTF * _errLbl;
 	void insertBase(UIBase *base);

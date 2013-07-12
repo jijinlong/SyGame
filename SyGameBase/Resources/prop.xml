@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <start backimg="panel_back.png" width="390" height="525" local="34" name="prop">
+    <start backimg="panel_back.png" local="34" name="prop">
 		<button uniquename="close" x="180" y="260" name="" downimg="close_common_down.png"
 		upimg="close_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
         <label x="-113" w="0" y="216" h="0" uniqueid="-1" name="label" uniquename="" content="横坐标:" fontsize="32" r="205" g="205" b="205" />

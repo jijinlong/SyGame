@@ -91,8 +91,8 @@ void UIWindow::setNowTouchPanel(UIPanel * pan)
 			base->setZOrder(0);
 		}
 	}
-	if (!pan->isMovable())
-	pan->setZOrder(1);
+	if (pan->isMovable())
+		pan->setZOrder(1);
 }
 /** 
  * 检查是否在区域里
@@ -275,5 +275,18 @@ void UIWindow::showErr(const std::string& info)
 		_errLbl->runAction(CCFadeOut::create(1.5));
 		_errLbl->setColor(ccc3(255,0,0));
 	}
+}
+UIPanel *UIWindow::showPanel(const std::string &name)
+{
+	UIPanel * bp = this->getPanel(name);
+	if (!bp)
+	{
+		std::stringstream namestr;
+		namestr << name << ".xml";
+		CommonPanel *panel = CommonPanel::create(this,namestr.str().c_str());
+		panel->name = name;
+		return panel;
+	}
+	else return bp;
 }
 NS_CC_END

@@ -2,6 +2,7 @@
 #include "UIButton.h"
 #include "UILabel.h"
 #include "UIEditField.h"
+#include "UIPanel.h"
 NS_CC_BEGIN
 //! convert from wstring to UTF8 using self-coding-converting
 inline void WStrToUTF8(std::string& dest, const std::wstring& src){
@@ -28,6 +29,11 @@ inline void WStrToUTF8(std::string& dest, const std::wstring& src){
 		else
 			dest.push_back('?');
 	}
+}
+UIPanel * UIBase::getPanel()
+{
+	UIPanel * panel = static_cast<UIPanel*>(this->getParent());
+	return panel;
 }
 /**
 * 创建一个基本的ui 用于持久化

@@ -12,6 +12,7 @@ typedef void (UIBase::*UI_EVENT_HANDLE)(UIBase*);
 #define ui_object_function(object,_SELECTOR) FunctionInfo((UI_EVENT_HANDLE)(&_SELECTOR),object)
 #define REGISTER_EVENT 
 class UIItem;
+class UIPanel;
 struct stBagExecEach{
 	virtual  void exec(UIItem *item) = 0;
 };
@@ -71,6 +72,7 @@ public:
 		EVENT_TOUCH_OUT, // 出来
 		EVENT_TOUCH_NO_CHILD_IN,
 	};
+	UIPanel * getPanel();
 	/**
 	 * 创建一个基本的ui 用于持久化
 	 */

@@ -343,15 +343,24 @@ void UIPanel::setEditable(bool tag)
 */
 void UIPanel::setSize(float w,float h) 
 {
-	 if (back)
+	 if (back && w && h)
 	 {
 		 back->setScaleX(w / back->getContentSize().width);
 		 back->setScaleY(h / back->getContentSize().height);	 
 	 }
+
 	 this->w = w;
 	 this->h = h;
 	 _width = w;
 	_height = h;
+	if (!w || !h)
+	{
+		if (back)
+		{
+		_width = back->getContentSize().width;
+		_height = back->getContentSize().height;
+		}
+	}
 }
 
 UIPanel* UIPanel::create()
@@ -666,7 +675,7 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	{
 		this->setVisible(false);
 	}
-	this->setSize(width,height);
+	
 	if (backimg != "")
 	{
 		this->replaceBack(backimg.c_str());
@@ -682,8 +691,8 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	origin = ccpAdd(origin,ccp(width /2,height/2));
 	float x = 0;
 	float y = 0;
-	float w = 0;
-	float h = 0;
+	float w = _width;
+	float h = _height;
 	node->getAttr("x",x);
 	node->getAttr("y",y);
 	node->getAttr("w",w);
@@ -721,10 +730,12 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		{
 			 x = visibleSize.width - width + origin.x;
 		}
+		if ((localinfo & ALIGN_LEFT))
+		{
+			x = origin.x + width;
+		}
 	}
-	if (w && h)
-		this->setSize(w,h);
-	this->setPosition(x,y);
+	
     /**
      * ´´½¨°´Å¥
      **/
@@ -886,6 +897,9 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	{
 		this->setEditable(true);
 	}
+	if (w && h)
+		this->setSize(w,h);
+	this->setPosition(x,y);
 	return true;
 }
 
@@ -922,7 +936,28 @@ UIBase* UIPanel::getUIByName(std::string name)
 	}
 	return NULL;
 }
-
+UIWindow *UIPanel::getWindow()
+{
+	UIWindow *window = static_cast<UIWindow*>(this->getParent());
+	return window;
+}
+void UIPanel::bindBtnClick(const std::string &btnName,UICallback *callback)
+{
+	GET_UI_BYNAME(this,UIButton,btn,btnName.c_str());
+	if (btn)
+	{
+		btn->bind(UIBase::EVENT_CLICK_DOWN,callback);
+	}
+}
+std::string UIPanel::getEditFieldValue(const std::string &name)
+{
+	GET_UI_BYNAME(this,UIEditField,field,name.c_str());
+	if (field)
+	{
+		return field->getContent();
+	}
+	return "";
+}
 void UIPanel::showByAction(int actionId)
 {
 	//CCAction *action = TFActionManager::getMe().getAction(actionId,0,ccp(0,0),NULL);

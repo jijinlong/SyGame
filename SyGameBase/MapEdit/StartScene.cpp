@@ -74,26 +74,12 @@ bool StartScene::init()
     }
 	
     this->setTouchEnabled(true);
-   
-	//startDialog = StartDialog::create(window,"startui.xml");
 	
 	/**
-	 * 操作界面
+	 * 操作界面 几个Button 
 	 */
 	MainDialog *mainDialog = MainDialog::create(window,"mainui.xml");
 	
-	/**
-	 * 保存界面
-	 */
-	SavePanelDialog *saveDialog = SavePanelDialog::create(window,"savedialog.xml");
-	saveDialog->setVisible(false);
-	
-	/**
-	 * 属性界面
-	 */
-	PropDialog *propDialog = PropDialog::create(window,"prop.xml");
-	
-
 	this->schedule(schedule_selector(StartScene::step), 0.75f); 
 	return true;
 }

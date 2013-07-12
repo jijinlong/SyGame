@@ -43,7 +43,6 @@ public:
 
 	CREATE_FUNC(StartScene);
 	
-	StartDialog *startDialog;
 	UIWindow *window;
 	void step(float dt);
 private:
