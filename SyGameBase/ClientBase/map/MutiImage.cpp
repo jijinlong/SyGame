@@ -7,6 +7,7 @@ MutiImage * MutiImage::create(script::tixmlCodeNode *node)
 	{
 		image->readNode(node);
 		image->initWithFile(image->pngName.c_str());
+		image->rebuild();
 		image->autorelease();
 		return image;
 	}
@@ -47,5 +48,15 @@ TiXmlElement * MutiImage::writeNode(TiXmlElement *parent,const std::string &name
 void MutiImage::rebuild()
 {
 	initWithFile(pngName.c_str());
+}
+bool MutiImage::checkIn(const CCPoint &point)
+{
+	CCPoint pos = this->convertToNodeSpace(point);
+	float width = getContentSize().width * getScaleX();
+	float height = getContentSize().height * getScaleY();
+	float x = - (width/2);
+	float y = - (height/2);
+	CCRect rect = CCRectMake(x,y,width,height);
+	return rect.containsPoint(pos);
 }
 NS_CC_END

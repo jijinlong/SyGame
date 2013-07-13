@@ -19,6 +19,12 @@ public:
 	void setBaseInfo(float x,float y,float w,float h);
 
 	void rebuild();
+	float w;
+	float h;
+	MutiObject()
+	{
+		w = h = 0;
+	}
 };
 
 NS_CC_END

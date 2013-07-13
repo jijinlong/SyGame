@@ -155,12 +155,13 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 			vieww = viewNode.getFloat("vieww");
 			viewh = viewNode.getFloat("viewh");
 			view = UIScrollView::create(viewx,viewy,vieww,viewh);
+			std::string viewback = viewNode.getAttr("back");
 			scrollTypeStr = node->getAttr("scrollable");
 			if (view)
 			{
 				((UIScrollView*)view)->addContent(this);
 				((UIScrollView*)view)->setScrollType(UIScrollView::UP_DOWN);
-				((UIScrollView*)view)->setBack("panel_back.png");
+				((UIScrollView*)view)->setBack(viewback.c_str());
 				view->setEditable(false);
 				if (scrollTypeStr == "true")
 				((UIScrollView*)view)->setScrollAble(true);
@@ -246,8 +247,8 @@ void UIViewList::addToParent(CCNode *node)
  {
 	if (view)
 	{
-		if (y < 0) y = 0;
-		if (y > this->_eachHeight * (this->_height + 1)) y = this->_eachHeight * (this->_height + 1);
+	//	if (y > 0) y = 0;
+	//	if (y < - (this->_eachHeight * (this->_height + 1))) y = - this->_eachHeight * (this->_height + 1);
 		UIList::setPosition(x,y);
 	}
 	else

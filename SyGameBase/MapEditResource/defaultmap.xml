@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-	<map name="default">
-		<image src="panel_back.png" x="500" y="300"/>
-	</map>
+    <map zorder="0" ratiox="0" rationy="0" offsetx="0" offsety="0">
+        <image x="-484" y="390" w="250" h="250" src="panel_back.png" />
+    </map>
 </Config>

@@ -20,4 +20,40 @@ void MapManager::addMap(MutiMap *map)
 	if (scene)
 		scene->addChild(map);
 }
+
+void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
+{
+	if (!map) return;
+	switch(touchType)
+	{
+		case UIBase::TOUCH_DOWN:
+		{
+			nowObject = map->pickObject(touchPoint);
+			nowTouchPoint = touchPoint;
+		}break;
+		case UIBase::TOUCH_MOVE:
+		{
+			if (nowObject)
+			{
+				CCPoint nowPoint = nowObject->getPosition();
+				nowObject->setPosition(ccp(nowPoint.x + touchPoint.x - nowTouchPoint.x,
+                                  nowPoint.y + touchPoint.y - nowTouchPoint.y));
+				nowTouchPoint = touchPoint;
+				return;
+			}
+			else
+			{
+				CCPoint nowPoint = map->getPosition();
+				map->setPosition(ccp(nowPoint.x + touchPoint.x - nowTouchPoint.x,
+                                  nowPoint.y + touchPoint.y - nowTouchPoint.y));
+				nowTouchPoint = touchPoint;
+				return;
+			}
+		}break;
+		case UIBase::TOUCH_END:
+		{
+			nowObject = NULL;
+		}break;
+	}
+}
 NS_CC_END

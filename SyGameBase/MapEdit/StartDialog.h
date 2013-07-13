@@ -20,7 +20,7 @@ public:
 	virtual void doInitEvent();
 
 	void openMap(UIBase *base);
-
+	void saveMap(UIBase *base);
 	void createCartoon(UIBase *base);
 
 	void createImage(UIBase *base);

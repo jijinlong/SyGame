@@ -6,8 +6,12 @@ NS_CC_BEGIN
 void MutiObject::readNode(script::tixmlCodeNode *node)
 {
 	CCSprite::setPosition(ccp(node->getFloat("x"),node->getFloat("y")));
-	float w = node->getFloat("w");
-	float h = node->getFloat("h");
+	w = node->getFloat("w");
+	h = node->getFloat("h");
+	
+}
+void MutiObject::rebuild()
+{
 	if (w && h)
 	{
 		this->setScaleX(w / this->getContentSize().width);

@@ -23,7 +23,7 @@ MutiMap * MutiMap::create(const char *fileName)
 		unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
 		if (!nSize)return false;
 		map->initFromString((char*)buffer);
-
+		map->fileName = fileName;
 		map->autorelease();
 		return map;
 	}
@@ -33,6 +33,20 @@ MutiMap * MutiMap::create(const char *fileName)
 void  MutiMap::takeNode(script::tixmlCodeNode *node)
 {
 	readNode(node);
+}
+/**
+ * 选择对象
+ */
+MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
+{
+	for (IMAGES_ITER iter = _images.begin(); iter != _images.end();++iter)
+	{
+		if (*iter && (*iter)->checkIn(pixelPoint))
+		{
+			return *iter;
+		}
+	}
+	return NULL;
 }
 /**
  * 从配置文件中读取信息

@@ -169,7 +169,7 @@ void UIScrollView::setBack(const char *backName)
 	if (!back)
 	{
 		back = CCSprite::create(backName);
-		this->addChild(back,-10);
+		this->addChild(back,19);
 		back->setAnchorPoint(ccp(0,0));
 	}
 	else back->initWithFile(backName);

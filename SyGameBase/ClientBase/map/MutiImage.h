@@ -17,7 +17,8 @@ public:
 	 * 将信息写入节点当中
 	 */
 	TiXmlElement * writeNode(TiXmlElement *parent,const std::string &name);
-
+	
+	bool checkIn(const CCPoint &point);
 	void rebuild();
 };
 NS_CC_END

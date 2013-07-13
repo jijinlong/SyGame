@@ -123,6 +123,7 @@ bool UIButton::touchDown(float x,float y)
 bool UIButton::touchMove(float x,float y)
 {
 	CCPoint pos = ccp(x,y);
+	pos = this->convertToNodeSpace(pos);
 	if (_editable && _touchIn)
 	{
 		CCPoint nowPoint = getPosition();

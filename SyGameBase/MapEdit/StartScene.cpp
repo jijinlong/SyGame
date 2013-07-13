@@ -98,6 +98,7 @@ void StartScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	 * 处理窗口
 	 */
 	if (window->touchDown(pos.x,pos.y)) return;
+	MapManager::getMe().doTouch(UIBase::TOUCH_DOWN,pos);
 	
 }
 void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
@@ -108,6 +109,7 @@ void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	 * 处理窗口
 	 */
 	if (window->touchMove(pos.x,pos.y)) return;
+	MapManager::getMe().doTouch(UIBase::TOUCH_MOVE,pos);
 }
 void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -117,6 +119,7 @@ void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	 * 处理窗口
 	 */
 	window->touchEnd(pos.x,pos.y);
+	MapManager::getMe().doTouch(UIBase::TOUCH_END,pos);
 }
 void StartScene::step(float dt)
 {

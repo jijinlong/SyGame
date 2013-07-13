@@ -26,7 +26,12 @@ public:
 		scene = NULL;
 		window = NULL;
 		map = NULL;
+		nowObject = NULL;
 	}
+	void doTouch(int,const CCPoint &point);
+
+	MutiObject *nowObject;
+	CCPoint nowTouchPoint;
 };
 
 NS_CC_END

@@ -15,6 +15,11 @@ void MainDialog::doInitEvent()
 	{
 		openBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::openMap));
 	}
+	GET_UI_BYNAME(this,UIButton,saveBtn,"save"); // 打开一个地图 将会替换当前的地图
+	if (saveBtn)
+	{
+		saveBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::saveMap));
+	}
 	// TODO 创建一个新的地图
 
 	// TODO 创建一个图片
@@ -80,7 +85,10 @@ void MainDialog::openMap(UIBase *base)
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
 	panel->setVisible(true);
 }
-
+void MainDialog::saveMap(UIBase *base)
+{
+	MapManager::getMe().getMap()->save();
+}
 /**
  * 帧的条目
  */
@@ -89,8 +97,36 @@ public:
 	// list中的元素
 	static stFrameItem *create(const std::string &pngName)
 	{
-		return NULL;
+		stFrameItem *node = new stFrameItem();
+		node->autorelease();
+		node->init(pngName);
+		return node;
 	}
+	void init(const std::string &pngName)
+	{
+		this->pngName = pngName;
+		UILabel *info = UILabel::create(pngName.c_str(),32);
+		if (info)
+		{
+			this->addChild(info);
+			info->setPosition(84,25);
+		}
+		sprite = CCSprite::create(pngName.c_str());
+		if (sprite)
+		{
+			addChild(sprite);
+			sprite->setAnchorPoint(ccp(0,0));
+		}
+	}
+	virtual void setSize(float w,float h)
+	{
+		if (sprite)
+		{
+			sprite->setScaleX(64/sprite->getContentSize().width);
+			sprite->setScaleY(h / sprite->getContentSize().height);
+		}
+	}
+	CCSprite *sprite;
 	std::string pngName;
 };
 /**
@@ -150,6 +186,7 @@ public:
 		UIPanel *nowPanel = base->getPanel();
 		stFrameItem *item = stFrameItem::create(nowPanel->getEditFieldValue("pngname"));
 		LIST(panel,"list")->addItem(item);
+		LIST(panel,"list")->show();
 		nowPanel->setVisible(false);
 	}
 	stAddFrame(UIWindow *window,UIPanel *panel):window(window),panel(panel)
@@ -173,6 +210,8 @@ public:
 			if (addFrame)
 			{
 				addFrame->bindBtnClick("ok",new stAddFrame(window,panel));
+				addFrame->bindBtnClick("cancel",new CloseMe());
+				addFrame->setVisible(true);
 			}
 		}
 	}

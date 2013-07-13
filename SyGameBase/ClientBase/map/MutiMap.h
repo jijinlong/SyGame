@@ -40,7 +40,10 @@ public:
 	void takeNode(script::tixmlCodeNode *node);
 
 	void addImage(MutiImage *image);
+
+	void save(){write(fileName.c_str());}
 protected:
+	std::string fileName;
 	std::list<MutiImage*> _images; // 图片集合
 	std::list<MutiCartoon*> _cartoons; // 动画集合
 	std::list<MutiMap*> _grouds; // 远层集合
