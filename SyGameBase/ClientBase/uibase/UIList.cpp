@@ -107,7 +107,13 @@ UIViewList *UIViewList::create(script::tixmlCodeNode *snode)
 	CC_SAFE_DELETE(node);
 	return NULL;
 }
-
+/**
+ * 设置位置
+ */
+void UIList::setPosition(float x,float y)
+{
+	UISuperBag::setPosition(x,y);
+}
 bool  UIViewList::doTouch(int touchType,const CCPoint &touchPoint)
 {
 	if (view)
@@ -233,5 +239,20 @@ void UIViewList::addToParent(CCNode *node)
 		node->addChild(this);
 	}
 }
-
+/**
+ * 设置位置
+ */
+ void UIViewList::setPosition(float x,float y)
+ {
+	if (view)
+	{
+		if (y < 0) y = 0;
+		if (y > this->_eachHeight * (this->_height + 1)) y = this->_eachHeight * (this->_height + 1);
+		UIList::setPosition(x,y);
+	}
+	else
+	{
+		UIList::setPosition(x,y);
+	}
+ }
 NS_CC_END

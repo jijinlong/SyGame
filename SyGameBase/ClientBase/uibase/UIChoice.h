@@ -38,6 +38,8 @@ public:
 	 */
 	virtual void setSize(float w,float h);
 	bool isChoiced(){return _choiced;}
+
+	void setChoiced(bool);
 private:
 	bool _choiced; // 选择中了
 	bool _editable; // 是否可选

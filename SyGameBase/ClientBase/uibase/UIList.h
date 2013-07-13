@@ -31,6 +31,10 @@ public:
 	//zPos getZPosByBagId(int bagId);
 	CCPoint getPixelPosition(int x,int y);
 	const CCSize & getContentSize();
+	/**
+	 * 设置位置
+	 */
+	virtual void setPosition(float x,float y);
 public:
 	/**
 	 * 获取当前id 的像素位置
@@ -85,6 +89,11 @@ public:
 	float vieww;
 	float viewh;
 	std::string scrollTypeStr;
+
+	/**
+	 * 设置位置
+	 */
+	virtual void setPosition(float x,float y);
 };
 
 NS_CC_END

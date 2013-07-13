@@ -24,7 +24,11 @@ void MainDialog::doInitEvent()
 		createImgBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createImage));
 	}
 	// TODO 创建一个动画
-
+	GET_UI_BYNAME(this,UIButton,createCartoonBtn,"cartoon") // 打开一个地图 将会替换当前的地图
+	if (createCartoonBtn)
+	{
+		createCartoonBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createCartoon));
+	}
 	// TODO 创建一个背景
 }
 
@@ -176,6 +180,44 @@ public:
 	{}
 	UIWindow *window;
 };
+class stChoiceBasePanel:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		UIPanel *panel = base->getPanel();
+		UIChoice *choice = (UIChoice*) base;
+		PANEL(panel,"extinfo")->setVisible(false);
+		PANEL(panel,"baseinfo")->setVisible(false);
+		if (panel && !choice->isChoiced())
+		{
+			PANEL(panel,"baseinfo")->setVisible(true);
+			CHOICE(panel,"extchoice")->setChoiced(false);
+		}
+		else if (panel)
+		{
+			PANEL(panel,"extinfo")->setVisible(true);
+		}
+	}
+};
+class stChoiceExtPanel:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		UIPanel *panel = base->getPanel();
+		UIChoice *choice = (UIChoice*) base;
+		PANEL(panel,"extinfo")->setVisible(false);
+		PANEL(panel,"baseinfo")->setVisible(false);
+		if (panel && !choice->isChoiced())
+		{
+			PANEL(panel,"extinfo")->setVisible(true);
+			CHOICE(panel,"basechoice")->setChoiced(false);
+		}
+		else if(panel)
+		{
+			PANEL(panel,"baseinfo")->setVisible(true);
+		}
+	}
+};
 /**
  * 创建动画
  */
@@ -191,10 +233,11 @@ void MainDialog::createCartoon(UIBase *base)
 
 	// 绑定增加frame的按钮
 	PANEL(panel,"extinfo")->bindBtnClick("addframe",new stShowAddFrame(window));
+	PANEL(panel,"extinfo")->setVisible(false);
 	GET_UI_BYNAME(PANEL(panel,"extinfo"),UISuperBag,bag,"list");
 	//bag->bind(); 处理bag的点击消息
-	panel->bindChoiceClick("basechoice",NULL);
-	panel->bindChoiceClick("extchoice",NULL);
+	panel->bindChoiceClick("basechoice",new stChoiceBasePanel());
+	panel->bindChoiceClick("extchoice",new stChoiceExtPanel());
 	panel->setVisible(true);
 }
 

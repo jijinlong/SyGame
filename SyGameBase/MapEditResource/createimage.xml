@@ -1,6 +1,6 @@
 <Config>
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
-	<start x="-500" y="0" width="0" height="0"  local="40" backimg="panel_back.png" moveable="true">
+	<start x="0" y="200" width="0" height="0"  local="2" backimg="panel_back.png" moveable="true">
 		<panel uniquename="baseinfo" moveable="false">
 			<editfield uniquename="x" x="-50" y="50" content="输入横坐标" width="400" height="32"/>
 			<editfield uniquename="y" x="-50" y="80" content="输入纵坐标" width="400" height="32"/>

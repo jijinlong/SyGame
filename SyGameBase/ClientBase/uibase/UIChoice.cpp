@@ -98,6 +98,20 @@ bool UIChoice::touchEnd(float x,float y)
 	}
 	return true;
 }
+void UIChoice::setChoiced(bool tag)
+{
+	_choiced = tag;
+	if (_choiced)
+	{
+		_up->setVisible(false);
+		_down->setVisible(true);
+	}
+	else
+	{
+		_up->setVisible(true);
+		_down->setVisible(false);
+	}
+}
 /**
 * …Ë÷√Œª÷√
 */
