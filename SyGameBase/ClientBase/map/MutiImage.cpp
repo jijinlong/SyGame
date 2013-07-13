@@ -54,8 +54,8 @@ bool MutiImage::checkIn(const CCPoint &point)
 	CCPoint pos = this->convertToNodeSpace(point);
 	float width = getContentSize().width * getScaleX();
 	float height = getContentSize().height * getScaleY();
-	float x = - (width/2);
-	float y = - (height/2);
+	float x = 0;
+	float y = 0;
 	CCRect rect = CCRectMake(x,y,width,height);
 	return rect.containsPoint(pos);
 }

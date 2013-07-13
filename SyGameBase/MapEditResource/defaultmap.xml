@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
     <map zorder="0" ratiox="0" rationy="0" offsetx="0" offsety="0">
-        <image x="-484" y="390" w="250" h="250" src="panel_back.png" />
+        <image x="197" y="246" w="250" h="250" src="panel_back.png" />
+        <image x="199" y="503" w="250" h="250" src="panel_back.png" />
+        <cartoon x="-52" y="605" w="133" h="45" repeatetimes="-1" needtime="1">
+            <frame name="btn_common_up.png" />
+            <frame name="btn_common_down.png" />
+        </cartoon>
     </map>
 </Config>

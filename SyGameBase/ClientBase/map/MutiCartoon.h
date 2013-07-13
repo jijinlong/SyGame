@@ -22,5 +22,9 @@ public:
 	std::vector<std::string> pngNames; // 图片集合
 	float tapTime; // 间隔时间
 	int repeateTimes; // 重复的次数
+
+	void rebuild();
+
+	bool checkIn(const CCPoint &point);
 };
 NS_CC_END

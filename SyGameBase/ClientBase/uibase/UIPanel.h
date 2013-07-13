@@ -146,7 +146,7 @@ public:
 	void bindChoiceClick(const std::string &btnName,UICallback *callback);
 	std::string getEditFieldValue(const std::string &name);
 	template<typename CLASS>
-	bool getEditFieldValue(const std::string &name,CLASS object)
+	bool getEditFieldValue(const std::string &name,CLASS& object)
 	{
 		std::string value = getEditFieldValue(name);
 		object = atoi(value.c_str());
@@ -154,7 +154,7 @@ public:
 	}
 	void setEditFielValue(const std::string &name,const std::string& value);
 	template<typename CLASS>
-	void setEditFielValue(const std::string &name,CLASS object)
+	void setEditFielValue(const std::string &name,CLASS& object)
 	{
 		std::stringstream ss;
 		ss << object;

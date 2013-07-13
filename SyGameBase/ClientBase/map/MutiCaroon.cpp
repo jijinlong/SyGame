@@ -28,6 +28,11 @@ MutiCartoon * MutiCartoon::create(script::tixmlCodeNode *node)
 	CC_SAFE_DELETE(cartoon);
 	return NULL;
 }
+void MutiCartoon::rebuild()
+{
+	this->stopAllActions();
+	init();
+}
 bool MutiCartoon::init()
 {
 	initWithTexture(NULL, CCRectZero);
@@ -87,5 +92,16 @@ TiXmlElement * MutiCartoon::writeNode(TiXmlElement *parent,const std::string &na
 		}
 	}
 	return cartoonNode;
+}
+
+bool MutiCartoon::checkIn(const CCPoint &point)
+{
+	CCPoint pos = this->convertToNodeSpace(point);
+	float width = getContentSize().width * getScaleX();
+	float height = getContentSize().height * getScaleY();
+	float x = 0;
+	float y = 0;
+	CCRect rect = CCRectMake(x,y,width,height);
+	return rect.containsPoint(pos);
 }
 NS_CC_END

@@ -40,7 +40,7 @@ public:
 	void takeNode(script::tixmlCodeNode *node);
 
 	void addImage(MutiImage *image);
-
+	void addCartoon(MutiCartoon *cartoon);
 	void save(){write(fileName.c_str());}
 protected:
 	std::string fileName;

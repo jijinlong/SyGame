@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
 #include "cocos2d.h"
+#include "xmlScript.h"
+
 NS_CC_BEGIN
+class UIPanel;
 /**
  * 实现容纳固定大小的sprite 且空间可以大于展示的空间 可以拖动内容，并且放置
  */
@@ -52,4 +55,63 @@ protected:
 	}
 };
 
+class XmlUIItem:public UIItem{
+public:
+	static XmlUIItem* create(script::tixmlCodeNode *node);
+	bool initWithNode(script::tixmlCodeNode *node);
+	XmlUIItem()
+	{
+		panel = NULL;
+	}
+	virtual bool doTouch(int touchType,const CCPoint &touchPoint);
+	UIPanel * getPanel();
+	virtual void setSize(float width,float height);
+private:
+	UIPanel *panel;
+};
+template<typename CHILD>
+class BaseUIItem:public XmlUIItem,public script::tixmlCode{
+public:
+	static CHILD * create(const std::string &name)
+	{
+		CHILD *node = new CHILD();
+		if (node)
+		{
+			node->init(name);
+			node->autorelease();
+			return node;
+		}
+		CC_SAFE_DELETE(node);
+		return NULL;
+	}
+
+	bool init(const std::string &name)
+	{
+		std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(name);
+		unsigned long nSize = 0;
+		unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
+		if (!nSize)return false;
+		if (script::tixmlCode::initFromString((char*)buffer))
+		{
+			doInitEvent();
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 从配置文件中加载配置
+	 * \param node 配置根节点
+	 */
+	void takeNode(script::tixmlCodeNode *node)
+	{
+		if (node && node->equal("Config"))
+		{
+			XmlUIItem::initWithNode(&node);
+		}
+		vTakeNode(node);
+	}
+	virtual void vTakeNode(script::tixmlCodeNode *node){}
+protected:
+	virtual void doInitEvent(){}
+};
 NS_CC_END

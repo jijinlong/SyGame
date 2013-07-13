@@ -1,5 +1,5 @@
 #include "UIItem.h"
-
+#include "UIPanel.h"
 NS_CC_BEGIN
 UIItem *UIItem::clone()
 {
@@ -89,4 +89,41 @@ bool UIItem::checkIn(float x,float y)
 	}
 	return false;
 }
+
+XmlUIItem* XmlUIItem::create(script::tixmlCodeNode *snode)
+{
+	XmlUIItem *node = new XmlUIItem();
+	if (node && node->initWithNode(snode))
+	{
+		node->autorelease();
+		return node;
+	}
+	CC_SAFE_DELETE(node);
+	return NULL;
+}
+bool XmlUIItem::initWithNode(script::tixmlCodeNode *node)
+{
+	panel = UIPanel::createFromNode(node);
+	this->addChild(panel);
+	panel->setAnchorPoint(ccp(0,0));
+	if (panel->back)
+	panel->back->setAnchorPoint(ccp(0,0));
+	return true;
+}
+bool XmlUIItem::doTouch(int touchType,const CCPoint &touchPoint)
+{
+	if (panel)
+	{
+		panel->doTouch(touchType,touchPoint);
+	}
+	return true;
+}
+void XmlUIItem::setSize(float width,float height)
+{
+	if (panel)
+	{
+		panel->setSize(width,height);
+	}
+}
+UIPanel * XmlUIItem::getPanel(){return panel;}
 NS_CC_END

@@ -46,6 +46,13 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 			return *iter;
 		}
 	}
+	for (CARTOONS_ITER iter = _cartoons.begin(); iter != _cartoons.end();++iter)
+	{
+		if (*iter && (*iter)->checkIn(pixelPoint))
+		{
+			return *iter;
+		}
+	}
 	return NULL;
 }
 /**
@@ -77,7 +84,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 			script::tixmlCodeNode cartoonNode = mapNode.getFirstChildNode("cartoon");
 			while(cartoonNode.isValid())
 			{
-				MutiCartoon *cartoon = MutiCartoon::create(&imageNode);
+				MutiCartoon *cartoon = MutiCartoon::create(&cartoonNode);
 				if (cartoon)
 				{
 					CCNode::addChild(cartoon);
@@ -106,6 +113,11 @@ void MutiMap::addImage(MutiImage *image)
 {
 	CCNode::addChild(image);
 	_images.push_back(image);
+}
+void MutiMap::addCartoon(MutiCartoon *cartoon)
+{
+	CCNode::addChild(cartoon);
+	_cartoons.push_back(cartoon);
 }
 /**
 * 将信息写入节点当中

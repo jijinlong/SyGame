@@ -171,7 +171,8 @@ public:
 			LIST(PANEL(panel,"extinfo"),"list")->execEachItem(&exec);
 			PANEL(panel,"extinfo")->getEditFieldValue("taptime",cartoon->tapTime);
 			PANEL(panel,"extinfo")->getEditFieldValue("repeatetimes",cartoon->repeateTimes);
-
+			cartoon->rebuild();
+			MapManager::getMe().getMap()->addCartoon(cartoon);
 		}
 	}
 };
@@ -309,6 +310,9 @@ public:
 		}
 	}
 };
+/**
+ * 响应创建图像的按钮
+ */
 void MainDialog::createImage(UIBase *base)
 {
 	UIWindow *window = getWindow();
