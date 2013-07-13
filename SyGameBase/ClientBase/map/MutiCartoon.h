@@ -4,6 +4,7 @@
 NS_CC_BEGIN
 class MutiCartoon:public MutiObject{
 public:
+	static MutiCartoon * create(); // 创建空信息
 	/**
 	 * 从节点上创建动画
 	 */
@@ -17,7 +18,7 @@ public:
 	 * 将信息写入节点当中
 	 */
 	TiXmlElement * writeNode(TiXmlElement *parent,const std::string &name);
-private:
+
 	std::vector<std::string> pngNames; // 图片集合
 	float tapTime; // 间隔时间
 	int repeateTimes; // 重复的次数

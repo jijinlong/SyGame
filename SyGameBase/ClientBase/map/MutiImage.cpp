@@ -15,6 +15,13 @@ MutiImage * MutiImage::create(script::tixmlCodeNode *node)
 }
 MutiImage * MutiImage::create()
 {
+	MutiImage *image = new MutiImage();
+	if (image)
+	{
+		image->autorelease();
+		return image;
+	}
+	CC_SAFE_DELETE(image);
 	return NULL;
 }
 /**
@@ -37,5 +44,8 @@ TiXmlElement * MutiImage::writeNode(TiXmlElement *parent,const std::string &name
 	}
 	return imageNode;
 }
-
+void MutiImage::rebuild()
+{
+	initWithFile(pngName.c_str());
+}
 NS_CC_END

@@ -38,6 +38,8 @@ public:
 
 	static MutiMap * create(const char *fileName);
 	void takeNode(script::tixmlCodeNode *node);
+
+	void addImage(MutiImage *image);
 protected:
 	std::list<MutiImage*> _images; // 图片集合
 	std::list<MutiCartoon*> _cartoons; // 动画集合

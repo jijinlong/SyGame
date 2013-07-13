@@ -93,6 +93,7 @@ bool UIChoice::touchEnd(float x,float y)
 				_up->setVisible(true);
 				_down->setVisible(false);
 			}
+			doEvent(UIBase::EVENT_CLICK_DOWN,this);
 		}
 	}
 	return true;

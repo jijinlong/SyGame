@@ -20,7 +20,24 @@ struct stBagExecEach{
 	Class *Fieldname = static_cast<Class*>( Panel->getUIById(UniqueId));
 #define GET_UI_BYNAME(Panel,Class,Fieldname,UniqueName)\
 	Class *Fieldname = static_cast<Class*>( Panel->getUIByName(UniqueName));
-
+// 获取面板
+#define PANEL(Panel,UniqueName) \
+	(static_cast<UIPanel*>( Panel->getUIByName(UniqueName)))
+// 获取按钮
+#define BUTTON(Panel,UniqueName) \
+	((UIButton*) Panel->getUIByName(UniqueName))
+// 获取标签
+#define LABEL(Panel,UniqueName) \
+	(UILabel*) Panel->getUIByName(UniqueName))
+// 获取编辑框
+#define EIDTFIELD(Panel,UniqueName) \
+		(static_cast<UIEditField*>( Panel->getUIByName(UniqueName)))
+// 获取列表
+#define LIST(Panel,UniqueName) \
+		(static_cast<UIViewList*>( Panel->getUIByName(UniqueName)))
+// 获取单选框
+#define CHOICE(Panel,UniqueName) \
+		(static_cast<UIChoice*>( Panel->getUIByName(UniqueName)))
 struct FunctionInfo{
 	UI_EVENT_HANDLE handle;
 	UIBase *object;

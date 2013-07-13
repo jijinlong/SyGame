@@ -88,6 +88,11 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 		}
 	}
 }
+void MutiMap::addImage(MutiImage *image)
+{
+	CCNode::addChild(image);
+	_images.push_back(image);
+}
 /**
 * 将信息写入节点当中
 */

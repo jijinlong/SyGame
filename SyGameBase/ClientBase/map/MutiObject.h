@@ -15,6 +15,10 @@ public:
 	virtual TiXmlElement * writeNode(TiXmlElement *parent,const std::string &name);
 
 	bool checkIn(const CCPoint &point){return false;}
+
+	void setBaseInfo(float x,float y,float w,float h);
+
+	void rebuild();
 };
 
 NS_CC_END

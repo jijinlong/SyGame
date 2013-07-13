@@ -857,6 +857,19 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		}
 		storeBagNode = storeBagNode.getNextNode("storebag");
 	}
+	script::tixmlCodeNode panelNode = node->getFirstChildNode("panel");
+	while (panelNode.isValid())
+	{
+		UIPanel *panel = UIPanel::createFromNode(&panelNode);
+		if (panel)
+		{
+			childuis.push_back(panel);
+			panel->uniqueName = panelNode.getAttr("uniquename");
+			nameuis[panel->uniqueName] = panel;
+			this->addChild(panel);
+		}
+		panelNode = panelNode.getNextNode("panel");
+	}
 	/**
 	 * //TODO 创建带视图的List
 	 */
@@ -949,6 +962,14 @@ void UIPanel::bindBtnClick(const std::string &btnName,UICallback *callback)
 		btn->bind(UIBase::EVENT_CLICK_DOWN,callback);
 	}
 }
+void UIPanel::bindChoiceClick(const std::string &choiceName,UICallback *callback)
+{
+	GET_UI_BYNAME(this,UIChoice,choice,choiceName.c_str());
+	if (choice)
+	{
+		choice->bind(UIBase::EVENT_CLICK_DOWN,callback);
+	}
+}
 std::string UIPanel::getEditFieldValue(const std::string &name)
 {
 	GET_UI_BYNAME(this,UIEditField,field,name.c_str());
@@ -957,6 +978,14 @@ std::string UIPanel::getEditFieldValue(const std::string &name)
 		return field->getContent();
 	}
 	return "";
+}
+void UIPanel::setEditFielValue(const std::string &name,const std::string& value)
+{
+	GET_UI_BYNAME(this,UIEditField,field,name.c_str());
+	if (field)
+	{
+		field->setContent(value.c_str());
+	}
 }
 void UIPanel::showByAction(int actionId)
 {

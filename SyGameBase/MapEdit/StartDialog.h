@@ -20,5 +20,9 @@ public:
 	virtual void doInitEvent();
 
 	void openMap(UIBase *base);
+
+	void createCartoon(UIBase *base);
+
+	void createImage(UIBase *base);
 };
 NS_CC_END

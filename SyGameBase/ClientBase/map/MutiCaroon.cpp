@@ -1,7 +1,17 @@
 #include "MutiCartoon.h"
 
 NS_CC_BEGIN
-
+MutiCartoon * MutiCartoon::create()
+{
+	MutiCartoon *cartoon = new MutiCartoon();
+	if (cartoon)
+	{
+		cartoon->autorelease();
+		return cartoon;
+	}
+	CC_SAFE_DELETE(cartoon);
+	return NULL;
+}
 /**
 * 从节点上创建动画
 */

@@ -14,6 +14,10 @@ void MutiObject::readNode(script::tixmlCodeNode *node)
 		this->setScaleY(h / this->getContentSize().height);
 	}
 }
+void MutiObject::setBaseInfo(float x,float y,float w,float h)
+{
+
+}
 /**
 * 将信息写入节点当中
 */

@@ -143,7 +143,23 @@ public:
 	virtual bool isMovable(){return _moveable;}
 	UIWindow *getWindow();
 	void bindBtnClick(const std::string &btnName,UICallback *callback);
+	void bindChoiceClick(const std::string &btnName,UICallback *callback);
 	std::string getEditFieldValue(const std::string &name);
+	template<typename CLASS>
+	bool getEditFieldValue(const std::string &name,CLASS object)
+	{
+		std::string value = getEditFieldValue(name);
+		object = atoi(value.c_str());
+		return true;
+	}
+	void setEditFielValue(const std::string &name,const std::string& value);
+	template<typename CLASS>
+	void setEditFielValue(const std::string &name,CLASS object)
+	{
+		std::stringstream ss;
+		ss << object;
+		setEditFielValue(name,ss.str());
+	}
 protected:
 	CCPoint nowTouchPoint;
 	bool _moveable;
