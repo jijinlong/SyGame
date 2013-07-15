@@ -96,6 +96,17 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 				}
 				cartoonNode = cartoonNode.getNextNode("cartoon");
 			}
+			script::tixmlCodeNode bigImageNode = mapNode.getFirstChildNode("bigimage");
+			while(bigImageNode.isValid())
+			{
+				MutiBigImage *image = MutiBigImage::create(&bigImageNode);
+				if (image)
+				{
+					CCNode::addChild(image);
+					_bigImages.push_back(image);
+				}
+				bigImageNode = bigImageNode.getNextNode("bigimage");
+			}
 			/**
 			 * 递归的方式创建子节点
 			 */
@@ -128,6 +139,11 @@ void MutiMap::addMap(MutiMap *map)
 	this->addChild(map,map->zOrder,map->ratio,map->offset);
 	_grouds.push_back(map);
 }
+void MutiMap::addBigImage(MutiBigImage *bigImage)
+{
+	CCNode::addChild(bigImage);
+	_bigImages.push_back(bigImage);
+}
 /**
 * 将信息写入节点当中
 */
@@ -155,6 +171,11 @@ TiXmlElement * MutiMap::writeNode(TiXmlElement *parent,const std::string &name)
 	{
 		if (*iter)
 			(*iter)->writeNode(mapNode,"map");
+	}
+	for (BIG_IMAGES_ITER iter = _bigImages.begin(); iter != _bigImages.end();++iter)
+	{
+		if (*iter)
+			(*iter)->writeNode(mapNode,"bigimage");
 	}
 	return mapNode;
 }

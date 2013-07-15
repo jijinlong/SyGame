@@ -40,7 +40,7 @@ public:
 	void takeNode(script::tixmlCodeNode *node);
 
 	void addImage(MutiImage *image);
-
+	void addBigImage(MutiBigImage *bigImage);
 	void addMap(MutiMap *map);
 	void addCartoon(MutiCartoon *cartoon);
 	void save(){write(fileName.c_str());}
@@ -49,9 +49,11 @@ protected:
 	std::list<MutiImage*> _images; // 图片集合
 	std::list<MutiCartoon*> _cartoons; // 动画集合
 	std::list<MutiMap*> _grouds; // 远层集合
+	std::list<MutiBigImage*> _bigImages;
 	typedef std::list<MutiImage*>::iterator IMAGES_ITER;
 	typedef std::list<MutiCartoon*>::iterator CARTOONS_ITER;
 	typedef std::list<MutiMap*>::iterator GROUDS_ITER;
+	typedef std::list<MutiBigImage*>::iterator BIG_IMAGES_ITER;
 	int zOrder;
 	CCPoint ratio;
 	CCPoint offset;

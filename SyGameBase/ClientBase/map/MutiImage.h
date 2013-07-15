@@ -22,8 +22,9 @@ public:
 	void rebuild();
 };
 
-class MutiBigImage:public CCNode,public script::tixmlCode{
+class MutiBigImage:public MutiObject,public script::tixmlCode{
 public:
+	static MutiBigImage* create(script::tixmlCodeNode *node);
 	static MutiBigImage* create(const char *pngName);
 	bool init(const char *pngName);
 
@@ -33,7 +34,20 @@ public:
 	bool initFromXml(const char *pngName);
 
 	void takeNode(script::tixmlCodeNode *node);
+
+	/**
+	 * 从配置文件中读取信息
+	 */
+	virtual void readNode(script::tixmlCodeNode *node);
+	/**
+	 * 将信息写入节点当中
+	 */
+	TiXmlElement * writeNode(TiXmlElement *parent,const std::string &name);
+
+	bool checkIn(const CCPoint &point);
+	void rebuild();
 private:
 	CCPoint offset;
+	std::string pngName;
 };
 NS_CC_END

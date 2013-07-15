@@ -91,7 +91,12 @@ bool StartScene::init()
 	MutiBigImage *image = MutiBigImage::createFromXml("bigimage.pngxmlext");
 	if (image)
 	{
-		this->addChild(image);
+	//	this->addChild(image);
+	}
+	MutiMap *map = MutiMap::create("defaultmap.xml");
+	if (map)
+	{
+		MapManager::getMe().addMap(map); // Ôö¼ÓµØÍ¼
 	}
 	return true;
 }

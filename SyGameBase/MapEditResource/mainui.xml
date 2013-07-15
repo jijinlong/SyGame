@@ -7,7 +7,7 @@
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 		<button uniquename="cartoon" x="-84" y="0" name="动画" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<button uniquename="backgroud" x="-84" y="-60" name="底图" downimg="btn_common_down.png"
+		<button uniquename="bigimage" x="-84" y="-60" name="大图" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 		<button uniquename="image" x="-84" y="-180" name="图像" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>

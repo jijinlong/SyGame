@@ -34,11 +34,11 @@ void MainDialog::doInitEvent()
 	{
 		createCartoonBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createCartoon));
 	}
-	// TODO 创建一个背景
-	GET_UI_BYNAME(this,UIButton,createBackgroundBtn,"backgroud") // 打开一个地图 将会替换当前的地图
-	if (createBackgroundBtn)
+	// TODO 创建一个大图片
+	GET_UI_BYNAME(this,UIButton,createBgImageBtn,"bigimage") // 打开一个地图 将会替换当前的地图
+	if (createBgImageBtn)
 	{
-		createBackgroundBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createBackground));
+		createBgImageBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createBigImage));
 	}
 	// TODO 打开当前地图属性
 	GET_UI_BYNAME(this,UIButton,showMapBtn,"map") // 打开一个地图 将会替换当前的地图
@@ -336,11 +336,45 @@ void MainDialog::createImage(UIBase *base)
 	panel->setVisible(true);
 }
 /**
+ * 创建图像
+ */
+class CreateBigImage:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		UIPanel *panel = base->getPanel();
+		if (panel)
+		{
+			MutiBigImage *image = MutiBigImage::create(PANEL(panel,"extinfo")->getEditFieldValue("pngname").c_str());
+			// 获取各个字段的值
+			int x = 0, y = 0, w = 0, h = 0;
+			PANEL(panel,"baseinfo")->getEditFieldValue("x",x);
+			PANEL(panel,"baseinfo")->getEditFieldValue("y",y);
+			PANEL(panel,"baseinfo")->getEditFieldValue("w",y);
+			PANEL(panel,"baseinfo")->getEditFieldValue("h",y);
+			image->setBaseInfo(x,y,w,h);
+			// 获取list 设置信息
+			//image->rebuild();
+
+			MapManager::getMe().getMap()->addBigImage(image);
+
+			panel->setVisible(false);
+		}
+	}
+};
+/**
  * 响应展示创建背景按钮
  **/
-void MainDialog::createBackground(UIBase *base)
+void MainDialog::createBigImage(UIBase *base)
 {
-
+	UIWindow *window = getWindow();
+	/**
+	 * 展示一个dialog 携带对应的btn 的处理事件
+	 */
+	UIPanel *panel = window->showPanel("createimage");// 打开openmap.xml 的Panel
+	panel->bindBtnClick("ok",new CreateBigImage()); // 绑定按钮的响应事件
+	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
+	panel->setVisible(true);
 }
 /**
  * 删除当前条目

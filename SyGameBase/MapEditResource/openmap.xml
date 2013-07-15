@@ -3,7 +3,7 @@
 	<start name="open" x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true" root="true">
 			<label x="-84" y="50" content="文件:" fontsize="32" r="" g="255" b="" />
 			<editfield uniquename="filename" x="20" y="50" content="输入名字" width="400" height="32"/>
-			<button uniquename="open" x="-44" y="-80" w="64" h="32" name="保存" downimg="btn_common_down.png"
+			<button uniquename="open" x="-44" y="-80" w="64" h="32" name="打开" downimg="btn_common_down.png"
 				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 			<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
 				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>

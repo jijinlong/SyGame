@@ -20,7 +20,7 @@ void MutiObject::rebuild()
 }
 void MutiObject::setBaseInfo(float x,float y,float w,float h)
 {
-
+	CCSprite::setPosition(ccp(x,y));
 }
 /**
 * 将信息写入节点当中

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
     <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0">
-        <image x="543" y="463" w="250" h="250" src="panel_back.png" />
+        <image x="584" y="471" w="250" h="250" src="panel_back.png" />
         <image x="-5" y="150" w="250" h="250" src="panel_back.png" />
         <cartoon x="387" y="618" w="133" h="45" repeatetimes="-1" needtime="1">
             <frame name="btn_common_up.png" />
             <frame name="btn_common_down.png" />
         </cartoon>
-        <map zorder="-1" rationx="2" rationy="2" offsetx="0" offsety="0">
+        <map zorder="-1" rationx="0.13" rationy="0.12" offsetx="0" offsety="0">
             <image x="197" y="246" w="250" h="250" src="panel_back.png" />
             <image x="199" y="503" w="250" h="250" src="panel_back.png" />
+			<bigimage x="0" y="0" w="0" h="0" src="start.png" />
         </map>
     </map>
 </Config>

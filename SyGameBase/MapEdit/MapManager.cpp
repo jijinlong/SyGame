@@ -15,10 +15,14 @@ CCScene *MapManager::getScene()
 }
 void MapManager::addMap(MutiMap *map)
 {
-	if (this->map) scene->removeChild(this->map,true);
+	if (this->map)
+	{
+		map->save();
+		scene->removeChild(this->map,true);
+	}
 	this->map = map;
 	if (scene)
-		scene->addChild(map);
+		scene->addChild(map,-2);
 }
 
 void MapManager::doTouch(int touchType,const CCPoint &touchPoint)

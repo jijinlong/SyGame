@@ -25,7 +25,7 @@ public:
 	
 	void createImage(UIBase *base);
 	
-	void createBackground(UIBase *base);
+	void createBigImage(UIBase *base);
 
 	void showMapProp(UIBase *base);
 };

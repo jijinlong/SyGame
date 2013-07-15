@@ -60,7 +60,19 @@ bool MutiImage::checkIn(const CCPoint &point)
 	CCRect rect = CCRectMake(x,y,width,height);
 	return rect.containsPoint(pos);
 }
-
+MutiBigImage* MutiBigImage::create(script::tixmlCodeNode *node)
+{
+	MutiBigImage *image = new MutiBigImage();
+	if (image)
+	{
+		image->readNode(node);
+		image->rebuild();
+		image->autorelease();
+		return image;
+	}
+	CC_SAFE_DELETE(image);
+	return NULL;
+}
 MutiBigImage* MutiBigImage::create(const char *pngName)
 {
 	MutiBigImage *image = new MutiBigImage();
@@ -73,6 +85,8 @@ MutiBigImage* MutiBigImage::create(const char *pngName)
 }
 bool MutiBigImage::init(const char *pngName)
 {
+	CCSprite::init();
+	this->pngName = pngName;
 	bool saveTemp = true;
 	png::image< png::rgba_pixel > img;
 	img.read(pngName);  
@@ -181,6 +195,7 @@ MutiBigImage* MutiBigImage::createFromXml(const  char *pngName)
 }
 bool MutiBigImage::initFromXml(const char *pngName)
 {
+	CCSprite::init();
 	std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(pngName);
 	unsigned long nSize = 0;
 	unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
@@ -219,5 +234,36 @@ void MutiBigImage::takeNode(script::tixmlCodeNode *node)
 			}
 		}
 	}
+}
+/**
+ * 从配置文件中读取信息
+ */
+void MutiBigImage::readNode(script::tixmlCodeNode *node)
+{
+	MutiObject::readNode(node);
+	pngName = node->getAttr("src");
+}
+/**
+ * 将信息写入节点当中
+ */
+TiXmlElement * MutiBigImage::writeNode(TiXmlElement *parent,const std::string &name)
+{
+	TiXmlElement *imageNode = MutiObject::writeNode(parent,"bigimage");
+	if (imageNode)
+	{
+		imageNode->SetAttribute("src",pngName.c_str());
+	}
+	return imageNode;
+}
+
+bool MutiBigImage::checkIn(const CCPoint &point)
+{
+	return false;
+}
+void MutiBigImage::rebuild()
+{
+	std::stringstream fileName;
+	fileName << pngName << "xmlext";
+	initFromXml(fileName.str().c_str());
 }
 NS_CC_END
