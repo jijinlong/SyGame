@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <image width_pixel_width="450" offsetx="225" offsety="180" height_pixel_height="360" width_size="3" image_height="720" imgsize="6" pngname="bigimage.png" />
+</Config>

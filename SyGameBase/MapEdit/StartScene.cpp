@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include "PngPack.h"
 #include "MapManager.h"
+#include "MutiImage.h"
 USING_NS_CC;
 
 
@@ -86,6 +87,12 @@ bool StartScene::init()
 	MapManager::getMe().window = window;
 
 	this->schedule(schedule_selector(StartScene::step), 0.75f); 
+
+	MutiBigImage *image = MutiBigImage::createFromXml("bigimage.pngxmlext");
+	if (image)
+	{
+		this->addChild(image);
+	}
 	return true;
 }
 
