@@ -395,6 +395,12 @@ public:
 				{
 					bgName->setContent(EIDTFIELD(infoPanel,"bgname")->getContent().c_str()); // 设置属性
 				}
+				// 创建一个底图
+				MutiMap *muMap = MutiMap::create("defaultbg.xml");
+				if (muMap && MapManager::getMe().getMap())
+				{
+					MapManager::getMe().getMap()->addMap(muMap);
+				}
 			}
 		}
 	}

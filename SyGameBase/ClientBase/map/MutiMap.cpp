@@ -32,7 +32,11 @@ MutiMap * MutiMap::create(const char *fileName)
 }
 void  MutiMap::takeNode(script::tixmlCodeNode *node)
 {
-	readNode(node);
+	if (node && node->equal("Config"))
+	{
+		script::tixmlCodeNode mapNode = node->getFirstChildNode("map");
+		readNode(&mapNode);
+	}
 }
 /**
  * 选择对象
@@ -60,14 +64,14 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
  */
 void MutiMap::readNode(script::tixmlCodeNode *node)
 {
-	if (node && node->equal("Config"))
+	script::tixmlCodeNode &mapNode = *node;
+	if (mapNode.isValid())
 	{
-		script::tixmlCodeNode mapNode = node->getFirstChildNode("map");
-		zOrder = node->getInt("zorder");
-		ratio.x = node->getInt("ratiox");
-		ratio.y = node->getInt("rationy");
-		offset.x = node->getInt("offsetx");
-		offset.y = node->getInt("offsety");
+		zOrder = mapNode.getInt("zorder");
+		ratio.x = mapNode.getFloat("rationx");
+		ratio.y = mapNode.getFloat("rationy");
+		offset.x = mapNode.getInt("offsetx");
+		offset.y = mapNode.getInt("offsety");
 		if (mapNode.isValid())
 		{
 			script::tixmlCodeNode imageNode = mapNode.getFirstChildNode("image");
@@ -119,6 +123,11 @@ void MutiMap::addCartoon(MutiCartoon *cartoon)
 	CCNode::addChild(cartoon);
 	_cartoons.push_back(cartoon);
 }
+void MutiMap::addMap(MutiMap *map)
+{
+	this->addChild(map,map->zOrder,map->ratio,map->offset);
+	_grouds.push_back(map);
+}
 /**
 * 将信息写入节点当中
 */
@@ -128,7 +137,7 @@ TiXmlElement * MutiMap::writeNode(TiXmlElement *parent,const std::string &name)
 	if (parent)
 		parent->LinkEndChild(mapNode);
 	mapNode->SetAttribute("zorder",zOrder);
-	mapNode->SetAttribute("ratiox",ratio.x);
+	mapNode->SetAttribute("rationx",ratio.x);
 	mapNode->SetAttribute("rationy",ratio.y);
 	mapNode->SetAttribute("offsetx",offset.x);
 	mapNode->SetAttribute("offsety",offset.y);

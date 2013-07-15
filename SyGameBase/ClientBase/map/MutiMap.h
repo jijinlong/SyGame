@@ -40,6 +40,8 @@ public:
 	void takeNode(script::tixmlCodeNode *node);
 
 	void addImage(MutiImage *image);
+
+	void addMap(MutiMap *map);
 	void addCartoon(MutiCartoon *cartoon);
 	void save(){write(fileName.c_str());}
 protected:
