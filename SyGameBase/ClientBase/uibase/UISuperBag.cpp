@@ -50,6 +50,7 @@ bool UISuperBag::addItem(UIItem *item)
 {
 	if (!item) return false;
 	unsigned int index = 0;
+	item->bag = this;
 	for (ITEMS_ITER iter = _items.begin(); iter != _items.end();++iter,++index)
 	{
 		UIItem *i = *iter;
@@ -63,7 +64,6 @@ bool UISuperBag::addItem(UIItem *item)
 		}
 	}
 	
-	//item->_bag = this;
 	item->bagId = _items.size();
 	_items.push_back(item);
 	item->setSize(_eachWidth,_eachHeight);

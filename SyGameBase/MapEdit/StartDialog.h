@@ -22,7 +22,11 @@ public:
 	void openMap(UIBase *base);
 	void saveMap(UIBase *base);
 	void createCartoon(UIBase *base);
-
+	
 	void createImage(UIBase *base);
+	
+	void createBackground(UIBase *base);
+
+	void showMapProp(UIBase *base);
 };
 NS_CC_END

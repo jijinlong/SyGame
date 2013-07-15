@@ -187,7 +187,7 @@ namespace script{
 		/**
  		 * 释放资源
  		 * */
-		virtual bool release(){return false;}
+		virtual void release(){return;}
 		/**
  		 * 遍历code  节点 获取执行树
  		 * \parma root NULL 

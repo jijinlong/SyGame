@@ -8,7 +8,7 @@ class UIPanel;
 /**
  * 实现容纳固定大小的sprite 且空间可以大于展示的空间 可以拖动内容，并且放置
  */
-class UIBag;
+class UISuperBag;
 class UIItem:public CCNode{
 public:
 	/**
@@ -39,9 +39,10 @@ public:
 	 * \param touchPoint 点击点
 	 */
 	virtual bool doTouch(int touchType,const CCPoint &touchPoint){return false;}
+	UISuperBag * bag;
 protected:
 	friend class UIBag;
-	UIBag * _bag;
+	
 	CCRect _viewRect;
 	CCRect _oldRect;
 	bool downTag; // 标识是否按下按钮
@@ -51,7 +52,7 @@ protected:
 		showInView = false;
 		downTag = false;
 		bagId = 0;
-		_bag = NULL;
+		bag= NULL;
 	}
 };
 
@@ -87,7 +88,7 @@ public:
 
 	bool init(const std::string &name)
 	{
-		std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(name);
+		std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(name.c_str());
 		unsigned long nSize = 0;
 		unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
 		if (!nSize)return false;
@@ -98,6 +99,11 @@ public:
 		}
 		return false;
 	}
+	void release()
+	{
+		script::tixmlCode::release();
+		CCObject::release();
+	}
 	/**
 	 * 从配置文件中加载配置
 	 * \param node 配置根节点
@@ -106,12 +112,21 @@ public:
 	{
 		if (node && node->equal("Config"))
 		{
-			XmlUIItem::initWithNode(&node);
+			script::tixmlCodeNode itemNode = node->getFirstChildNode("item");
+			if (itemNode.isValid())
+				XmlUIItem::initWithNode(&itemNode);
 		}
 		vTakeNode(node);
 	}
 	virtual void vTakeNode(script::tixmlCodeNode *node){}
 protected:
 	virtual void doInitEvent(){}
+};
+/**
+ * 通用的item
+ */
+class CommonUIItem:public BaseUIItem<CommonUIItem>
+{
+public:
 };
 NS_CC_END

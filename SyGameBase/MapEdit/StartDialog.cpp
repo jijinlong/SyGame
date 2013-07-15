@@ -35,6 +35,17 @@ void MainDialog::doInitEvent()
 		createCartoonBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createCartoon));
 	}
 	// TODO 创建一个背景
+	GET_UI_BYNAME(this,UIButton,createBackgroundBtn,"backgroud") // 打开一个地图 将会替换当前的地图
+	if (createBackgroundBtn)
+	{
+		createBackgroundBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::createBackground));
+	}
+	// TODO 打开当前地图属性
+	GET_UI_BYNAME(this,UIButton,showMapBtn,"map") // 打开一个地图 将会替换当前的地图
+	if (showMapBtn)
+	{
+		showMapBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::showMapProp));
+	}
 }
 
 /**
@@ -322,6 +333,113 @@ void MainDialog::createImage(UIBase *base)
 	UIPanel *panel = window->showPanel("createimage");// 打开openmap.xml 的Panel
 	panel->bindBtnClick("ok",new CreateImageLogic()); // 绑定按钮的响应事件
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
+	panel->setVisible(true);
+}
+/**
+ * 响应展示创建背景按钮
+ **/
+void MainDialog::createBackground(UIBase *base)
+{
+
+}
+/**
+ * 删除当前条目
+ */
+struct stDeleteItem:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		UISuperBag *bag = (UISuperBag*) item->bag;
+		if (bag)
+		{
+			bag->removeItem(item);
+			item->setVisible(false);
+			bag->show();
+		}
+	}
+	stDeleteItem(CommonUIItem *item):item(item)
+	{
+		
+	}
+	CommonUIItem *item;
+};
+struct stListItemDown:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		// 展示详细信息
+	}
+};
+/**
+ * 创建新的背景
+ **/
+struct stNewBackGroud:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		CommonUIItem *item = CommonUIItem::create("bgiteminfo.xml");
+		if (item)
+		{
+			UIPanel *targetPanel = window->getPanel("showmap");
+			UIPanel *infoPanel = window->getPanel("bginfo");
+			if (targetPanel && infoPanel)
+			{
+				LIST(PANEL(targetPanel,"extinfo"),"list")->addItem(item);
+				item->getPanel()->bindChoiceClick("show",NULL); // 绑定事件
+				item->getPanel()->bindBtnClick("delete",new stDeleteItem(item)); // 绑定事件
+				LIST(PANEL(targetPanel,"extinfo"),"list")->show();
+				LIST(PANEL(targetPanel,"extinfo"),"list")->bind(UIBase::EVENT_CLICK_DOWN,new stListItemDown());
+				// 创建关联的地图的属性
+				GET_UI_BYNAME(item->getPanel(),UILabel,bgName,"bgname");
+				if (bgName)
+				{
+					bgName->setContent(EIDTFIELD(infoPanel,"bgname")->getContent().c_str()); // 设置属性
+				}
+			}
+		}
+	}
+	stNewBackGroud(UIWindow *window):window(window)
+	{
+	
+	}
+	UIWindow *window;
+};
+/**
+ * 展示创建背景展示属性界面
+ */
+struct stShowBackgroud:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		// 展示bg的属性界面
+		UIPanel *panel = window->showPanel("bginfo");// 打开bginfo.xml 的Panel
+		if (panel)
+		{
+			panel->bindBtnClick("ok",new stNewBackGroud(window));
+			panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
+		}
+	}
+	stShowBackgroud(UIWindow *window):window(window)
+	{}
+	UIWindow *window;
+};
+/**
+ * 响应展示属性按钮
+ */
+void MainDialog::showMapProp(UIBase *base)
+{
+	UIWindow *window = getWindow();
+	/**
+	 * 展示一个dialog 携带对应的btn 的处理事件
+	 */
+	UIPanel *panel = window->showPanel("showmap");// 打开showmap.xml 的Panel
+
+	// 尝试绑定相关的处理事件
+	PANEL(panel,"extinfo")->bindBtnClick("addbg",new stShowBackgroud(window)); // 增加一个层
+	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
+	PANEL(panel,"extinfo")->setVisible(false);
+	panel->bindChoiceClick("basechoice",new stChoiceBasePanel());
+	panel->bindChoiceClick("extchoice",new stChoiceExtPanel());
 	panel->setVisible(true);
 }
 NS_CC_END
