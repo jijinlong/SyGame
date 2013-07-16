@@ -102,6 +102,7 @@ bool MutiBigImage::init(const char *pngName)
 
 	int height_size = img.get_height() / 512;
 	int height_index = img.get_height() % 512;
+	size = CCSizeMake(img.get_width(),img.get_height());
 	if (height_index)
 	{
 		height_size ++;
@@ -232,6 +233,7 @@ void MutiBigImage::takeNode(script::tixmlCodeNode *node)
 				this->addChild(sprite);
 				sprite->setPosition(ccp(offset.x + x * width_pixel_width,image_height - y * height_pixel_height - offset.y));
 			}
+			size = CCSizeMake(width_pixel_width * width_size,image_height);
 		}
 	}
 }
@@ -258,7 +260,13 @@ TiXmlElement * MutiBigImage::writeNode(TiXmlElement *parent,const std::string &n
 
 bool MutiBigImage::checkIn(const CCPoint &point)
 {
-	return false;
+	CCPoint pos = this->convertToNodeSpace(point);
+	float width = size.width;
+	float height = size.height;
+	float x = 0;
+	float y = 0;
+	CCRect rect = CCRectMake(x,y,width,height);
+	return rect.containsPoint(pos);
 }
 void MutiBigImage::rebuild()
 {

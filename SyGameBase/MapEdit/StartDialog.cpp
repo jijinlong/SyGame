@@ -60,6 +60,10 @@ public:
 		if (panel)
 		{
 			panel->setVisible(false);
+			if (panel->isModel())
+			{
+				panel->getWindow()->popModel();
+			}
 		}
 	}
 };
@@ -92,6 +96,7 @@ void MainDialog::openMap(UIBase *base)
 	 * 展示一个dialog 携带对应的btn 的处理事件
 	 */
 	UIPanel *panel = window->showPanel("openmap");// 打开openmap.xml 的Panel
+	window->pushModel(panel);
 	panel->bindBtnClick("open",new OpenMapLogic()); // 绑定按钮的响应事件
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
 	panel->setVisible(true);
@@ -279,6 +284,7 @@ void MainDialog::createCartoon(UIBase *base)
 	 * 展示一个dialog 携带对应的btn 的处理事件
 	 */
 	UIPanel *panel = window->showPanel("createcartoon");// 打开openmap.xml 的Panel
+	window->pushModel(panel);
 	panel->bindBtnClick("ok",new CreateCartoonLogic()); // 绑定按钮的响应事件
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
 
@@ -331,6 +337,7 @@ void MainDialog::createImage(UIBase *base)
 	 * 展示一个dialog 携带对应的btn 的处理事件
 	 */
 	UIPanel *panel = window->showPanel("createimage");// 打开openmap.xml 的Panel
+	window->pushModel(panel);
 	panel->bindBtnClick("ok",new CreateImageLogic()); // 绑定按钮的响应事件
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
 	panel->setVisible(true);
@@ -372,6 +379,7 @@ void MainDialog::createBigImage(UIBase *base)
 	 * 展示一个dialog 携带对应的btn 的处理事件
 	 */
 	UIPanel *panel = window->showPanel("createimage");// 打开openmap.xml 的Panel
+	window->pushModel(panel);
 	panel->bindBtnClick("ok",new CreateBigImage()); // 绑定按钮的响应事件
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
 	panel->setVisible(true);
@@ -473,7 +481,7 @@ void MainDialog::showMapProp(UIBase *base)
 	 * 展示一个dialog 携带对应的btn 的处理事件
 	 */
 	UIPanel *panel = window->showPanel("showmap");// 打开showmap.xml 的Panel
-
+	window->pushModel(panel);
 	// 尝试绑定相关的处理事件
 	PANEL(panel,"extinfo")->bindBtnClick("addbg",new stShowBackgroud(window)); // 增加一个层
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件

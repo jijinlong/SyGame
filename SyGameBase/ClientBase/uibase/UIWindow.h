@@ -59,6 +59,14 @@ public:
 	void showErr(const std::string& info);
 	UIPanel *getPanel(const std::string &name);
 	UIPanel *showPanel(const std::string &name);
+	/**
+	 * 将panel 设置为模态
+	 */
+	void pushModel(UIPanel *panel);
+	/**
+	 * 弹出当前模态框
+	 */
+	void popModel();
 private:
 	CCLabelTTF * _errLbl;
 	void insertBase(UIBase *base);
@@ -66,15 +74,18 @@ private:
 	PANELS _panels;
 	typedef PANELS::iterator PANELS_ITER;
 	typedef std::list<UIBase*> BASES;
+	std::vector<UIPanel*> _models;
 	BASES _bases;
 	typedef BASES::iterator BASES_ITER;
 	UIPanel *_nowTouchPanel;
+	UIPanel *_nowModel;
 	CCSprite *_cursor; // 鼠标游标
 	UIBase *_nowTouchUI;
 	CCPoint nowCursorPoint;
 	bool endFlag;
 	UIWindow()
 	{
+		_nowModel = NULL;
 		_errLbl = NULL;
 		endFlag = false;
 		_nowTouchUI = NULL;

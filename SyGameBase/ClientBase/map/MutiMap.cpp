@@ -57,6 +57,13 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 			return *iter;
 		}
 	}
+	for (BIG_IMAGES_ITER iter = _bigImages.begin();iter != _bigImages.end();++iter)
+	{
+		if (*iter && (*iter)->checkIn(pixelPoint))
+		{
+			return *iter;
+		}
+	}
 	return NULL;
 }
 /**

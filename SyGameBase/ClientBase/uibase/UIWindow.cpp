@@ -100,9 +100,11 @@ void UIWindow::setNowTouchPanel(UIPanel * pan)
 bool UIWindow::touchDown(float x,float y)
 {
 	nowCursorPoint = ccp(x,y);
-	if (_nowTouchPanel && _nowTouchPanel->isModel())
+	
+	if (_models.size())
 	{
-		_nowTouchPanel->touchDown(x,y);
+		_nowModel = _models.back();
+		_nowModel->touchDown(x,y);
 		return true;
 	}
 	_nowTouchUI = NULL;
@@ -141,6 +143,26 @@ void UIWindow::setEndFunction(const FunctionInfo &function)
 	endFlag = true;
 }
 /**
+ * 将panel 设置为模态
+ */
+void UIWindow::pushModel(UIPanel *panel)
+{
+	_models.push_back(panel);
+	panel->setZOrder(_models.size() + 100);
+	panel->beginModel();
+}
+/**
+ * 弹出当前模态框
+ */
+void UIWindow::popModel()
+{
+	if (_models.size())
+	{
+		_models.back()->endModel();
+		_models.pop_back();
+	}
+}
+/**
  * 更新位置
  */
 bool UIWindow::touchMove(float x,float y)
@@ -150,8 +172,10 @@ bool UIWindow::touchMove(float x,float y)
 	{
 		_cursor->setPosition(ccp(x,y));
 	}
-	if (_nowTouchPanel && _nowTouchPanel->isModel())
+	
+	if (_nowModel)
 	{
+		_nowModel->touchMove(x,y);
 		return true;
 	}
 	if (_nowTouchPanel && _nowTouchPanel->touchMove(x,y))
@@ -182,20 +206,11 @@ bool UIWindow::touchEnd(float x,float y)
 {
 	nowCursorPoint = ccp(x,y);
 	bool tag = false;
-	if (_nowTouchPanel && _nowTouchPanel->isModel())
+	
+	if (_nowModel)
 	{
-		_nowTouchPanel->touchEnd(x,y);
-		if (endFlag)
-		{
-			FunctionInfo& func = exitFunction;
-			if (func.handle && func.object)
-			{
-				UIBase *o = func.object;
-				(o->*func.handle)(NULL);
-				o->release();
-				func.object = NULL;
-			}
-		}
+		_nowModel->touchEnd(x,y);
+		_nowModel = NULL;
 		return false;
 	}
 	//if (_nowTouchPanel)_nowTouchPanel->setZOrder(100);

@@ -49,5 +49,6 @@ public:
 private:
 	CCPoint offset;
 	std::string pngName;
+	CCSize size;
 };
 NS_CC_END
