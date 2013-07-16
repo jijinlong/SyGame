@@ -22,9 +22,11 @@ public:
 	CCScene *getScene();
 	UIWindow *window;
 	MutiMap * nowMap;
+	MutiMap * mapRoot;
 	CCScene *scene;
 	MapManager()
 	{
+		mapRoot = NULL;
 		scene = NULL;
 		window = NULL;
 		nowMap = NULL;

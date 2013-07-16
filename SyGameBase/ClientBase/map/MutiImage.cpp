@@ -109,7 +109,7 @@ bool MutiBigImage::init(const char *pngName)
 	}
 	int height_pixel_height = img.get_height() / height_size; // 每个字图片的高
 	offset = ccp(width_pixel_width/2,height_pixel_height/2);
-	tmpImgs.resize(width_size * height_size);
+	tmpImgs.resize(width_size * height_size + 1);
 	for (int i = 0; i < tmpImgs.size(); i++)
 	{
 		tmpImgs[i].resize(width_pixel_width,height_pixel_height);

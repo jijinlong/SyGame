@@ -102,8 +102,7 @@ bool StartScene::init()
 	MutiMap *map = MutiMap::create("defaultmap.xml");
 	if (map)
 	{
-		MapManager::getMe().addMap(map); // Ôö¼ÓµØÍ¼
-		this->addChild(map);
+		MapManager::getMe().replaceMap(map);
 	}
 	return true;
 }

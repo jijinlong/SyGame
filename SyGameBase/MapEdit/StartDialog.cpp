@@ -82,9 +82,13 @@ public:
 			MutiMap *map = MutiMap::create(value.c_str());
 			if (map)
 			{
-				MapManager::getMe().addMap(map); // 增加地图
+				MapManager::getMe().replaceMap(map); // 增加地图
 			}
 			panel->setVisible(false); // 将自身隐藏
+			if (panel->isModel())
+			{
+				panel->getWindow()->popModel();
+			}
 		}
 	}
 	//CCScene *scene;
@@ -103,7 +107,7 @@ void MainDialog::openMap(UIBase *base)
 }
 void MainDialog::saveMap(UIBase *base)
 {
-	MapManager::getMe().getMap()->save();
+	MapManager::getMe().mapRoot->save();
 }
 /**
  * 帧的条目
@@ -204,7 +208,7 @@ public:
 		stFrameItem *item = stFrameItem::create(nowPanel->getEditFieldValue("pngname"));
 		LIST(panel,"list")->addItem(item);
 		LIST(panel,"list")->show();
-		nowPanel->setVisible(false);
+		nowPanel->hide();
 	}
 	stAddFrame(UIWindow *window,UIPanel *panel):window(window),panel(panel)
 	{
@@ -229,6 +233,7 @@ public:
 				addFrame->bindBtnClick("ok",new stAddFrame(window,panel));
 				addFrame->bindBtnClick("cancel",new CloseMe());
 				addFrame->setVisible(true);
+				window->pushModel(addFrame);
 			}
 		}
 	}
@@ -324,6 +329,10 @@ public:
 			MapManager::getMe().getMap()->addImage(image);
 
 			panel->setVisible(false);
+			if (panel->isModel())
+			{
+				panel->getWindow()->popModel();
+			}
 		}
 	}
 };
@@ -366,6 +375,10 @@ public:
 			MapManager::getMe().getMap()->addBigImage(image);
 
 			panel->setVisible(false);
+			if (panel->isModel())
+			{
+				panel->getWindow()->popModel();
+			}
 		}
 	}
 };
@@ -532,6 +545,30 @@ public:
 	}
 	UIWindow *window;
 };
+
+class SetPanelProp:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		// 设定当前的map的属性
+		UIPanel *panel = base->getPanel();
+		if (panel)
+		{
+			MutiMap *map = MapManager::getMe().getMap();
+			if (map)
+			{
+				PANEL(panel,"baseinfo")->getEditFieldValue("x",map->m_tPosition.x);
+				PANEL(panel,"baseinfo")->getEditFieldValue("y",map->m_tPosition.y);
+				map->setZOrder(atoi(PANEL(panel,"baseinfo")->getEditFieldValue("zorder").c_str())); // 设置zorder 属性
+				std::string name = PANEL(panel,"baseinfo")->getEditFieldValue("name");
+				if (name != "")
+					map->fileName = name; 
+			}
+			panel->hide();
+		}
+	}
+};
+
 /**
  * 响应展示属性按钮
  */
@@ -546,12 +583,13 @@ void MainDialog::showMapProp(UIBase *base)
 	// 尝试绑定相关的处理事件
 	PANEL(panel,"extinfo")->bindBtnClick("addbg",new stShowBackgroud(window)); // 增加一个层
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
+	panel->bindBtnClick("ok",new SetPanelProp()); // 设定Panel 的属性
 	PANEL(panel,"extinfo")->setVisible(false);
 	panel->bindChoiceClick("basechoice",new stChoiceBasePanel());
 	panel->bindChoiceClick("extchoice",new stChoiceExtPanel());
 	panel->setVisible(true);
 	stShowEachBg exec;
 	exec.window = window;
-	MapManager::getMe().getMap()->execEachBg(&exec); // 刷新列表
+	MapManager::getMe().mapRoot->execEachBg(&exec); // 刷新列表
 }
 NS_CC_END

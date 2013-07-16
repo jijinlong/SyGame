@@ -160,6 +160,7 @@ public:
 		ss << object;
 		setEditFielValue(name,ss.str());
 	}
+	void hide();
 protected:
 	CCPoint nowTouchPoint;
 	bool _moveable;

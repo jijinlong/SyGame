@@ -63,6 +63,7 @@ bool UIBase::bind(int uiEvnet,UICallback *callback)
 {
 	if (uiEvnet >= event_functions.size())
 		event_callbacks.resize(uiEvnet + 1);
+	if (event_callbacks[uiEvnet]) delete event_callbacks[uiEvnet];
 	event_callbacks[uiEvnet] = callback;
 	return true;
 }

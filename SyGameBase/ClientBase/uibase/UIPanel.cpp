@@ -995,4 +995,13 @@ void UIPanel::showByAction(int actionId)
 	//	this->runAction(action);
 	}
 }
+
+void UIPanel::hide()
+{
+	this->setVisible(false);
+	if (this->isModel())
+	{
+		this->getWindow()->popModel();
+	}
+}
 NS_CC_END

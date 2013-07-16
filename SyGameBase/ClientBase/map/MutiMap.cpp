@@ -188,10 +188,11 @@ TiXmlElement * MutiMap::writeNode(TiXmlElement *parent,const std::string &name)
 	if (parent)
 		parent->LinkEndChild(mapNode);
 	mapNode->SetAttribute("zorder",zOrder);
-	mapNode->SetAttribute("rationx",ratio.x);
-	mapNode->SetAttribute("rationy",ratio.y);
+	mapNode->SetDoubleAttribute("rationx",ratio.x);
+	mapNode->SetDoubleAttribute("rationy",ratio.y);
 	mapNode->SetAttribute("offsetx",offset.x);
 	mapNode->SetAttribute("offsety",offset.y);
+	mapNode->SetAttribute("name",fileName);
 	for (IMAGES_ITER iter = _images.begin(); iter != _images.end();++iter)
 	{
 		if (*iter)
