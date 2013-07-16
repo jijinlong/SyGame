@@ -14,24 +14,31 @@ public:
 		static MapManager mm;
 		return mm;
 	}
+	void replaceMap(MutiMap *map);
+
 	void addMap(MutiMap *map);
 	UIWindow * getWindow();
 	MutiMap *getMap();
 	CCScene *getScene();
 	UIWindow *window;
-	MutiMap * map;
+	MutiMap * nowMap;
 	CCScene *scene;
 	MapManager()
 	{
 		scene = NULL;
 		window = NULL;
-		map = NULL;
+		nowMap = NULL;
 		nowObject = NULL;
 	}
 	void doTouch(int,const CCPoint &point);
 
+	void choiceMap(MutiMap *map);
+	
 	MutiObject *nowObject;
 	CCPoint nowTouchPoint;
+	
+	std::list<MutiMap*> mapList;
+	typedef std::list<MutiMap*>::iterator MAPLIST_ITER;
 };
 
 NS_CC_END

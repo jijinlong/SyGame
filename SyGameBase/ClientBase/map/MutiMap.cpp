@@ -43,6 +43,7 @@ void  MutiMap::takeNode(script::tixmlCodeNode *node)
  */
 MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 {
+	if (!this->isVisible() || isHide) return NULL;
 	for (IMAGES_ITER iter = _images.begin(); iter != _images.end();++iter)
 	{
 		if (*iter && (*iter)->checkIn(pixelPoint))
@@ -73,6 +74,14 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 	}
 	return NULL;
 }
+void MutiMap::execEachBg(stExecEachBackgroud *bg)
+{
+	for (GROUDS_ITER iter = _grouds.begin();iter != _grouds.end();++iter)
+	{
+		bg->exec(*iter);
+	}
+	bg->exec(this);
+}
 /**
  * 从配置文件中读取信息
  */
@@ -86,6 +95,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 		ratio.y = mapNode.getFloat("rationy");
 		offset.x = mapNode.getInt("offsetx");
 		offset.y = mapNode.getInt("offsety");
+		fileName = mapNode.getAttr("name");
 		if (mapNode.isValid())
 		{
 			script::tixmlCodeNode imageNode = mapNode.getFirstChildNode("image");
@@ -226,5 +236,64 @@ void MutiMap::write(const std::string &name)
 	TiXmlElement *mapNode = writeNode(configNode,"map");
 
 	pDoc->SaveFile(name);
+}
+
+void MutiMap::hide()
+{
+	isHide = true;
+	for (IMAGES_ITER iter = _images.begin(); iter != _images.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(false);
+	}
+	for (CARTOONS_ITER iter = _cartoons.begin(); iter != _cartoons.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(false);
+	}
+	for (GROUDS_ITER iter = _grouds.begin(); iter != _grouds.end();++iter)
+	{
+		if (*iter)
+			(*iter)->hide();
+	}
+	for (BIG_IMAGES_ITER iter = _bigImages.begin(); iter != _bigImages.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(false);
+	}
+	for (BIG_TERRAINS_ITER iter = _bigTerrains.begin(); iter != _bigTerrains.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(false);
+	}
+}
+void MutiMap::show()
+{
+	isHide = false;
+	for (IMAGES_ITER iter = _images.begin(); iter != _images.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(true);
+	}
+	for (CARTOONS_ITER iter = _cartoons.begin(); iter != _cartoons.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(true);
+	}
+	for (GROUDS_ITER iter = _grouds.begin(); iter != _grouds.end();++iter)
+	{
+		if (*iter)
+			(*iter)->show();
+	}
+	for (BIG_IMAGES_ITER iter = _bigImages.begin(); iter != _bigImages.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(true);
+	}
+	for (BIG_TERRAINS_ITER iter = _bigTerrains.begin(); iter != _bigTerrains.end();++iter)
+	{
+		if (*iter)
+			(*iter)->setVisible(true);
+	}
 }
 NS_CC_END

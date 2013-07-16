@@ -103,6 +103,7 @@ bool StartScene::init()
 	if (map)
 	{
 		MapManager::getMe().addMap(map); // Ôö¼ÓµØÍ¼
+		this->addChild(map);
 	}
 	return true;
 }

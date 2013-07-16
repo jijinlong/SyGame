@@ -16,6 +16,12 @@ NS_CC_BEGIN
  *		</map>
  *	</map>
  */
+
+class MutiMap;
+struct stExecEachBackgroud{
+public:
+	virtual void exec(MutiMap *map) = 0;
+};
 class MutiMap:public CCParallaxNode,public script::tixmlCode{
 public:
 	static MutiMap * create(script::tixmlCodeNode *node);
@@ -44,8 +50,16 @@ public:
 	void addMap(MutiMap *map);
 	void addCartoon(MutiCartoon *cartoon);
 	void save(){write(fileName.c_str());}
-protected:
 	std::string fileName;
+	void hide();
+	void show();
+	bool isHide;
+	void execEachBg(stExecEachBackgroud *bg);
+	MutiMap()
+	{
+		isHide = false;
+	}
+protected:
 	std::list<MutiImage*> _images; // 图片集合
 	std::list<MutiCartoon*> _cartoons; // 动画集合
 	std::list<MutiMap*> _grouds; // 远层集合

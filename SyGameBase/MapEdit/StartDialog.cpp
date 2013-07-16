@@ -384,26 +384,31 @@ void MainDialog::createBigImage(UIBase *base)
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件
 	panel->setVisible(true);
 }
+class MapInfoItem:public BaseUIItem<MapInfoItem>
+{
+public:
+	std::string mapName;
+	MutiMap *map;
+	MapInfoItem()
+	{
+		map = NULL;
+	}
+};
 /**
- * 删除当前条目
+ * 编辑当前条目
  */
-struct stDeleteItem:public UICallback{
+struct stEditItem:public UICallback{
 public:
 	void callback(UIBase *base)
 	{
-		UISuperBag *bag = (UISuperBag*) item->bag;
-		if (bag)
-		{
-			bag->removeItem(item);
-			item->setVisible(false);
-			bag->show();
-		}
+		MapManager::getMe().choiceMap(map);
 	}
-	stDeleteItem(CommonUIItem *item):item(item)
+	stEditItem(MapInfoItem *item,MutiMap *map):item(item),map(map)
 	{
 		
 	}
-	CommonUIItem *item;
+	MapInfoItem *item;
+	MutiMap *map;
 };
 struct stListItemDown:public UICallback{
 public:
@@ -412,6 +417,7 @@ public:
 		// 展示详细信息
 	}
 };
+
 /**
  * 创建新的背景
  **/
@@ -419,7 +425,7 @@ struct stNewBackGroud:public UICallback{
 public:
 	void callback(UIBase *base)
 	{
-		CommonUIItem *item = CommonUIItem::create("bgiteminfo.xml");
+		MapInfoItem *item = MapInfoItem::create("bgiteminfo.xml");
 		if (item)
 		{
 			UIPanel *targetPanel = window->getPanel("showmap");
@@ -428,7 +434,7 @@ public:
 			{
 				LIST(PANEL(targetPanel,"extinfo"),"list")->addItem(item);
 				item->getPanel()->bindChoiceClick("show",NULL); // 绑定事件
-				item->getPanel()->bindBtnClick("delete",new stDeleteItem(item)); // 绑定事件
+				
 				LIST(PANEL(targetPanel,"extinfo"),"list")->show();
 				LIST(PANEL(targetPanel,"extinfo"),"list")->bind(UIBase::EVENT_CLICK_DOWN,new stListItemDown());
 				// 创建关联的地图的属性
@@ -442,7 +448,10 @@ public:
 				if (muMap && MapManager::getMe().getMap())
 				{
 					MapManager::getMe().getMap()->addMap(muMap);
+					MapManager::getMe().choiceMap(muMap); // 当前地图为编辑对象
 				}
+				item->getPanel()->bindBtnClick("edit",new stEditItem(item,muMap)); // 绑定事件
+				item->mapName = bgName->getContent();
 			}
 		}
 	}
@@ -471,6 +480,58 @@ public:
 	{}
 	UIWindow *window;
 };
+struct stHadQqualItem:public stBagExecEach{
+	void exec(UIItem *item) 
+	{
+		MapInfoItem *infoItem = (MapInfoItem*) item;
+		if (infoItem->mapName == mapName)
+		{
+			value = true;
+		}
+	}
+	bool value;
+	stHadQqualItem()
+	{
+		value = false;
+	}
+	std::string mapName;
+};
+/**
+ * 遍历场景上的每个地图
+ */
+struct stShowEachBg:public stExecEachBackgroud{
+public:
+	void exec(MutiMap *map)
+	{
+		MapInfoItem *item = MapInfoItem::create("bgiteminfo.xml");
+		if (item)
+		{
+			UIPanel *targetPanel = window->getPanel("showmap");
+			if (targetPanel)
+			{
+				// 先遍历是否存在相同的
+				UISuperBag * list = LIST(PANEL(targetPanel,"extinfo"),"list");
+				stHadQqualItem exec;
+				exec.mapName = map->fileName;
+				list->execEachItem(&exec);
+				if (!exec.value)
+				{
+					list->addItem(item);
+					item->getPanel()->bindBtnClick("edit",new stEditItem(item,map)); // 绑定事件
+				}
+				GET_UI_BYNAME(item->getPanel(),UILabel,bgName,"bgname");
+				if (bgName)
+				{
+					bgName->setContent(map->fileName.c_str()); // 设置属性
+				}
+				item->mapName = map->fileName;
+
+				list->show();
+			}
+		}
+	}
+	UIWindow *window;
+};
 /**
  * 响应展示属性按钮
  */
@@ -489,5 +550,8 @@ void MainDialog::showMapProp(UIBase *base)
 	panel->bindChoiceClick("basechoice",new stChoiceBasePanel());
 	panel->bindChoiceClick("extchoice",new stChoiceExtPanel());
 	panel->setVisible(true);
+	stShowEachBg exec;
+	exec.window = window;
+	MapManager::getMe().getMap()->execEachBg(&exec); // 刷新列表
 }
 NS_CC_END

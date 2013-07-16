@@ -7,32 +7,52 @@ UIWindow * MapManager::getWindow()
 }
 MutiMap *MapManager::getMap()
 {
-	return map;
+	return nowMap;
 }
 CCScene *MapManager::getScene()
 {
 	return scene;
 }
-void MapManager::addMap(MutiMap *map)
+void MapManager::replaceMap(MutiMap *map)
 {
-	if (this->map)
+	if (this->nowMap)
 	{
-		map->save();
-		scene->removeChild(this->map,true);
+		nowMap->save();
+		scene->removeChild(this->nowMap,true);
 	}
-	this->map = map;
+	this->nowMap = map;
 	if (scene)
 		scene->addChild(map,-2);
 }
-
+void MapManager::addMap(MutiMap *map)
+{
+	if (nowMap) nowMap->setVisible(false); 
+	nowMap = map;
+	mapList.push_back(map);
+}
+void MapManager::choiceMap(MutiMap *map)
+{
+	nowMap = map;
+	bool had = false;
+	for (MAPLIST_ITER iter = mapList.begin(); iter != mapList.end();++iter)
+	{
+		if (*iter == map)
+		{
+			had = true;
+		}
+		(*iter)->hide();
+	}
+	if (!had) mapList.push_back(map);
+	nowMap->show();
+}
 void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 {
-	if (!map) return;
+	if (!nowMap) return;
 	switch(touchType)
 	{
 		case UIBase::TOUCH_DOWN:
 		{
-			nowObject = map->pickObject(touchPoint);
+			nowObject = nowMap->pickObject(touchPoint);
 			nowTouchPoint = touchPoint;
 		}break;
 		case UIBase::TOUCH_MOVE:
@@ -47,8 +67,8 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 			}
 			else
 			{
-				CCPoint nowPoint = map->getPosition();
-				map->setPosition(ccp(nowPoint.x + touchPoint.x - nowTouchPoint.x,
+				CCPoint nowPoint = nowMap->getPosition();
+				nowMap->setPosition(ccp(nowPoint.x + touchPoint.x - nowTouchPoint.x,
                                   nowPoint.y + touchPoint.y - nowTouchPoint.y));
 				nowTouchPoint = touchPoint;
 				return;
