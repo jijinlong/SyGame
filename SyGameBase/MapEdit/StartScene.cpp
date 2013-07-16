@@ -93,6 +93,12 @@ bool StartScene::init()
 	{
 	//	this->addChild(image);
 	}
+	MutiBigTerrain *terrain = MutiBigTerrain::create("grass.png",2,2);
+	if (terrain)
+	{
+		//this->addChild(terrain);
+		terrain->setPosition(ccp(10,10));
+	}
 	MutiMap *map = MutiMap::create("defaultmap.xml");
 	if (map)
 	{

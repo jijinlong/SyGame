@@ -64,6 +64,13 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 			return *iter;
 		}
 	}
+	for (BIG_TERRAINS_ITER iter = _bigTerrains.begin();iter != _bigTerrains.end();++iter)
+	{
+		if (*iter && (*iter)->checkIn(pixelPoint))
+		{
+			return *iter;
+		}
+	}
 	return NULL;
 }
 /**
@@ -113,6 +120,17 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 					_bigImages.push_back(image);
 				}
 				bigImageNode = bigImageNode.getNextNode("bigimage");
+			}
+			script::tixmlCodeNode bigTerrainNode = mapNode.getFirstChildNode("bigterrain");
+			while(bigTerrainNode.isValid())
+			{
+				MutiBigTerrain *image = MutiBigTerrain::create(&bigTerrainNode);
+				if (image)
+				{
+					CCNode::addChild(image);
+					_bigTerrains.push_back(image);
+				}
+				bigTerrainNode = bigTerrainNode.getNextNode("bigterrain");
 			}
 			/**
 			 * 递归的方式创建子节点
@@ -183,6 +201,11 @@ TiXmlElement * MutiMap::writeNode(TiXmlElement *parent,const std::string &name)
 	{
 		if (*iter)
 			(*iter)->writeNode(mapNode,"bigimage");
+	}
+	for (BIG_TERRAINS_ITER iter = _bigTerrains.begin(); iter != _bigTerrains.end();++iter)
+	{
+		if (*iter)
+			(*iter)->writeNode(mapNode,"bigterrain");
 	}
 	return mapNode;
 }

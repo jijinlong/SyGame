@@ -50,10 +50,12 @@ protected:
 	std::list<MutiCartoon*> _cartoons; // 动画集合
 	std::list<MutiMap*> _grouds; // 远层集合
 	std::list<MutiBigImage*> _bigImages;
+	std::list<MutiBigTerrain*> _bigTerrains;
 	typedef std::list<MutiImage*>::iterator IMAGES_ITER;
 	typedef std::list<MutiCartoon*>::iterator CARTOONS_ITER;
 	typedef std::list<MutiMap*>::iterator GROUDS_ITER;
 	typedef std::list<MutiBigImage*>::iterator BIG_IMAGES_ITER;
+	typedef std::list<MutiBigTerrain*>::iterator BIG_TERRAINS_ITER;
 	int zOrder;
 	CCPoint ratio;
 	CCPoint offset;

@@ -7,10 +7,11 @@
             <frame name="btn_common_up.png" />
             <frame name="btn_common_down.png" />
         </cartoon>
-        <map zorder="-1" rationx="0.13" rationy="0.12" offsetx="0" offsety="0">
+        <map zorder="-1" rationx="0" rationy="0" offsetx="0" offsety="0">
             <image x="197" y="246" w="250" h="250" src="panel_back.png" />
             <image x="199" y="503" w="250" h="250" src="panel_back.png" />
-			<bigimage x="0" y="0" w="0" h="0" src="start.png" />
         </map>
+        <bigimage x="0" y="0" w="0" h="0" src="start.png" />
+		<bigterrain x="10" y="10" src="grass.png" width="2" height="2"/>
     </map>
 </Config>
