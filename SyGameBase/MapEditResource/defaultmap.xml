@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0">
+    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0" name="defaultmap.xml">
         <image x="584" y="471" w="250" h="250" src="panel_back.png" />
         <image x="-5" y="150" w="250" h="250" src="panel_back.png" />
         <cartoon x="387" y="618" w="133" h="45" repeatetimes="-1" needtime="1">
             <frame name="btn_common_up.png" />
             <frame name="btn_common_down.png" />
         </cartoon>
-        <map name="test" zorder="-1" rationx="0" rationy="0" offsetx="0" offsety="0">
+        <map zorder="-1" rationx="0" rationy="0" offsetx="0" offsety="0" name="test">
             <image x="197" y="246" w="250" h="250" src="panel_back.png" />
             <image x="199" y="503" w="250" h="250" src="panel_back.png" />
+            <blocks />
         </map>
         <bigimage x="0" y="0" w="0" h="0" src="start.png" />
-		<bigterrain x="10" y="10" src="grass.png" width="2" height="2"/>
+        <bigterrain x="10" y="10" w="213" h="150" src="grass.png" width="2" height="2" />
+        <blocks>
+            <index x="2" y="2" />
+            <index x="3" y="2" />
+        </blocks>
     </map>
 </Config>

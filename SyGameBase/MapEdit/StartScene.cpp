@@ -102,6 +102,7 @@ bool StartScene::init()
 	MutiMap *map = MutiMap::create("defaultmap.xml");
 	if (map)
 	{
+		map->showGrids();
 		MapManager::getMe().replaceMap(map);
 	}
 	return true;

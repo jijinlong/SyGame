@@ -14,8 +14,7 @@ UIChoice*UIChoice::create(const char *upSprite,const char *downSprite)
 		{
 			node->addChild(node->_up);
 			node->addChild(node->_down );
-			node->_up->setVisible(true);
-			node->_down->setVisible(false);
+			node->setChoiced(false);
 			node->autorelease();
 			return node;
 		}
@@ -83,16 +82,7 @@ bool UIChoice::touchEnd(float x,float y)
 		if (rect.containsPoint(pos))
 		{
 			_choiced = !_choiced;
-			if (_choiced)
-			{
-				_up->setVisible(false);
-				_down->setVisible(true);
-			}
-			else
-			{
-				_up->setVisible(true);
-				_down->setVisible(false);
-			}
+			setChoiced(_choiced);
 			doEvent(UIBase::EVENT_CLICK_DOWN,this);
 		}
 	}

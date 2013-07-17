@@ -55,7 +55,7 @@ void MapManager::choiceMap(MutiMap *map)
 		{
 			had = true;
 		}
-		(*iter)->hide();
+		//(*iter)->hide();
 	}
 	if (!had) mapList.push_back(map);
 	nowMap->show();

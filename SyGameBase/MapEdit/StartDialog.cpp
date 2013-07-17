@@ -423,6 +423,27 @@ public:
 	MapInfoItem *item;
 	MutiMap *map;
 };
+struct stShowItem:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		 UIChoice *choice = (UIChoice*) base;
+		 if (choice && choice->isChoiced())
+		 {
+			map->show();
+		 }
+		 else if (choice)
+		 {
+			map->hide();
+		 }
+	}
+	stShowItem(MapInfoItem *item,MutiMap *map):item(item),map(map)
+	{
+		
+	}
+	MapInfoItem *item;
+	MutiMap *map;
+};
 struct stListItemDown:public UICallback{
 public:
 	void callback(UIBase *base)
@@ -446,7 +467,7 @@ public:
 			if (targetPanel && infoPanel)
 			{
 				LIST(PANEL(targetPanel,"extinfo"),"list")->addItem(item);
-				item->getPanel()->bindChoiceClick("show",NULL); // 绑定事件
+				
 				
 				LIST(PANEL(targetPanel,"extinfo"),"list")->show();
 				LIST(PANEL(targetPanel,"extinfo"),"list")->bind(UIBase::EVENT_CLICK_DOWN,new stListItemDown());
@@ -464,6 +485,7 @@ public:
 					MapManager::getMe().choiceMap(muMap); // 当前地图为编辑对象
 				}
 				item->getPanel()->bindBtnClick("edit",new stEditItem(item,muMap)); // 绑定事件
+				item->getPanel()->bindChoiceClick("show",new stShowItem(item,muMap)); // 绑定事件
 				item->mapName = bgName->getContent();
 			}
 		}
@@ -531,6 +553,7 @@ public:
 				{
 					list->addItem(item);
 					item->getPanel()->bindBtnClick("edit",new stEditItem(item,map)); // 绑定事件
+					item->getPanel()->bindChoiceClick("show",new stShowItem(item,map)); // 绑定事件
 				}
 				GET_UI_BYNAME(item->getPanel(),UILabel,bgName,"bgname");
 				if (bgName)
@@ -579,7 +602,7 @@ void MainDialog::showMapProp(UIBase *base)
 	 * 展示一个dialog 携带对应的btn 的处理事件
 	 */
 	UIPanel *panel = window->showPanel("showmap");// 打开showmap.xml 的Panel
-	window->pushModel(panel);
+//	window->pushModel(panel);
 	// 尝试绑定相关的处理事件
 	PANEL(panel,"extinfo")->bindBtnClick("addbg",new stShowBackgroud(window)); // 增加一个层
 	panel->bindBtnClick("cancel",new CloseMe());// 绑定按钮的响应事件

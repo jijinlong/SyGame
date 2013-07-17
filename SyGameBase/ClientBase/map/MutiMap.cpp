@@ -76,11 +76,11 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 }
 void MutiMap::execEachBg(stExecEachBackgroud *bg)
 {
+	bg->exec(this);
 	for (GROUDS_ITER iter = _grouds.begin();iter != _grouds.end();++iter)
 	{
 		bg->exec(*iter);
 	}
-	bg->exec(this);
 }
 /**
  * 从配置文件中读取信息
@@ -143,6 +143,22 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 				bigTerrainNode = bigTerrainNode.getNextNode("bigterrain");
 			}
 			/**
+			 * 获取阻挡点信息
+			 */
+			script::tixmlCodeNode blockNode = mapNode.getFirstChildNode("blocks");
+			if (blockNode.isValid())
+			{
+				script::tixmlCodeNode indexNode = blockNode.getFirstChildNode("index");
+				while (indexNode.isValid())
+				{
+					GridIndex index;
+					index.x = indexNode.getInt("x");
+					index.y = indexNode.getInt("y");
+					setBlock(index);
+					indexNode = indexNode.getNextNode("index");
+				}
+			}
+			/**
 			 * 递归的方式创建子节点
 			 */
 			script::tixmlCodeNode childMapNode = mapNode.getFirstChildNode("map");
@@ -156,6 +172,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 				}
 				childMapNode = childMapNode.getNextNode("map");
 			}
+
 		}
 	}
 }
@@ -179,6 +196,28 @@ void MutiMap::addBigImage(MutiBigImage *bigImage)
 	CCNode::addChild(bigImage);
 	_bigImages.push_back(bigImage);
 }
+void MutiMap::addSprite(CCSprite *sprite)
+{
+	CCNode::addChild(sprite);
+}
+struct stWriteGrids:stExecEach<int>{
+	void exec(const GridIndex& index)
+	{
+		int * value = grids->getObjectByIndex(index);
+		if (value && *value == 1)
+		{
+			TiXmlElement *indexNode=new TiXmlElement("index");
+			if (blockNode)
+				blockNode->LinkEndChild(indexNode);
+			indexNode->SetAttribute("x",index.x);
+			indexNode->SetAttribute("y",index.y);
+		}
+	}
+	HexagonGrids<int> * grids;
+	TiXmlElement  *blockNode;
+	stWriteGrids(HexagonGrids<int> * grids,TiXmlElement  *blockNode):grids(grids),blockNode(blockNode)
+	{}
+};
 /**
 * 将信息写入节点当中
 */
@@ -218,6 +257,15 @@ TiXmlElement * MutiMap::writeNode(TiXmlElement *parent,const std::string &name)
 		if (*iter)
 			(*iter)->writeNode(mapNode,"bigterrain");
 	}
+	/**
+	 * 写入阻挡点
+	 */
+	TiXmlElement *blockNode=new TiXmlElement("blocks");
+	if (mapNode)
+		mapNode->LinkEndChild(blockNode);
+	stWriteGrids exec(_grids,blockNode);
+	if (_grids)
+		_grids->execAll(&exec);
 	return mapNode;
 }
 
@@ -295,6 +343,61 @@ void MutiMap::show()
 	{
 		if (*iter)
 			(*iter)->setVisible(true);
+	}
+}
+struct stShowEachGrids:stExecEach<int>{
+	void exec(const GridIndex& index)
+	{
+		CCSprite * test = CCSprite::create("cell.png");
+		test->setPosition(grids->getPointByIndex(index));
+		map->addSprite(test);
+	}
+	HexagonGrids<int> * grids;
+	MutiMap *map;
+	stShowEachGrids(HexagonGrids<int> * grids,MutiMap *map):grids(grids),map(map)
+	{}
+};
+struct stCheckValid:public stCheckMoveAble{
+	bool exec(const GridIndex &index) 
+	{
+		int * value = grids->getObjectByIndex(index);
+		if (!value || *value == 1)
+		{
+			return false;
+		}
+		return true;
+	}
+	stCheckValid(HexagonGrids<int> * grids):grids(grids)
+	{}
+	HexagonGrids<int> * grids;
+};
+void MutiMap::showGrids()
+{
+	if (!_grids) _grids = new AStarSeachInHexagonGrids<int>(10,10,64);
+	stShowEachGrids exec(_grids,this);
+//	_grids->execAll(&exec);
+	setBlock(GridIndex(2,2));
+	setBlock(GridIndex(3,2));
+	stCheckValid check(_grids);
+	/**
+	 * 测试寻路算法
+	 */
+	GridIndex out;
+	_grids->getNextGridIndex(GridIndex(0,0),GridIndex(5,2),out,&exec,&check);
+}
+
+/**
+ * 设置阻挡点信息
+ */
+void MutiMap::setBlock(const GridIndex &index)
+{
+	if (_grids)
+	{
+		int * value = _grids->getObjectByIndex(index);
+		if (value)
+		{
+			*value = 1;
+		}
 	}
 }
 NS_CC_END

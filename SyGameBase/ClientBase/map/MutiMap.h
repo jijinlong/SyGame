@@ -4,6 +4,7 @@
 #include "MutiImage.h"
 #include "MutiObject.h"
 #include "MutiCartoon.h"
+#include "HexagonGrids.h"
 NS_CC_BEGIN
 /**
  * 创建一个多层地图
@@ -50,6 +51,8 @@ public:
 	void addMap(MutiMap *map);
 	void addCartoon(MutiCartoon *cartoon);
 	void save(){write(fileName.c_str());}
+
+	void addSprite(CCSprite *sprite);
 	std::string fileName;
 	void hide();
 	void show();
@@ -58,8 +61,16 @@ public:
 	MutiMap()
 	{
 		isHide = false;
+		_grids = NULL;
 	}
+
+	void showGrids();
+	/**
+	 * 设置阻挡点信息
+	 */
+	void setBlock(const GridIndex &index);
 protected:
+	AStarSeachInHexagonGrids<int>* _grids; // 网格系统
 	std::list<MutiImage*> _images; // 图片集合
 	std::list<MutiCartoon*> _cartoons; // 动画集合
 	std::list<MutiMap*> _grouds; // 远层集合
@@ -75,14 +86,4 @@ protected:
 	CCPoint offset;
 };
 
-/**
- * 地图的编辑模式
- */
-class MutiMapEdit:public MutiMap{
-public:
-protected:
-	MutiMap *nowBackgroud;
-	MutiImage *nowImage;
-	MutiCartoon *nowCartoon;
-};
 NS_CC_END
