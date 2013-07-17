@@ -69,6 +69,8 @@ public:
 	 * 设置阻挡点信息
 	 */
 	void setBlock(const GridIndex &index);
+
+	void setBlockByTouchPoint(const CCPoint &touchPoint);
 protected:
 	AStarSeachInHexagonGrids<int>* _grids; // 网格系统
 	std::list<MutiImage*> _images; // 图片集合

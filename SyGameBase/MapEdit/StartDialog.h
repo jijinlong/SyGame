@@ -28,5 +28,7 @@ public:
 	void createBigImage(UIBase *base);
 
 	void showMapProp(UIBase *base);
+
+	void editBlock(UIBase *base);
 };
 NS_CC_END

@@ -46,6 +46,12 @@ void MainDialog::doInitEvent()
 	{
 		showMapBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::showMapProp));
 	}
+	GET_UI_BYNAME(this,UIChoice,editBlockChoice,"editblock") // 打开一个地图 将会替换当前的地图
+	if (editBlockChoice)
+	{
+		editBlockChoice->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::editBlock));
+	}
+	
 }
 
 /**
@@ -614,5 +620,21 @@ void MainDialog::showMapProp(UIBase *base)
 	stShowEachBg exec;
 	exec.window = window;
 	MapManager::getMe().mapRoot->execEachBg(&exec); // 刷新列表
+}
+
+void MainDialog::editBlock(UIBase *base)
+{
+	UIChoice *choice = (UIChoice*) base;
+	if (choice)
+	{
+		if (choice->isChoiced())
+		{
+			MapManager::getMe().isSetBlock = true;
+		}
+		else
+		{
+			MapManager::getMe().isSetBlock = false;
+		}
+	}
 }
 NS_CC_END

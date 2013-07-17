@@ -400,4 +400,12 @@ void MutiMap::setBlock(const GridIndex &index)
 		}
 	}
 }
+void MutiMap::setBlockByTouchPoint(const CCPoint &touchPoint)
+{
+	CCPoint point = this->convertToNodeSpace(touchPoint);
+	GridIndex index = _grids->getIndexByPoint(point);
+	setBlock(index);
+	stShowEachGrids exec(_grids,this);
+	_grids->execOne(index,&exec);
+}
 NS_CC_END

@@ -147,6 +147,15 @@ public:
 		if (index.y % 2 == 1) offsetx = cellWidth /2;
 		return ccp(offsetx + index.x * cellWidth,index.y * cellWidth);
 	}
+	GridIndex getIndexByPoint(const CCPoint &point)
+	{
+		GridIndex index;
+		index.y = point.y / cellWidth;
+		int offsetx = 0;
+		if (index.y % 2 == 1) offsetx = cellWidth /2;
+		index.x = (point.x - offsetx) / cellWidth;
+		return index;
+	}
 	/**
 	 * 遍历元素
 	 * searchType 搜索类型
@@ -176,7 +185,7 @@ public:
 	 */
 	void execOne(const GridIndex &index,typename stExecEach<CELLOBJECT> *execEach)
 	{
-		eachEach->exec(index); // 执行该节点
+		execEach->exec(index); // 执行该节点
 	}
 	/**
 	 * 遍历所有的网格
