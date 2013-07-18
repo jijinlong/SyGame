@@ -382,7 +382,11 @@ void UISuperBag::showItem(UIItem *item,bool dynamic)
 	}
 }
 
-
+void UISuperBag::clear()
+{
+	_items.clear();
+	this->removeAllChildrenWithCleanup(true);
+}
 /**
 * 检查坐标是否在区域内
 */

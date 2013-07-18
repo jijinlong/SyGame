@@ -38,7 +38,7 @@ void UIScrollView::setPosition(float x,float y)
 bool UIScrollView::addContent(UIBase*node)
 {
 	if (!node) return false;
-	if (child) this->removeAllChildrenWithCleanup(true);
+//	if (child) this->removeAllChildrenWithCleanup(true);
 	this->addChild(node);
 	child = node;
 	return true;

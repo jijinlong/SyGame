@@ -131,15 +131,7 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 	if (node->equal("list"))
 	{
 		backName = node->getAttr("back");
-		if (backName != "")
-		{
-			CCSprite *back = CCSprite::create(backName.c_str());
-			if (back)
-			{
-				this->addChild(back,-10);
-				back->setAnchorPoint(ccp(0,0));
-			}
-		}
+		
 		this->setAnchorPoint(ccp(0,0));
 		this->_eachHeight = node->getInt("eachheight");
 		this->_eachWidth = node->getInt("eachwidth");
@@ -167,6 +159,15 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 				((UIScrollView*)view)->setScrollAble(true);
 				else
 				((UIScrollView*)view)->setScrollAble(false);
+			}
+		}
+		if (backName != "")
+		{
+			CCSprite *back = CCSprite::create(backName.c_str());
+			if (back)
+			{
+				this->addChild(back,-10);
+				back->setAnchorPoint(ccp(0,0));
 			}
 		}
 	}

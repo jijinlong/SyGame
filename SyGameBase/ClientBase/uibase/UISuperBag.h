@@ -97,6 +97,7 @@ public:
 	{
 		return CCSizeMake(0,0);
 	}
+	void clear();
 protected:
 	bool _editable;
 	int _nowTouchItemId;

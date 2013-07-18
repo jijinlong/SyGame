@@ -5,6 +5,7 @@
 #include "PngPack.h"
 #include "MapManager.h"
 #include "MutiImage.h"
+#include "UIFileList.h"
 USING_NS_CC;
 
 
@@ -104,6 +105,12 @@ bool StartScene::init()
 	{
 		map->showGrids();
 		MapManager::getMe().replaceMap(map);
+	}
+	UIFileList *list = UIFileList::create(window,"filelist.xml");
+	if (list)
+	{
+		list->show(".");
+		window->pushModel(list);
 	}
 	return true;
 }
