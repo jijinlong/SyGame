@@ -43,6 +43,8 @@ public:
 		SEQUENCE = 0,// 序列 
 		TOGETHER = 1, // 一起
 	};
+	// 在此控制该动作的播放概率
+	bool isValid(){return true;}
 	/**
 	 * 增加下一个动画序列
 	 */
@@ -282,8 +284,8 @@ protected:
 	 void setAction(int actionType);
 	 virtual CartoonInfo* makeCartoon(int actionType);
 	 virtual void putCartoon(CartoonInfo *action);
-	 virtual CartoonInfo* v_makeCartoon(int actionType) = 0;
-	 virtual void v_putCartoon(CartoonInfo *action) = 0;
+	 virtual CartoonInfo* v_makeCartoon(int actionType) {return NULL;};
+	 virtual void v_putCartoon(CartoonInfo *action){};
 };
 
 

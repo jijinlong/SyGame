@@ -141,13 +141,13 @@ public:
 	/**
 	 * 获取地图上的实际位置
 	 */
-	CCPoint getPointByIndex(const GridIndex& index)
+	virtual CCPoint getPointByIndex(const GridIndex& index)
 	{
 		int offsetx = 0;
 		if (index.y % 2 == 1) offsetx = cellWidth /2;
 		return ccp(offsetx + index.x * cellWidth,index.y * cellWidth);
 	}
-	GridIndex getIndexByPoint(const CCPoint &point)
+	virtual GridIndex getIndexByPoint(const CCPoint &point)
 	{
 		GridIndex index;
 		index.y = point.y / cellWidth;
@@ -281,14 +281,27 @@ struct stCheckMoveAble{
 template<typename CELLOBJECT>
 class AStarSeachInHexagonGrids:public HexagonGrids<CELLOBJECT>{
 public:
+	std::vector<GridIndex> adjust;
 	AStarSeachInHexagonGrids()
 	{
 		minRadius = 12;
+		initCircles();
 	}
 	AStarSeachInHexagonGrids(unsigned int width,unsigned int height,int cellWidth):HexagonGrids<CELLOBJECT>(width,height,cellWidth)
 	{
 		cells.resize(width * height);
 		minRadius = 12;
+		initCircles();
+	}
+	virtual void initCircles()
+	{
+		adjust.clear();
+		adjust.push_back(GridIndex(-1,0));
+		adjust.push_back(GridIndex(0,1));
+		adjust.push_back(GridIndex(0,-1));
+		adjust.push_back(GridIndex(1,0));
+		adjust.push_back(GridIndex(1,1));
+		adjust.push_back(GridIndex(1,-1));
 	}
 	int minRadius;
 	/**
@@ -335,27 +348,8 @@ public:
 				//找到到达目的地的路径
 				break;
 			}
-
-#if (0)
-			const GridIndex adjust[6] =
-			{
-				GridIndex(-1,0),
-				GridIndex(0,1),
-				GridIndex(0,-1),
-				GridIndex(1,0),
-				GridIndex(1,1),
-				GridIndex(1,-1)
-			};
-#endif
-			std::vector<GridIndex> adjust;
-			adjust.push_back(GridIndex(-1,0));
-			adjust.push_back(GridIndex(0,1));
-			adjust.push_back(GridIndex(0,-1));
-			adjust.push_back(GridIndex(1,0));
-			adjust.push_back(GridIndex(1,1));
-			adjust.push_back(GridIndex(1,-1));
 			std::random_shuffle(adjust.begin(),adjust.end());
-			for(int i = 0; i < 6; i++)
+			for(int i = 0; i < adjust.size(); i++)
 			{
 				//分别对周围8个格点进行计算路径
 				bool bCanWalk = true;
@@ -480,6 +474,46 @@ public:
 		if (dest.x > width || dest.y >= this->height) return false;
 		if (check && !check->exec(dest)) return false;
 		return true;
+	}
+};
+
+template<typename CELLOBJECT>
+class AStarSeachInGrids:public AStarSeachInHexagonGrids<CELLOBJECT>{
+public:
+	AStarSeachInGrids(unsigned int width,unsigned int height,int cellWidth):AStarSeachInHexagonGrids<CELLOBJECT>(width,height,cellWidth)
+	{
+		initCircles();
+	}
+	virtual void initCircles()
+	{
+		adjust.clear();
+		adjust.push_back(GridIndex(0,-1));
+		adjust.push_back(GridIndex(-1,0));
+		adjust.push_back(GridIndex(1,0));
+		adjust.push_back(GridIndex(0,1));
+		adjust.push_back(GridIndex(1,-1));
+		adjust.push_back(GridIndex(-1,-1));
+		adjust.push_back(GridIndex(-1,1));
+		adjust.push_back(GridIndex(1,1));
+	}
+	/**
+	 * 获取地图上的实际位置
+	 */
+	CCPoint getPointByIndex(const GridIndex& index)
+	{
+		int offsetx = 0;
+		return ccp(offsetx + index.x * cellWidth,index.y * cellWidth);
+	}
+	/**
+	 * 根据点获取引索
+	 */
+	GridIndex getIndexByPoint(const CCPoint &point)
+	{
+		GridIndex index;
+		index.y = point.y / cellWidth;
+		int offsetx = 0;
+		index.x = (point.x - offsetx) / cellWidth;
+		return index;
 	}
 };
 NS_CC_END

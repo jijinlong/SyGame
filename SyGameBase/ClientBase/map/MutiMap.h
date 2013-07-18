@@ -5,6 +5,7 @@
 #include "MutiObject.h"
 #include "MutiCartoon.h"
 #include "HexagonGrids.h"
+
 NS_CC_BEGIN
 /**
  * 创建一个多层地图
@@ -19,6 +20,7 @@ NS_CC_BEGIN
  */
 
 class MutiMap;
+class MutiMonster;
 struct stExecEachBackgroud{
 public:
 	virtual void exec(MutiMap *map) = 0;
@@ -50,6 +52,8 @@ public:
 	void addBigImage(MutiBigImage *bigImage);
 	void addMap(MutiMap *map);
 	void addCartoon(MutiCartoon *cartoon);
+
+	void addMonster(MutiMonster *monster);
 	void save(){write(fileName.c_str());}
 
 	void addSprite(CCSprite *sprite);

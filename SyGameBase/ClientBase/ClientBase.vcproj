@@ -552,6 +552,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\map\MutiMonster.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MutiMonster.h"
+				>
+			</File>
+			<File
 				RelativePath=".\map\MutiObject.cpp"
 				>
 			</File>
@@ -736,11 +744,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
