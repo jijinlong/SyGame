@@ -101,6 +101,10 @@ void MutiMonster::start(const std::string &actionFile)
 	doAction();
 
 	tryAction("idle");
+	CCSprite * test = CCSprite::create("cell.png");
+	this->addChild(test);
+	test->setPosition(offset);
+	this->setAnchorPoint(ccp(offset.x/size.width,offset.y / size.height));
 }
 /**
  * 执行某个动作 获取当前动作的优先级 然后放入到列表中 默认为0
@@ -229,6 +233,13 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 			myindexs.push_back(index); // 自己占据的格子数
 			indexNode = indexNode.getNextNode("index");
 		}
+	}
+	script::tixmlCodeNode myRectNode = node->getFirstChildNode("rect");
+	if (myRectNode.isValid())
+	{
+		offset.x = myRectNode.getInt("x");
+		offset.y = myRectNode.getInt("y");
+		size = CCSizeMake(myRectNode.getInt("w"),myRectNode.getInt("h"));
 	}
 }
 void MutiMonster::doAction()
@@ -385,5 +396,10 @@ bool MutiMonster::isNowAction(const std::string &name)
 MutiMonster * MutiMonster::getNowTarget()
 {
 	return NULL;
+}
+
+void MutiMonster::setPosition(const GridIndex &point)
+{
+	CCSprite::setPosition(map->getLocationByIndex(point));
 }
 NS_CC_END

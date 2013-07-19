@@ -66,6 +66,8 @@ class MutiMonster:public Cartoon,public script::tixmlCode{
 public:
 	static MutiMonster * create();
 	int dir;
+	CCPoint offset; // 相对偏移
+	CCSize size; // 我的有效面积
 	MutiMap *map;
 	MutiMonster()
 	{
@@ -136,6 +138,8 @@ public:
 	bool isNowAction(const std::string &name);
 
 	void tryMove(const GridIndex &index);
+
+	void setPosition(const GridIndex &point);
 public:
 	/**
 	 * 判断当前是否移动

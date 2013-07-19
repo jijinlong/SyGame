@@ -121,7 +121,21 @@ bool StartScene::init()
 			monster->start("monster1.xml");
 			map->addMonster(monster);
 			monster->tryMove(GridIndex(5,5+i));
+			monster->setPosition(GridIndex(0,i));
 		}
+	}
+	MutiMonster *monster = MutiMonster::create();
+	if (monster)
+	{
+		monster->start("monster1.xml");
+		map->addMonster(monster);
+		
+		monster->setPosition(GridIndex(0,0));
+	}
+	CCSprite *sprite = CCSprite::create("cell.png");
+	if (sprite)
+	{
+		map->addSprite(sprite);
 	}
 	return true;
 }

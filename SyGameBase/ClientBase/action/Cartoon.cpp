@@ -543,7 +543,7 @@ void Cartoon::runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCP
 	}
 	if (preAction)
 	{
-		CCFiniteTimeAction *seqaction = CCSequence::create(preAction,
+		CCFiniteTimeAction *seqaction = CCSequence::create(preAction,/*CCDelayTime::create(0.5),*/
 					CCCallFunc::create(this, callfunc_selector(Cartoon::doCartoonEnd)),NULL);
 		if (seqaction)
 			sprite->runAction(seqaction);
