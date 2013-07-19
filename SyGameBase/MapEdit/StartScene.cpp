@@ -6,6 +6,7 @@
 #include "MapManager.h"
 #include "MutiImage.h"
 #include "UIFileList.h"
+#include "MutiMonster.h"
 USING_NS_CC;
 
 
@@ -111,6 +112,16 @@ bool StartScene::init()
 	{
 		list->show(".");
 		window->pushModel(list);
+	}
+	for (int i = 0; i < 5;i++)
+	{
+		MutiMonster *monster = MutiMonster::create();
+		if (monster)
+		{
+			monster->start("monster1.xml");
+			map->addMonster(monster);
+			monster->tryMove(GridIndex(5,5+i));
+		}
 	}
 	return true;
 }

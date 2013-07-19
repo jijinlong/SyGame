@@ -7,7 +7,57 @@ NS_CC_BEGIN
 
 class ActionPool{
 public:
-	std::list<std::string> actions;
+	static std::map<std::string,unsigned int> actionsMap;
+	typedef std::map<std::string,unsigned int>::iterator ACTIONSMAP_ITER;
+	unsigned int actions; // 并行IDs
+	std::list<unsigned int> actionStack;
+	typedef std::list<unsigned int>::iterator ACTIONS_ITER;
+	void addAction(const std::string &name);
+	void addAction(const unsigned int &actionId);
+	enum ACTION_TYPE{
+		CONBINE_ACTION = 0, // 同时行为
+		SINGLE_ACTION = 1, // 独立行为
+		ALWAYS_ACTION = 2, // 永久行为 不离开
+	};
+	ACTION_TYPE actionType; // 行为类型
+	/**
+	 * 获取动作
+	 */
+	unsigned int getAction();
+	/**
+	 * 释放工作
+	 */
+	void popAction();
+
+	static unsigned int getActionIdByName(const std::string&name); 
+
+	ActionPool()
+	{
+		actions = 0;
+		actionType = SINGLE_ACTION;
+	}
+};
+
+class MoveActionPoint{
+public:
+	GridIndex index; //当前移动的位置
+	std::string actionName; // 当前移动的行为
+};
+/**
+ * 预定义的路径说明
+ */
+class PrePathDec{
+public:
+	int dir; // 方向
+	std::vector<MoveActionPoint> indexs; // 引索列表
+};
+/**
+ * 各个方向的路径
+ **/
+class PrePathDecDirs{
+public:
+	std::string name; // 名字
+	std::vector<PrePathDec> paths;
 };
 /**
  * 实现怪物在地图上的各种动作
@@ -19,7 +69,7 @@ public:
 	MutiMap *map;
 	MutiMonster()
 	{
-		dir = -1;
+		dir = 0;
 		map = NULL;
 	}
 	/**
@@ -47,22 +97,68 @@ public:
 	 * 从配置文件中获取信息
 	 **/
 	void takeNode(script::tixmlCodeNode *node);
+	void initNode(script::tixmlCodeNode *node);
 	std::vector<ActionPool> actionPools;
 	typedef std::vector<ActionPool>::iterator ACTIONPOOLS_ITER;
-	std::map<std::string,int> priorityMap; // 优先级列表
+	std::map<std::string,int> priorityMap; // 优先级列表 从配置中加载
 	typedef std::map<std::string,int>::iterator PRIORITYMAP_ITER;
 
-	CartoonInfo * makeMyCartoon(const std::string &name,int dir);
+	CartoonInfo * makeMyCartoon(const unsigned int&,int dir);
 	void putMyCartoon(CartoonInfo *info);
 	typedef std::vector<CartoonConbineAction> COBINE_ACTIONS;
-	static std::map<std::string,COBINE_ACTIONS > conbineactionmaps;
-	typedef std::map<std::string,COBINE_ACTIONS >::iterator CONBINEACTIONMAPS_ITER;
-	std::string nowActionName;
+	static std::map<unsigned int,COBINE_ACTIONS > conbineactionmaps; // 行为表
+	typedef std::map<unsigned int,COBINE_ACTIONS >::iterator CONBINEACTIONMAPS_ITER;
+	unsigned int nowActionName;
+
+	static std::map<std::string,PrePathDecDirs> PRE_PATHS; // 各种预定义的路径
+	typedef std::map<std::string,PrePathDecDirs>::iterator PRE_PATHS_ITER;
+
+	
+	std::vector<GridIndex> myindexs; // 自己的格子列表 从配置中加载
+
+	GridIndex getStartMyIndex(); // 获取自己的起始格子
+	/**
+	 * 检查当前一个引索 是否碰撞
+	 */
+	bool checkCollideInMap(const GridIndex& nextIndex);
+	/**
+	 * 根据点获取地图上实际像素位置
+	 */
+	CCPoint getLocationByIndex(const GridIndex &index);
+	/**
+	 * 获取当前的引索
+	 */
+	GridIndex getNowIndex();
+
+	/**
+	 * 检查当前行为中是否包含自己
+	 */
+	bool isNowAction(const std::string &name);
+
+	void tryMove(const GridIndex &index);
 public:
 	/**
-	 * 移动到某点
+	 * 判断当前是否移动
 	 */
-	GridIndex destionation;
+	bool isMoving();
+	
+	
+	/**
+	 * 当前目的地 使用于Astar
+	 */
+	MoveActionPoint nowAstarDestination;
+	/**
+	 * 将移动的路径
+	 */
+	std::list<MoveActionPoint> movePath;
+	/**
+	 * 当前目标集合
+	 */
+	std::list<MutiMonster*> targets;
+	/**
+	 * 获取当前的目标
+	 */
+	MutiMonster * getNowTarget();
 	GridIndex nowLocationIndex; // 现在的点
 	GridIndex maybeLocationIndex; // 将来的点
 	/**

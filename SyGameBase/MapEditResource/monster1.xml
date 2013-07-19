@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+   <conbineactions>
+		<actions name="1">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--先播放一号动作 紧接着播放2号动作-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="skill01.png"/>
+			  <frame name="skill02.png"/>
+			  <frame name="skill03.png"/>
+			  <frame name="skill04.png"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="2">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--先播放一号动作 紧接着播放2号动作-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="skill01.png"/>
+			  <frame name="skill02.png"/>
+			  <frame name="skill03.png"/>
+			  <frame name="skill04.png"/>
+			</dir>
+		  </action>
+		</actions>
+   </conbineactions>
+   <actionpools>
+		<pool id="0" type="conbine"/>
+		<pool id="1" type="always"/> <!--2号动作池定义默认行为-->
+   </actionpools>
+   <actionpriority>
+		<priority name="move" value="0"/>
+		<priority name="idle" value="1"/>
+   </actionpriority>
+   <actionnames>
+		<action name="move" id="1"/>
+		<action name="idle" id="2"/>
+	</actionnames>
+	<myindexs>
+		<index x="0" y="0"/>
+	</myindexs>
+ </Config>

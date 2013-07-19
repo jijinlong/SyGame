@@ -16,12 +16,26 @@ public:
 	{}
 	GridIndex()
 	{
-		x = y = 0;
+		x = y = -1;
 	}
 	GridIndex & operator=(const GridIndex &index)
 	{
 		x = index.x;
 		y = index.y;
+		return *this;
+	}
+	bool isValid()
+	{
+		return x != -1 && y != -1;
+	}
+	bool equal(const GridIndex &index)
+	{
+		return x == index.x && y == index.y;
+	}
+	const GridIndex &operator + (const GridIndex &index)
+	{
+		x += index.x;
+		y += index.y;
 		return *this;
 	}
 };

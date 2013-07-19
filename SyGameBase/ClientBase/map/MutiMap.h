@@ -73,8 +73,13 @@ public:
 	 * 设置阻挡点信息
 	 */
 	void setBlock(const GridIndex &index);
-
+	void clearBlock(const GridIndex &index);
 	void setBlockByTouchPoint(const CCPoint &touchPoint);
+	CCPoint getLocationByIndex(const GridIndex &index);
+	GridIndex getIndexByLocation(const CCPoint &point);
+	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out);
+
+	bool checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid = 0);
 protected:
 	AStarSeachInHexagonGrids<int>* _grids; // 网格系统
 	std::list<MutiImage*> _images; // 图片集合

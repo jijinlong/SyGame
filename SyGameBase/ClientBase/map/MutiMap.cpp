@@ -1,5 +1,5 @@
 #include "MutiMap.h"
-
+#include "MutiMonster.h"
 NS_CC_BEGIN
 MutiMap * MutiMap::create(script::tixmlCodeNode *node)
 {
@@ -185,6 +185,11 @@ void MutiMap::addCartoon(MutiCartoon *cartoon)
 {
 	CCNode::addChild(cartoon);
 	_cartoons.push_back(cartoon);
+}
+void MutiMap::addMonster(MutiMonster *monster)
+{
+	monster->map = this;
+	CCNode::addChild(monster,10);
 }
 void MutiMap::addMap(MutiMap *map)
 {
@@ -373,7 +378,7 @@ struct stCheckValid:public stCheckMoveAble{
 };
 void MutiMap::showGrids()
 {
-	if (!_grids) _grids = new AStarSeachInHexagonGrids<int>(10,10,64);
+	if (!_grids) _grids = new AStarSeachInGrids<int>(10,10,126);
 	stShowEachGrids exec(_grids,this);
 //	_grids->execAll(&exec);
 	setBlock(GridIndex(2,2));
@@ -385,7 +390,15 @@ void MutiMap::showGrids()
 	GridIndex out;
 	_grids->getNextGridIndex(GridIndex(0,0),GridIndex(5,2),out,&exec,&check);
 }
-
+CCPoint  MutiMap::getLocationByIndex(const GridIndex &index)
+{
+	return _grids->getPointByIndex(index);
+}
+bool  MutiMap::getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out)
+{
+	stCheckValid check(_grids);
+	return _grids->getNextGridIndex(src,dest,out,NULL,&check);
+}
 /**
  * 设置阻挡点信息
  */
@@ -400,6 +413,17 @@ void MutiMap::setBlock(const GridIndex &index)
 		}
 	}
 }
+void MutiMap::clearBlock(const GridIndex &index)
+{
+	if (_grids)
+	{
+		int * value = _grids->getObjectByIndex(index);
+		if (value)
+		{
+			*value = 0;
+		}
+	}
+}
 void MutiMap::setBlockByTouchPoint(const CCPoint &touchPoint)
 {
 	CCPoint point = this->convertToNodeSpace(touchPoint);
@@ -407,5 +431,34 @@ void MutiMap::setBlockByTouchPoint(const CCPoint &touchPoint)
 	setBlock(index);
 	stShowEachGrids exec(_grids,this);
 	_grids->execOne(index,&exec);
+}
+GridIndex MutiMap::getIndexByLocation(const CCPoint &point)
+{
+	return _grids->getIndexByPoint(point);
+}
+
+bool MutiMap::checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid)
+{
+	if (_grids)
+	{
+		int * value = _grids->getObjectByIndex(location);
+		if (!value || *value == 1)
+		{
+			return false;
+		}
+		if (relateGrid)
+		{
+			for (std::vector<GridIndex>::iterator iter = relateGrid->begin();iter != relateGrid->end();++iter)
+			{
+				int * value = _grids->getObjectByIndex(*iter);
+				if (!value || *value == 1)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	return false;
 }
 NS_CC_END
