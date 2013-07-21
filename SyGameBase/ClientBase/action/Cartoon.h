@@ -241,7 +241,7 @@ public:
 	/**
 	 * 执行下一步
 	 */
-	virtual void nextStep() = 0;
+	virtual void nextStep(){}
 
 	void attachSprite(CCSprite *sprite)
 	{

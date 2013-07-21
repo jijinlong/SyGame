@@ -81,6 +81,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 				nowObject->setPosition(ccp(nowPoint.x + touchPoint.x - nowTouchPoint.x,
                                   nowPoint.y + touchPoint.y - nowTouchPoint.y));
 				nowTouchPoint = touchPoint;
+				nowObject->freshBlock();
 				return;
 			}
 			else

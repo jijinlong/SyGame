@@ -72,6 +72,13 @@ MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 			return *iter;
 		}
 	}
+	for (MONSTERS_ITER iter = _monsters.begin();iter != _monsters.end();++iter)
+	{
+		if (*iter && (*iter)->checkIn(pixelPoint))
+		{
+			return *iter;
+		}
+	}
 	return NULL;
 }
 void MutiMap::execEachBg(stExecEachBackgroud *bg)
@@ -154,7 +161,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 					GridIndex index;
 					index.x = indexNode.getInt("x");
 					index.y = indexNode.getInt("y");
-					setBlock(index);
+					setBlock(index,indexNode.getInt("value"));
 					indexNode = indexNode.getNextNode("index");
 				}
 			}
@@ -189,6 +196,7 @@ void MutiMap::addCartoon(MutiCartoon *cartoon)
 void MutiMap::addMonster(MutiMonster *monster)
 {
 	monster->map = this;
+	_monsters.push_back(monster);
 	CCNode::addChild(monster,10);
 }
 void MutiMap::addMap(MutiMap *map)
@@ -209,13 +217,14 @@ struct stWriteGrids:stExecEach<int>{
 	void exec(const GridIndex& index)
 	{
 		int * value = grids->getObjectByIndex(index);
-		if (value && *value == 1)
+		if (value && *value !=0 )
 		{
 			TiXmlElement *indexNode=new TiXmlElement("index");
 			if (blockNode)
 				blockNode->LinkEndChild(indexNode);
 			indexNode->SetAttribute("x",index.x);
 			indexNode->SetAttribute("y",index.y);
+			indexNode->SetAttribute("value",*value);
 		}
 	}
 	HexagonGrids<int> * grids;
@@ -353,20 +362,31 @@ void MutiMap::show()
 struct stShowEachGrids:stExecEach<int>{
 	void exec(const GridIndex& index)
 	{
-		CCSprite * test = CCSprite::create("cell.png");
-		test->setPosition(grids->getPointByIndex(index));
-		map->addSprite(test);
+		int * value = grids->getObjectByIndex(index);
+		if (!value || *value == GridIndex::STATIC_BLOCK || *value == GridIndex::MONSTER_BLOCK)
+		{
+			CCSprite * test = CCSprite::create("cell.png");
+			test->setPosition(grids->getPointByIndex(index));
+			map->addSprite(test);
+			map->tempDebugBlocks.push_back(test);
+		}
 	}
 	HexagonGrids<int> * grids;
 	MutiMap *map;
 	stShowEachGrids(HexagonGrids<int> * grids,MutiMap *map):grids(grids),map(map)
-	{}
+	{
+		for (std::vector<CCSprite*>::iterator iter = map->tempDebugBlocks.begin(); iter != map->tempDebugBlocks.end();++iter)
+		{
+			map->removeChild(*iter,true);
+		}
+		map->tempDebugBlocks.clear();
+	}
 };
 struct stCheckValid:public stCheckMoveAble{
 	bool exec(const GridIndex &index) 
 	{
 		int * value = grids->getObjectByIndex(index);
-		if (!value || *value == 1)
+		if (!value || *value != 0)
 		{
 			return false;
 		}
@@ -380,15 +400,20 @@ void MutiMap::showGrids()
 {
 	if (!_grids) _grids = new AStarSeachInGrids<int>(10,10,126);
 	stShowEachGrids exec(_grids,this);
-//	_grids->execAll(&exec);
-	setBlock(GridIndex(2,2));
-	setBlock(GridIndex(3,2));
-	stCheckValid check(_grids);
+	
+	setBlock(GridIndex(2,2), GridIndex::STATIC_BLOCK);
+	setBlock(GridIndex(3,2), GridIndex::STATIC_BLOCK);
+	for (int i = 0; i < 100;i++)
+	{
+		setBlock(GridIndex(i,2), GridIndex::STATIC_BLOCK);
+	}
+	_grids->execAll(&exec);
+	//stCheckValid check(_grids);
 	/**
 	 * 测试寻路算法
 	 */
-	GridIndex out;
-	_grids->getNextGridIndex(GridIndex(0,0),GridIndex(5,2),out,&exec,&check);
+	//GridIndex out;
+	//_grids->getNextGridIndex(GridIndex(0,0),GridIndex(5,2),out,&exec,&check);
 }
 CCPoint  MutiMap::getLocationByIndex(const GridIndex &index)
 {
@@ -402,25 +427,25 @@ bool  MutiMap::getNextPosition(const GridIndex &src,const GridIndex &dest,GridIn
 /**
  * 设置阻挡点信息
  */
-void MutiMap::setBlock(const GridIndex &index)
+void MutiMap::setBlock(const GridIndex &index,int bvalue)
 {
 	if (_grids)
 	{
 		int * value = _grids->getObjectByIndex(index);
 		if (value)
 		{
-			*value = 1;
+			*value |= bvalue;
 		}
 	}
 }
-void MutiMap::clearBlock(const GridIndex &index)
+void MutiMap::clearBlock(const GridIndex &index,int bvalue)
 {
 	if (_grids)
 	{
 		int * value = _grids->getObjectByIndex(index);
 		if (value)
 		{
-			*value = 0;
+			*value &= ~bvalue;
 		}
 	}
 }
@@ -428,7 +453,7 @@ void MutiMap::setBlockByTouchPoint(const CCPoint &touchPoint)
 {
 	CCPoint point = this->convertToNodeSpace(touchPoint);
 	GridIndex index = _grids->getIndexByPoint(point);
-	setBlock(index);
+	setBlock(index,GridIndex::STATIC_BLOCK);
 	stShowEachGrids exec(_grids,this);
 	_grids->execOne(index,&exec);
 }
@@ -444,7 +469,7 @@ bool MutiMap::checkCollide(const GridIndex &location,std::vector<GridIndex> *rel
 		int * value = _grids->getObjectByIndex(location);
 		if (!value || *value == 1)
 		{
-			return false;
+			return true;
 		}
 		if (relateGrid)
 		{
@@ -453,11 +478,11 @@ bool MutiMap::checkCollide(const GridIndex &location,std::vector<GridIndex> *rel
 				int * value = _grids->getObjectByIndex(*iter);
 				if (!value || *value == 1)
 				{
-					return false;
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 	return false;
 }

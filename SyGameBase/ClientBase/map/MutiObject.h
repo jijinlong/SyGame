@@ -1,9 +1,10 @@
 #pragma once
 #include "cocos2d.h"
 #include "xmlScript.h"
+#include "Cartoon.h"
 NS_CC_BEGIN
 
-class MutiObject :public CCSprite{
+class MutiObject :public Cartoon{
 public:
 	/**
 	 * 从配置文件中读取信息
@@ -17,7 +18,7 @@ public:
 	bool checkIn(const CCPoint &point){return false;}
 
 	void setBaseInfo(float x,float y,float w,float h);
-
+	virtual void freshBlock(){}
 	void rebuild();
 	float w;
 	float h;

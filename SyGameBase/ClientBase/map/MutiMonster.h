@@ -1,10 +1,10 @@
 #pragma once
 #include "cocos2d.h"
 #include "xmlScript.h"
-#include "Cartoon.h"
-#include "MutiMap.h"
+#include "HexagonGrids.h"
+#include "MutiObject.h"
 NS_CC_BEGIN
-
+class MutiMap;
 class ActionPool{
 public:
 	static std::map<std::string,unsigned int> actionsMap;
@@ -42,6 +42,19 @@ class MoveActionPoint{
 public:
 	GridIndex index; //当前移动的位置
 	std::string actionName; // 当前移动的行为
+	enum MOVESTATE{ // 标示当前一定的状态 相对于前一个点
+		NULL_STATE = -1,
+		UPING = 0, // 上升
+		DOWNING = 1, // 下降
+		LEFTING = 2, // 向左
+		RIGHTING = 3, // 向右
+	};
+	MOVESTATE moveState;
+	MoveActionPoint()
+	{
+		moveState = NULL_STATE;
+	}
+	void takeNode(script::tixmlCodeNode *node);
 };
 /**
  * 预定义的路径说明
@@ -50,6 +63,7 @@ class PrePathDec{
 public:
 	int dir; // 方向
 	std::vector<MoveActionPoint> indexs; // 引索列表
+	void takeNode(script::tixmlCodeNode *node);
 };
 /**
  * 各个方向的路径
@@ -58,11 +72,12 @@ class PrePathDecDirs{
 public:
 	std::string name; // 名字
 	std::vector<PrePathDec> paths;
+	void takeNode(script::tixmlCodeNode *node);
 };
 /**
  * 实现怪物在地图上的各种动作
  */
-class MutiMonster:public Cartoon,public script::tixmlCode{
+class MutiMonster:public MutiObject,public script::tixmlCode{
 public:
 	static MutiMonster * create();
 	int dir;
@@ -112,9 +127,10 @@ public:
 	typedef std::map<unsigned int,COBINE_ACTIONS >::iterator CONBINEACTIONMAPS_ITER;
 	unsigned int nowActionName;
 
-	static std::map<std::string,PrePathDecDirs> PRE_PATHS; // 各种预定义的路径
+	static std::map<std::string,PrePathDecDirs> prePaths; // 各种预定义的路径
 	typedef std::map<std::string,PrePathDecDirs>::iterator PRE_PATHS_ITER;
 
+	bool checkIn(const CCPoint &point);
 	
 	std::vector<GridIndex> myindexs; // 自己的格子列表 从配置中加载
 
@@ -123,6 +139,31 @@ public:
 	 * 检查当前一个引索 是否碰撞
 	 */
 	bool checkCollideInMap(const GridIndex& nextIndex);
+	/**
+	 * 检查只是底部碰撞了
+	 */
+	bool checkOnlyButtomCollide(const GridIndex &nextIndex);
+
+	/**
+	 * 下部没有碰撞
+	 */
+	bool checkNotDownCollide(const GridIndex &nextIndex);
+	/**
+	 * 左部没有碰撞
+	 */
+	bool checkNotLeftCollide(const GridIndex &nextIndex);
+	/**
+	 * 上部没有碰撞
+	 */
+	bool checkNotUpCollide(const GridIndex &nextIndex);
+	/**
+	 * 右部没有碰撞
+	 */
+	bool checkNotRightCollide(const GridIndex &nextIndex);
+	/**
+	 * 获取将要下降的点的引索
+	 */
+	GridIndex getPreDownIndex();
 	/**
 	 * 根据点获取地图上实际像素位置
 	 */
@@ -136,10 +177,23 @@ public:
 	 * 检查当前行为中是否包含自己
 	 */
 	bool isNowAction(const std::string &name);
-
-	void tryMove(const GridIndex &index);
-
+	/**
+	 * 使用Star 寻路到目的地
+	 */
+	void tryMoveUseAstr(const GridIndex &index);
+	/**
+	 * 清除Astar 寻路
+ 	 */
+	void clearAstar();
 	void setPosition(const GridIndex &point);
+	/**
+	 * 获取以point 为起始的路径列表 包含当前路径
+	 */
+	void getPreparePath(const std::string &name,const GridIndex &point);
+
+	void setPosition(const CCPoint &point);
+
+	void freshBlock();
 public:
 	/**
 	 * 判断当前是否移动
@@ -159,6 +213,7 @@ public:
 	 * 当前目标集合
 	 */
 	std::list<MutiMonster*> targets;
+
 	/**
 	 * 获取当前的目标
 	 */

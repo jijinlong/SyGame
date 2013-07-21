@@ -51,9 +51,9 @@ bool MutiCartoon::init()
 	animation->setDelayPerUnit(tapTime / pngNames.size());
 	animation->setRestoreOriginalFrame(true);
 	if (repeateTimes != -1)
-		this->runAction(CCRepeat::create(CCAnimate::create(animation),repeateTimes));
+		CCSprite::runAction(CCRepeat::create(CCAnimate::create(animation),repeateTimes));
 	else
-		this->runAction(CCRepeatForever::create(CCAnimate::create(animation)));
+		CCSprite::runAction(CCRepeatForever::create(CCAnimate::create(animation)));
 	return true;
 }
 /**

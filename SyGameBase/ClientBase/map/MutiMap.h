@@ -72,14 +72,15 @@ public:
 	/**
 	 * 设置阻挡点信息
 	 */
-	void setBlock(const GridIndex &index);
-	void clearBlock(const GridIndex &index);
+	void setBlock(const GridIndex &index,int value);
+	void clearBlock(const GridIndex &index,int value);
 	void setBlockByTouchPoint(const CCPoint &touchPoint);
 	CCPoint getLocationByIndex(const GridIndex &index);
 	GridIndex getIndexByLocation(const CCPoint &point);
 	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out);
 
 	bool checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid = 0);
+	std::vector<CCSprite*> tempDebugBlocks;
 protected:
 	AStarSeachInHexagonGrids<int>* _grids; // 网格系统
 	std::list<MutiImage*> _images; // 图片集合
@@ -87,6 +88,8 @@ protected:
 	std::list<MutiMap*> _grouds; // 远层集合
 	std::list<MutiBigImage*> _bigImages;
 	std::list<MutiBigTerrain*> _bigTerrains;
+	std::list<MutiMonster*> _monsters;
+	typedef std::list<MutiMonster*>::iterator MONSTERS_ITER;
 	typedef std::list<MutiImage*>::iterator IMAGES_ITER;
 	typedef std::list<MutiCartoon*>::iterator CARTOONS_ITER;
 	typedef std::list<MutiMap*>::iterator GROUDS_ITER;

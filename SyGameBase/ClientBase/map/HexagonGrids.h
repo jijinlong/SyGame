@@ -10,6 +10,10 @@ NS_CC_BEGIN
  */
 class GridIndex{
 public:
+	enum{
+		 STATIC_BLOCK = 1,
+		 MONSTER_BLOCK= 1 << 1,
+	};
 	int x;
 	int y;
 	GridIndex(int x,int y):x(x),y(y)

@@ -120,7 +120,7 @@ bool StartScene::init()
 		{
 			monster->start("monster1.xml");
 			map->addMonster(monster);
-			monster->tryMove(GridIndex(5,5+i));
+			monster->tryMoveUseAstr(GridIndex(5+i,5));
 			monster->setPosition(GridIndex(0,i));
 		}
 	}
