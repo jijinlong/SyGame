@@ -15,12 +15,16 @@
         <bigimage x="-11" y="225" w="0" h="0" src="start.png" />
         <bigterrain x="190" y="165" w="213" h="150" src="grass.png" width="2" height="2" />
         <blocks>
-            <index x="2" y="2" />
-            <index x="3" y="2" />
-            <index x="8" y="2" />
-            <index x="8" y="3" />
-            <index x="9" y="3" />
-            <index x="9" y="4" />
+			<index x="0" y="0" value="1"/>
+            <index x="1" y="0" value="1"/>
+			<index x="2" y="0" value="1"/>
+			<index x="3" y="0" value="1"/>
+			<index x="4" y="0" value="1"/>
+			<index x="5" y="0" value="1"/>
+			<index x="6" y="0" value="1"/>
+			<index x="7" y="0" value="1"/>
+			<index x="8" y="0" value="1"/>
+			<index x="9" y="0" value="1"/>
         </blocks>
     </map>
 </Config>

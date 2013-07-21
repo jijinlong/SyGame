@@ -103,6 +103,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 		offset.x = mapNode.getInt("offsetx");
 		offset.y = mapNode.getInt("offsety");
 		fileName = mapNode.getAttr("name");
+		if (!_grids) _grids = new AStarSeachInGrids<int>(10,10,126);
 		if (mapNode.isValid())
 		{
 			script::tixmlCodeNode imageNode = mapNode.getFirstChildNode("image");
@@ -363,7 +364,7 @@ struct stShowEachGrids:stExecEach<int>{
 	void exec(const GridIndex& index)
 	{
 		int * value = grids->getObjectByIndex(index);
-		if (!value || *value == GridIndex::STATIC_BLOCK || *value == GridIndex::MONSTER_BLOCK)
+		if (!value || *value !=0)
 		{
 			CCSprite * test = CCSprite::create("cell.png");
 			test->setPosition(grids->getPointByIndex(index));
@@ -398,12 +399,8 @@ struct stCheckValid:public stCheckMoveAble{
 };
 void MutiMap::showGrids()
 {
-	if (!_grids) _grids = new AStarSeachInGrids<int>(10,10,126);
 	stShowEachGrids exec(_grids,this);
-	
-	setBlock(GridIndex(2,2), GridIndex::STATIC_BLOCK);
-	setBlock(GridIndex(3,2), GridIndex::STATIC_BLOCK);
-	for (int i = 0; i < 100;i++)
+	for (int i = 3; i < 10;i++)
 	{
 		setBlock(GridIndex(i,2), GridIndex::STATIC_BLOCK);
 	}

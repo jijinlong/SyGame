@@ -130,7 +130,9 @@ bool StartScene::init()
 		monster->start("monster1.xml");
 		map->addMonster(monster);
 		
-		monster->setPosition(GridIndex(0,0));
+		monster->setPosition(GridIndex(1,1));
+
+		monster->jumpTo(GridIndex(0,0));
 	}
 	CCSprite *sprite = CCSprite::create("cell.png");
 	if (sprite)

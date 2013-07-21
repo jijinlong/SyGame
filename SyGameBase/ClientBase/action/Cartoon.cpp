@@ -31,7 +31,7 @@ CCFiniteTimeAction * CartoonInfo::createAction(CCNode * self,CCNode *parent,cons
 		followAction->isTempTarget = true;
 		cartoonType = OTHER;
 	}
-	else if (!point.equals(CCPointZero) && frameType != TIME_FRAMES)
+	else if (!point.equals(ccp(-1,-1)) && frameType != TIME_FRAMES)
 	{
 		// ÒÆ¶¯¶¯»­
 		CartoonMoveAction * moveAction = CartoonMoveAction::create(*this,point);

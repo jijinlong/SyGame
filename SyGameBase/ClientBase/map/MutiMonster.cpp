@@ -415,7 +415,7 @@ void MutiMonster::putMyCartoon(CartoonInfo *info)
 	}
 	else
 	{
-		runAction(this->getParent(),info,ccp(0,0),getNowTarget());
+		runAction(this->getParent(),info,ccp(-1,-1),getNowTarget());
 	}
 }
 
@@ -474,7 +474,15 @@ bool MutiMonster::checkIn(const CCPoint &point)
  */
 bool MutiMonster::checkCollideInMap(const GridIndex& nextIndex)
 {
-	return map->checkCollide(nextIndex,&myindexs);
+	std::vector<GridIndex> tempindexs;
+	for (std::vector<GridIndex>::iterator iter = myindexs.begin(); iter != myindexs.end();++iter)
+	{
+		GridIndex temp;
+		temp.x = nextIndex.x + iter->x;
+		temp.y = nextIndex.y + iter->y;
+		tempindexs.push_back(temp);
+	}
+	return map->checkCollide(nextIndex,&tempindexs);
 }
 /**
  * 根据点获取地图上实际像素位置
@@ -520,7 +528,6 @@ void MutiMonster::setPosition(const CCPoint &point)
 
 void MutiMonster::freshBlock()
 {
-	map->clearBlock(maybeLocationIndex,GridIndex::MONSTER_BLOCK);
 	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
 	map->setBlock(getNowIndex(),GridIndex::MONSTER_BLOCK);
 	nowLocationIndex = getNowIndex();
