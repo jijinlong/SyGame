@@ -79,7 +79,7 @@ public:
 	GridIndex getIndexByLocation(const CCPoint &point);
 	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out);
 
-	bool checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid = 0);
+	bool checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid = 0,int blockType = 1);
 	std::vector<CCSprite*> tempDebugBlocks;
 protected:
 	AStarSeachInHexagonGrids<int>* _grids; // Íø¸ñÏµÍ³

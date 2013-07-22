@@ -180,11 +180,38 @@ void MutiMonster::nextStep()
 		if (point.moveState == MoveActionPoint::LEFTING)
 		{
 			// 向左移动
-			
+			if (this->checkNotDownCollide(this->getStartMyIndex())) // 优先下降
+			{
+				movePath.clear();// 重新设定路径 
+				getPreparePath("down",this->getNowIndex());
+			}
+			else if (!this->checkNotLeftCollide(point.index))
+			{
+				movePath.clear(); // 左边碰撞了 则静止
+			}
+			else
+			{
+				getPreparePath("left",point.index);
+			// 下边有物 左边无阻挡 则继续
+			}
 		}
 		if (point.moveState == MoveActionPoint::RIGHTING)
 		{
 			// 向右移动
+			if (this->checkNotDownCollide(this->getStartMyIndex())) // 优先下降
+			{
+				movePath.clear();// 重新设定路径 
+				getPreparePath("down",this->getNowIndex());
+			}
+			else if (!this->checkNotRightCollide(point.index))
+			{
+				movePath.clear(); // 左边碰撞了 则静止
+			}
+			else
+			{
+				getPreparePath("right",point.index);
+			// 下边有物 左边无阻挡 则继续
+			}
 		}
 	}
 	if (nowAstarDestination.index.isValid() && nowAstarDestination.index.equal(getNowIndex()))
@@ -340,6 +367,32 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 			indexNode = indexNode.getNextNode("index");
 		}
 	}
+	script::tixmlCodeNode leftindexsNode = node->getFirstChildNode("leftindexs");
+	if (leftindexsNode.isValid())
+	{
+		script::tixmlCodeNode indexNode = myindexsNode.getFirstChildNode("index");
+		while (indexNode.isValid())
+		{
+			GridIndex index;
+			index.x = indexNode.getInt("x");
+			index.y = indexNode.getInt("y");
+			leftindexs.push_back(index); // 自己占据的格子数
+			indexNode = indexNode.getNextNode("index");
+		}
+	}
+	script::tixmlCodeNode rightindexsNode = node->getFirstChildNode("rightindexs");
+	if (rightindexsNode.isValid())
+	{
+		script::tixmlCodeNode indexNode = myindexsNode.getFirstChildNode("index");
+		while (indexNode.isValid())
+		{
+			GridIndex index;
+			index.x = indexNode.getInt("x");
+			index.y = indexNode.getInt("y");
+			rightindexs.push_back(index); // 自己占据的格子数
+			indexNode = indexNode.getNextNode("index");
+		}
+	}
 	script::tixmlCodeNode myRectNode = node->getFirstChildNode("rect");
 	if (myRectNode.isValid())
 	{
@@ -465,11 +518,14 @@ void MutiMonster::clearAstar()
 	nowAstarDestination.index.x = -1;
 	nowAstarDestination.index.y = -1;
 }
-void MutiMonster::jumpTo(const GridIndex &point)
+void MutiMonster::jumpTo()
 {
 	this->getPreparePath("jump",this->getStartMyIndex());
 }
-
+void MutiMonster::moveLeft()
+{
+	this->getPreparePath("left",this->getStartMyIndex());
+}
 GridIndex MutiMonster::getStartMyIndex()
 {
 	GridIndex index = getNowIndex();
@@ -555,7 +611,7 @@ void MutiMonster::freshBlock()
 */
 bool MutiMonster::checkOnlyButtomCollide(const GridIndex &nextIndex)
 {
-	if (map->checkCollide(nextIndex,NULL)) return true;
+	if (map->checkCollide(nextIndex,NULL,GridIndex::HORIZONTAL_BLOCK | GridIndex::STATIC_BLOCK)) return true;
 	return false;
 }
 
@@ -564,15 +620,26 @@ bool MutiMonster::checkOnlyButtomCollide(const GridIndex &nextIndex)
 */
 bool MutiMonster::checkNotDownCollide(const GridIndex &nextIndex)
 {
-	if (map->checkCollide(nextIndex,NULL)) return false;
-	return true;
+	return checkNotDirCollide(nextIndex,botoomindexs,GridIndex::HORIZONTAL_BLOCK | GridIndex::STATIC_BLOCK);
 }
 /**
 * 左部没有碰撞
 */
 bool MutiMonster::checkNotLeftCollide(const GridIndex &nextIndex)
 {
-	if (map->checkCollide(nextIndex,NULL)) return false;
+	return checkNotDirCollide(nextIndex,leftindexs,GridIndex::HORIZONTAL_BLOCK);
+}
+bool MutiMonster::checkNotDirCollide(const GridIndex &nextIndex,std::vector<GridIndex> &dirindexs,int index)
+{
+	std::vector<GridIndex> tempindexs;
+	for (std::vector<GridIndex>::iterator iter = dirindexs.begin(); iter != dirindexs.end();++iter)
+	{
+		GridIndex temp;
+		temp.x = nextIndex.x + iter->x;
+		temp.y = nextIndex.y + iter->y;
+		tempindexs.push_back(temp);
+	}
+	if (map->checkCollide(nextIndex,&tempindexs,index)) return false;
 	return true;
 }
 /**
@@ -580,16 +647,14 @@ bool MutiMonster::checkNotLeftCollide(const GridIndex &nextIndex)
 */
 bool MutiMonster::checkNotUpCollide(const GridIndex &nextIndex)
 {
-	if (map->checkCollide(nextIndex,NULL)) return false;
-	return true;
+	return checkNotDirCollide(nextIndex,upindexs);
 }
 /**
 * 右部没有碰撞
 */
 bool MutiMonster::checkNotRightCollide(const GridIndex &nextIndex)
 {
-	if (map->checkCollide(nextIndex,NULL)) return false;
-	return true;
+	return checkNotDirCollide(nextIndex,rightindexs);
 }
 /**
 * 获取将要下降的点的引索

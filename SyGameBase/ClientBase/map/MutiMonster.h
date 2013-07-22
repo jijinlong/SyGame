@@ -134,7 +134,10 @@ public:
 	bool checkIn(const CCPoint &point);
 	
 	std::vector<GridIndex> myindexs; // 自己的格子列表 从配置中加载
-
+	std::vector<GridIndex> leftindexs; // 左边区域
+	std::vector<GridIndex> botoomindexs; // 下边区域
+	std::vector<GridIndex> rightindexs; // 右边区域
+	std::vector<GridIndex> upindexs; // 上边区域
 	GridIndex getStartMyIndex(); // 获取自己的起始格子
 	/**
 	 * 检查当前一个引索 是否碰撞
@@ -161,6 +164,8 @@ public:
 	 * 右部没有碰撞
 	 */
 	bool checkNotRightCollide(const GridIndex &nextIndex);
+
+	bool checkNotDirCollide(const GridIndex &nextIndex,std::vector<GridIndex> &dirindexs,int index=1);
 	/**
 	 * 获取将要下降的点的引索
 	 */
@@ -235,7 +240,9 @@ public:
 	 * 尝试实现马里奥的版本 使用六边形网格系统 几种路径预先定义
 	 * 按照既定的逻辑路线行走 若在上升阶段碰撞 则下落(碰撞静止) 若在下降阶段碰撞 则静止
 	 */
-	void jumpTo(const GridIndex &point);
+	void jumpTo();
+
+	void moveLeft();
 public:
 
 };

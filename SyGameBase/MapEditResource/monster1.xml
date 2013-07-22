@@ -37,12 +37,23 @@
 		<action name="move" id="1"/>
 		<action name="idle" id="2"/>
 	</actionnames>
-	<myindexs>
+	<myindexs> <!--我的整个区域-->
 		<index x="0" y="0"/>
 	</myindexs>
+	<leftindexs> <!--左部-->
+		<index x="0" y="0"/>
+	</leftindexs>
+	<rightindexs><!--右部-->
+		<index x="0" y="0"/>
+	</rightindexs>
 	<prepaths name="down">
 		<path dir="0">
 			<point name="" x="0" y="-1" movestate="downing"/>
+		</path>
+	</prepaths>
+	<prepaths name="left">
+		<path dir="0">
+			<point name="" x="1" y="0" movestate="lefting"/>
 		</path>
 	</prepaths>
 	<prepaths name="jump">
@@ -55,7 +66,7 @@
 			<point name="" x="6" y="0" movestate="uping"/>
 			<point name="" x="7" y="0" movestate="uping"/>
 			<point name="" x="8" y="0" movestate="uping"/>
-			<point name="" x="9" y="0" movestate="uping"/>
+			<!--point name="" x="9" y="0" movestate="uping"/-->
 		</path>
 	</prepaths>
  </Config>

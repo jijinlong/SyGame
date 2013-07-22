@@ -459,12 +459,12 @@ GridIndex MutiMap::getIndexByLocation(const CCPoint &point)
 	return _grids->getIndexByPoint(point);
 }
 
-bool MutiMap::checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid)
+bool MutiMap::checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid,int blockType)
 {
 	if (_grids)
 	{
 		int * value = _grids->getObjectByIndex(location);
-		if (!value || *value == 1)
+		if (!value || *value & blockType)
 		{
 			return true;
 		}
@@ -473,7 +473,7 @@ bool MutiMap::checkCollide(const GridIndex &location,std::vector<GridIndex> *rel
 			for (std::vector<GridIndex>::iterator iter = relateGrid->begin();iter != relateGrid->end();++iter)
 			{
 				int * value = _grids->getObjectByIndex(*iter);
-				if (!value || *value == 1)
+				if (!value || *value & blockType)
 				{
 					return true;
 				}

@@ -13,6 +13,8 @@ public:
 	enum{
 		 STATIC_BLOCK = 1,
 		 MONSTER_BLOCK= 1 << 1,
+		 HORIZONTAL_BLOCK = 1 << 2, // ºáÏòÒÆ¶¯×èµ²
+		 VERTICAL_BLOCK = 1 << 3, // ×ÝÏòÒÆ¶¯×èµ²
 	};
 	int x;
 	int y;
