@@ -30,5 +30,7 @@ public:
 	void showMapProp(UIBase *base);
 
 	void editBlock(UIBase *base);
+
+	void showControlMonster(UIBase *base);
 };
 NS_CC_END

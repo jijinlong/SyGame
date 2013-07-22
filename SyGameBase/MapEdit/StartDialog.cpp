@@ -5,6 +5,7 @@
 #include "MapManager.h"
 #include "MutiCartoon.h"
 #include "MutiImage.h"
+#include "MutiMonster.h"
 NS_CC_BEGIN
 
 
@@ -51,7 +52,11 @@ void MainDialog::doInitEvent()
 	{
 		editBlockChoice->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::editBlock));
 	}
-	
+	GET_UI_BYNAME(this,UIButton,showMonsterEditBtn,"controlmonster") // 打开一个地图 将会替换当前的地图
+	if (showMonsterEditBtn)
+	{
+		showMonsterEditBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::showControlMonster));
+	}
 }
 
 /**
@@ -635,6 +640,52 @@ void MainDialog::editBlock(UIBase *base)
 		{
 			MapManager::getMe().isSetBlock = false;
 		}
+	}
+}
+/**
+ * 控制人物的走动
+ */
+struct stControlWalk:public UICallback{
+public:
+	enum eWalkType{
+		WALK_LEFT, // 向左走
+		WALK_RIGHT, // 向右走
+		WALK_JUMP, // 向前跳跃
+	};
+	eWalkType walkType;
+	stControlWalk(eWalkType type)
+	{
+		walkType = type;
+	}
+	void callback(UIBase *base)
+	{
+		MutiMonster *monster = MapManager::getMe().nowMonster;
+		if (!monster) return;
+		// 处理逻辑
+		if (walkType == WALK_LEFT)
+		{
+			monster->moveLeft();
+		}
+		if (walkType == WALK_JUMP)
+		{
+			monster->jumpTo();
+		}
+	}
+};
+
+void MainDialog::showControlMonster(UIBase *base)
+{
+	// 展示控制面板
+	UIWindow *window = getWindow();
+	/**
+	 * 展示一个dialog 携带对应的btn 的处理事件
+	 */
+	UIPanel *panel = window->showPanel("controlmonster");// 打开controlmonster.xml 的Panel
+	if (panel)
+	{
+		panel->bindBtnClick("moveleft",new stControlWalk(stControlWalk::WALK_LEFT));
+		panel->bindBtnClick("moveright",new stControlWalk(stControlWalk::WALK_RIGHT));
+		panel->bindBtnClick("jump",new stControlWalk(stControlWalk::WALK_JUMP));
 	}
 }
 NS_CC_END

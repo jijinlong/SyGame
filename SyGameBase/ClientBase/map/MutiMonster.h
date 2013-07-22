@@ -89,6 +89,7 @@ public:
 	{
 		dir = 0;
 		map = NULL;
+		objectType = MutiObject::MOSTER_TYPE;
 	}
 	/**
 	 * 尝试从动作列表中获取一个动作 并行为

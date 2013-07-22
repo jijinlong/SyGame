@@ -71,6 +71,10 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 			if (isSetBlock) return;
 			nowObject = map->pickObject(touchPoint);
 			nowTouchPoint = touchPoint;
+			if (nowObject && nowObject->objectType == MutiObject::MOSTER_TYPE)
+			{
+				nowMonster = (MutiMonster*) nowObject;
+			}
 		}break;
 		case UIBase::TOUCH_MOVE:
 		{
@@ -82,6 +86,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
                                   nowPoint.y + touchPoint.y - nowTouchPoint.y));
 				nowTouchPoint = touchPoint;
 				nowObject->freshBlock();
+				
 				return;
 			}
 			else

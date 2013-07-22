@@ -6,6 +6,13 @@ NS_CC_BEGIN
 
 class MutiObject :public Cartoon{
 public:
+	enum MUTIOBJECT_TYPE{
+		NULL_TYPE = -1,
+		IMAGE_TYPE = 0,
+		MOSTER_TYPE = 1,
+		MUTIMAP_TYPE = 2,
+	};
+	MUTIOBJECT_TYPE objectType;
 	/**
 	 * 从配置文件中读取信息
 	 */
@@ -25,6 +32,7 @@ public:
 	MutiObject()
 	{
 		w = h = 0;
+		objectType = NULL_TYPE;
 	}
 };
 

@@ -24,8 +24,10 @@ public:
 	MutiMap * nowMap;
 	MutiMap * mapRoot;
 	CCScene *scene;
+	MutiMonster *nowMonster;
 	MapManager()
 	{
+		nowMonster = NULL;
 		mapRoot = NULL;
 		scene = NULL;
 		window = NULL;

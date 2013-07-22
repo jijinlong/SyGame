@@ -14,5 +14,7 @@
 		<button uniquename="map" x="-84" y="-120" name="地图" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 		<choice uniquename="editblock" x="-84" y="160" upname="show_choice_up.png" downname="show_choice_down.png"/>
+		<button uniquename="controlmonster" x="-84" y="210" name="怪物" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
 	</start>
 </Config>
