@@ -545,8 +545,12 @@ void Cartoon::runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCP
 	{
 		CCFiniteTimeAction *seqaction = CCSequence::create(preAction,/*CCDelayTime::create(0.5),*/
 					CCCallFunc::create(this, callfunc_selector(Cartoon::doCartoonEnd)),NULL);
+		
 		if (seqaction)
+		{
+			seqaction->setTag(info->actionTag);
 			sprite->runAction(seqaction);
+		}
 	}
 }
 void Cartoon::flyEnd(CCNode *pSender,void *arg)

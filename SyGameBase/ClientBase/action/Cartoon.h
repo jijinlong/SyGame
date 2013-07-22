@@ -18,7 +18,7 @@ public:
 	 * \param parent 当是离身动画时 承载临时Sprite
 	 */
 	CCFiniteTimeAction * createAction(CCNode * self,CCNode *parent,const cocos2d::CCPoint &point,CCNode *target);
-
+	int actionTag;
 	int cartoonId; // 动画的编号
 	std::string cartoonName; // 动画名字
 	enum{
@@ -67,6 +67,7 @@ public:
 		cartoonType = -1;
 		needTime = -1;
 		nextCartoon = NULL;
+		actionTag = -1;
 		frameType = MOVE_FRAMES;
 	}
 	CartoonInfo &operator = (const CartoonInfo &info)

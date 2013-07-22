@@ -18,6 +18,7 @@ public:
 		CONBINE_ACTION = 0, // 同时行为
 		SINGLE_ACTION = 1, // 独立行为
 		ALWAYS_ACTION = 2, // 永久行为 不离开
+		REPLACE_ACTION = 3, // 替换执行
 	};
 	ACTION_TYPE actionType; // 行为类型
 	/**

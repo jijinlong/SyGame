@@ -26,6 +26,15 @@ void ActionPool::addAction(const unsigned int& actionId)
 	{
 		actionStack.push_back(actionId);
 	}
+	/**
+	if (actionType == REPLACE_ACTION)
+	{
+		//立即执行当前动作
+		actions = actionId;
+		stopAllActions();
+		nextStep();
+	}
+	**/
 }
 /**
  * 获取动作
@@ -124,6 +133,11 @@ void MutiMonster::tryAction(const std::string& name)
 		actionPools.resize(step+1);
 	}
 	actionPools[step].addAction(name);
+	if (actionPools[step].actionType == ActionPool::REPLACE_ACTION)
+	{
+		this->stopActionByTag(step);
+		nextStep();
+	}
 }
 /**
  * 下一个动作前夕 根据动作做出行为
@@ -294,6 +308,8 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 				actionPools[id].actionType = ActionPool::SINGLE_ACTION;
 			if (typeStr == "conbine")
 				actionPools[id].actionType = ActionPool::CONBINE_ACTION;
+			if (typeStr == "replace")
+				actionPools[id].actionType = ActionPool::REPLACE_ACTION;
 			poolNode = poolNode.getNextNode("pool");
 		}
 
@@ -342,7 +358,8 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 }
 void MutiMonster::doAction()
 {
-	for (ACTIONPOOLS_ITER iter = actionPools.begin(); iter != actionPools.end();++iter)
+	int step =0;
+	for (ACTIONPOOLS_ITER iter = actionPools.begin(); iter != actionPools.end();++iter,++step)
 	{
 		unsigned int actionId = iter->getAction();
 		if (actionId != 0)
@@ -352,6 +369,7 @@ void MutiMonster::doAction()
 			{
 				nowActionName = actionId;
 				iter->popAction();
+				cartoonInfo->actionTag = step;
 				putMyCartoon(cartoonInfo);
 				return ;
 			}
