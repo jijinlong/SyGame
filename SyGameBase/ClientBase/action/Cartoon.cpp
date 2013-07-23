@@ -20,14 +20,26 @@ CartoonInfo* CartoonInfo::create()
 /**
  * 根据动画创建自身动作
  */
-CCFiniteTimeAction * CartoonInfo::createAction(CCNode * self,CCNode *parent,const cocos2d::CCPoint &point,CCNode *target)
+CCFiniteTimeAction * CartoonInfo::createAction(CCNode * self,CCNode *parent,const cocos2d::CCPoint &point,CCNode *target,stCollideTargetCallback * callback)
 {
 	// 判定是移动还是静止
 	CCFiniteTimeAction *action = NULL;
-	if (frameType == FOLLOW_FRAMES)
+	CCAnimation * animation = NULL;
+	if (frameType == FOLLOW_ANIMATIONS)
+	{
+		FollowAnimationAction * followAction = FollowAnimationAction::create(target,needTime);;
+		followAction->isTempTarget = true;
+		cartoonType = OTHER;
+		followAction->callback = callback;
+		animation = createAnimation(needTime);
+    
+		action = followAction;
+	}
+	else if (frameType == FOLLOW_FRAMES)
 	{
 		CartoonFollowAction * followAction = CartoonFollowAction::create(*this,target);
 		action = followAction;
+		followAction->callback = callback;
 		followAction->isTempTarget = true;
 		cartoonType = OTHER;
 	}
@@ -61,6 +73,10 @@ CCFiniteTimeAction * CartoonInfo::createAction(CCNode * self,CCNode *parent,cons
 			if (temp)
 			{
 				parent->addChild(temp);
+				if (animation)
+				{
+					temp->runAction(CCRepeatForever::create(CCAnimate::create(animation)));
+				}
 				//temp->setAnchorPoint(ccp(0,0));
 				temp->setPosition(self->getPosition());
 				action->setTarget(temp);
@@ -276,6 +292,10 @@ void CartoonFollowAction::updateAnimate(float t)
 void CartoonFollowAction::stop(void)
 {
 	CCNode *tempTarget = m_pTarget;
+	if (callback && target)
+	{
+		callback->exec(target);
+	}
 	if (target)
 		target->release();
 	cartoonInfo.release();
@@ -323,6 +343,10 @@ void FollowAnimationAction::update(float t)
     
 void FollowAnimationAction::stop(void)
 {
+	if (callback && followTarget)
+	{
+		callback->exec(followTarget);
+	}
     CCNode *tempTarget = m_pTarget;
 	if (followTarget)
 		followTarget->release();
@@ -510,7 +534,7 @@ void Cartoon::runMoveAction(CCNode *parent,CartoonInfo &info,float animationTime
  * \param target 跟随对象
  * CartoonInfo::create()->addNextCartoonInfo(CartoonInfo::TOGETHER,info1)->addNextCartoonInfo(CartoonInfo::TOGETHER,info2);
  */
-void Cartoon::runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCPoint &point,CCNode *target)
+void Cartoon::runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCPoint &point,CCNode *target,stCollideTargetCallback * callback)
 {
 	if (!info) return;
 	CartoonInfo * root =(CartoonInfo*) info;
@@ -519,7 +543,7 @@ void Cartoon::runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCP
 	CCFiniteTimeAction *nowAction = NULL;
 	while(root)
 	{
-		nowAction = root->createAction(sprite,parent,point,target);
+		nowAction = root->createAction(sprite,parent,point,target,callback);
 		if (!preAction)
 		{
 			preAction = CCSequence::create(nowAction,NULL);
@@ -686,7 +710,13 @@ void CartoonDirAction::takeNode(script::tixmlCodeNode *node)
 void CartoonConbineAction::takeNode(script::tixmlCodeNode *node)
 {
 	CartoonXmlAction::takeNode(node);
-	node->getAttr("nexttype",nextType);
+	std::string nextTypeStr = node->getAttr("nexttype");
+	if (nextTypeStr == "conbine")
+	{
+		nextType = 1;
+	}
+	else
+		nextType = 0;
 }
 /**
  * 构建动画
@@ -700,6 +730,7 @@ CartoonInfo* CartoonConbineAction::getCartoonInfo(int dir)
 		info->cartoonName = actionName;
 		info->needTime = needTime;
 		info->frameType = frameType;
+		info->nextConbineType = this->nextType;
 		info->cartoonType = cartoonType;
 	}
 	return info;
@@ -716,11 +747,15 @@ void CartoonXmlAction::takeNode(script::tixmlCodeNode *node)
 	{
 		this->frameType = CartoonInfo::FOLLOW_FRAMES;
 	}
-	else if (frameTypeStr == "time")
+	else if (frameTypeStr == "times")
 	{
 		this->frameType = CartoonInfo::TIME_FRAMES;
 	}
-	else
+	else if (frameTypeStr == "followanimations")
+	{
+		this->frameType = CartoonInfo::FOLLOW_ANIMATIONS;
+	}
+	else 
 	{
 		this->frameType = CartoonInfo::MOVE_FRAMES;
 	}

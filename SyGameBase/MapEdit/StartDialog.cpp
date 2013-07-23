@@ -629,6 +629,11 @@ void MainDialog::showMapProp(UIBase *base)
 
 void MainDialog::editBlock(UIBase *base)
 {
+	UIWindow *window = getWindow();
+	UIPanel *panel = window->showPanel("editblock");
+	// TODO 设定
+	// TODO 取消
+/*
 	UIChoice *choice = (UIChoice*) base;
 	if (choice)
 	{
@@ -641,6 +646,7 @@ void MainDialog::editBlock(UIBase *base)
 			MapManager::getMe().isSetBlock = false;
 		}
 	}
+*/
 }
 /**
  * 控制人物的走动
@@ -651,6 +657,7 @@ public:
 		WALK_LEFT, // 向左走
 		WALK_RIGHT, // 向右走
 		WALK_JUMP, // 向前跳跃
+		ATTACK, // 攻击
 	};
 	eWalkType walkType;
 	stControlWalk(eWalkType type)
@@ -670,6 +677,10 @@ public:
 		{
 			monster->jumpTo();
 		}
+		if (walkType == ATTACK)
+		{
+			monster->tryAction("attack");
+		}
 	}
 };
 
@@ -686,6 +697,7 @@ void MainDialog::showControlMonster(UIBase *base)
 		panel->bindBtnClick("moveleft",new stControlWalk(stControlWalk::WALK_LEFT));
 		panel->bindBtnClick("moveright",new stControlWalk(stControlWalk::WALK_RIGHT));
 		panel->bindBtnClick("jump",new stControlWalk(stControlWalk::WALK_JUMP));
+		panel->bindBtnClick("attack",new stControlWalk(stControlWalk::ATTACK));
 	}
 }
 NS_CC_END

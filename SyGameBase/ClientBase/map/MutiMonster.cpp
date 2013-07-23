@@ -191,7 +191,7 @@ void MutiMonster::nextStep()
 			}
 			else
 			{
-				getPreparePath("left",point.index);
+			//TODO	getPreparePath("left",point.index);
 			// 下边有物 左边无阻挡 则继续
 			}
 		}
@@ -209,7 +209,7 @@ void MutiMonster::nextStep()
 			}
 			else
 			{
-				getPreparePath("right",point.index);
+			//TODO	getPreparePath("right",point.index);
 			// 下边有物 左边无阻挡 则继续
 			}
 		}

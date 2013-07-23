@@ -2,7 +2,13 @@
 #include "cocos2d.h"
 #include "xmlScript.h"
 NS_CC_BEGIN
-
+/**
+ * 当动画移动到目的地时展示
+ */
+class stCollideTargetCallback{
+public:
+	virtual void exec(CCNode *node) = 0;
+};
 /**
  * 动画信息
  */
@@ -17,7 +23,7 @@ public:
 	 * 根据动画创建自身动作
 	 * \param parent 当是离身动画时 承载临时Sprite
 	 */
-	CCFiniteTimeAction * createAction(CCNode * self,CCNode *parent,const cocos2d::CCPoint &point,CCNode *target);
+	CCFiniteTimeAction * createAction(CCNode * self,CCNode *parent,const cocos2d::CCPoint &point,CCNode *target,stCollideTargetCallback * callback);
 	int actionTag;
 	int cartoonId; // 动画的编号
 	std::string cartoonName; // 动画名字
@@ -32,6 +38,7 @@ public:
 		TIME_FRAMES = 0,
 		MOVE_FRAMES = 1,
 		FOLLOW_FRAMES = 2,
+		FOLLOW_ANIMATIONS = 3, 
 	};
 	int frameType; // 是时间帧 还是移动帧
 	
@@ -145,12 +152,14 @@ public:
  * 将target retain 每帧检查是否只有 1 若是1则 返回 说明对象消失 记录的目标不变
  * 自身的动画与移动不关联
  */
+
 class CartoonFollowAction:public CCMoveTo{
 public:
 	CartoonFollowAction()
 	{
 		isTempTarget = false;
 		target = NULL;
+		callback = NULL;
 	}
 	 static CartoonFollowAction* create(const CartoonInfo &cartoonInfo,CCNode *target);
 	 /**
@@ -167,7 +176,9 @@ public:
     virtual void startWithTarget(CCNode *pTarget);
 	void updateAnimate(float t);
 	bool isTempTarget;
+	stCollideTargetCallback *callback;
 private:
+	
 	CCNode *target;
 	CartoonInfo cartoonInfo;
 	/**
@@ -187,6 +198,7 @@ public:
 	{
 		isTempTarget = false;
 		followTarget = NULL;
+		callback = NULL;
 	}
     static FollowAnimationAction* create(CCNode *target,float needTime);
    
@@ -197,6 +209,7 @@ public:
     
     virtual void startWithTarget(CCNode *pTarget);
     bool isTempTarget;
+	stCollideTargetCallback *callback;
 private:
     CCNode *followTarget; // follow it
 };
@@ -230,7 +243,7 @@ public:
 	 * \param point 目的地
 	 * \param target 跟随对象
 	 */
-	void runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCPoint &point,CCNode *target);
+	void runAction(CCNode *parent,const CartoonInfo*info,const cocos2d::CCPoint &point,CCNode *target,stCollideTargetCallback * callback = NULL);
 	/**
 	 * 飞行结束后需要清除临时节点
 	 */
