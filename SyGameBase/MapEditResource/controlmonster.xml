@@ -1,0 +1,11 @@
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<start name="controlmonster" x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true" root="true">
+			<button uniquename="moveleft" x="-44" y="80" w="64" h="32" name="左" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+			<button uniquename="moveright" x="44" y="0" w="64" h="32" name="右" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+			<button uniquename="jump" x="44" y="-80" w="64" h="32" name="跳" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+	</start>
+</Config>
