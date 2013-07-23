@@ -676,20 +676,22 @@ void Cartoon::putCartoon(CartoonInfo *action)
  */
 bool CartoonDirAction::getFrames(std::vector<CCSpriteFrame *> &frames)
 {
-	for (std::vector<std::string>::iterator iter = this->frames.begin(); iter != this->frames.end();++iter)
+	for (std::vector<stFrameInfo>::iterator iter = this->frames.begin(); iter != this->frames.end();++iter)
 	{
 		
-		CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(iter->c_str());
-		if (texture)
+		CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(iter->frameName.c_str());
+		CCSpriteFrame *frame = iter->frame;
+		if (texture && !iter->frame)
 		{
-		CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
-		frame->retain();
-		frames.push_back(frame);
+			frame = CCSpriteFrame::frameWithTexture(texture,CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
+			frame->retain();
+			frame->setOffset(iter->offset);
+			iter->frame = frame;
 		}
-		else
+		if (frame)
 		{
-			CCLOG("cant find texture");
-			//TODO
+			frame->retain();
+			frames.push_back(frame);
 		}
 	}
 	return true;
@@ -702,8 +704,11 @@ void CartoonDirAction::takeNode(script::tixmlCodeNode *node)
 	script::tixmlCodeNode frameNode = node->getFirstChildNode("frame");
 	while(frameNode.isValid())
 	{
-		std::string frameName = frameNode.getAttr("name");
-		frames.push_back(frameName);
+		stFrameInfo info;
+		info.frameName = frameNode.getAttr("name");
+		info.offset.x = frameNode.getInt("offsetx");
+		info.offset.y = frameNode.getInt("offsety");
+		frames.push_back(info);
 		frameNode = frameNode.getNextNode("frame");
 	}
 }

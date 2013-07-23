@@ -302,15 +302,30 @@ protected:
 	 virtual void v_putCartoon(CartoonInfo *action){};
 };
 
-
+struct stFrameInfo{
+	std::string frameName;
+	CCPoint offset;
+	CCSpriteFrame *frame;
+	stFrameInfo()
+	{
+		frame = NULL;
+	}
+};
 class CartoonDirAction{
 public:
 	std::string FramesName; // 帧名字
 	std::string frameLoadType; // 帧加载类型
-	std::vector<std::string> frames;
+	std::vector<stFrameInfo> frames;
 	CartoonDirAction()
 	{
 		
+	}
+	~CartoonDirAction()
+	{
+		for (std::vector<stFrameInfo>::iterator iter = frames.begin(); iter != frames.end();++iter)
+		{
+			if (iter->frame) iter->frame->release();
+		}
 	}
 	/**
 	 * 获取多帧

@@ -28,15 +28,15 @@
 		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
 			<!--播放自身动画-->
 			<dir id="0" framesname="" framestype="frames" >
-			  <frame name="cell.png"/>
-			   <frame name="close_common_up.png"/>
+			  <frame name="cell.png" offsetx="256" offsety="256"/>
+			   <frame name="close_common_up.png" offsetx="256" offsety="256"/>
 			</dir>
 		  </action>
 		   <action nexttype="0" needtime="1.2" frametype="followanimations" cartoontype="other">
 			<!--播放飞行动画-->
 			<dir id="0" framesname="" framestype="frames" >
-			  <frame name="btn_common_up.png"/>
-			  <frame name="cell.png"/>
+			  <frame name="btn_common_up.png" offsetx="256" offsety="256"/>
+			  <frame name="cell.png" offsetx="256" offsety="256"/>
 			</dir>
 		  </action>
 		</actions>
