@@ -1,5 +1,5 @@
 #include "MapManager.h"
-
+#include "MutiMonster.h"
 NS_CC_BEGIN
 UIWindow * MapManager::getWindow()
 {
@@ -74,6 +74,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 			if (nowObject && nowObject->objectType == MutiObject::MOSTER_TYPE)
 			{
 				nowMonster = (MutiMonster*) nowObject;
+				nowMonster->map->clearBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
 			}
 		}break;
 		case UIBase::TOUCH_MOVE:
@@ -100,6 +101,10 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 		}break;
 		case UIBase::TOUCH_END:
 		{
+			if (nowMonster)
+			{
+				nowMonster->map->setBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
+			}
 			if (isSetBlock)
 			{
 				map->setBlockByTouchPoint(touchPoint);

@@ -113,7 +113,7 @@ bool StartScene::init()
 		list->show(".");
 		window->pushModel(list);
 	}
-	for (int i = 0; i < 0;i++)
+	for (int i = 0; i < 5;i++)
 	{
 		MutiMonster *monster = MutiMonster::create();
 		if (monster)

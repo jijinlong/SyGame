@@ -3,7 +3,7 @@
 	<rect x="256" y="200" w="512" h="512"/>
    <conbineactions>
 		<actions name="1">
-		  <action nexttype="0" needtime="0.6" frametype="move" cartoontype="self">
+		  <action nexttype="0" needtime="0.3" frametype="move" cartoontype="self">
 			<!--先播放一号动作 紧接着播放2号动作-->
 			<dir id="0" framesname="" framestype="frames" >
 			  <frame name="skill01.png"/>
@@ -72,6 +72,14 @@
 	</actionnames>
 	<myindexs> <!--我的整个区域-->
 		<index x="0" y="0"/>
+		<index x="0" y="1"/>
+		<index x="0" y="-1"/>
+		<index x="1" y="0"/>
+		<index x="-1" y="0"/>
+		<index x="1" y="-1"/>
+		<index x="-1" y="-1"/>
+		<index x="1" y="1"/>
+		<index x="-1" y="1"/>
 	</myindexs>
 	<leftindexs> <!--左部-->
 		<index x="0" y="0"/>
@@ -79,24 +87,63 @@
 	<rightindexs><!--右部-->
 		<index x="0" y="0"/>
 	</rightindexs>
+	<idleaction>
+		<movelogic name="move" collide="false" x="0" y="-1">
+			<offset x="0" y="0"/>
+		</movelogic>
+	</idleaction>
 	<prepaths name="down">
 		<path dir="0">
-			<point name="" x="0" y="-1" movestate="downing"/>
+			<logic>
+				<!--检查是否是下降的 [当前点未碰撞则下降]-->
+				<movelogic name="move" collide="false" x="0" y="-1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
 		</path>
 	</prepaths>
 	<prepaths name="left">
 		<path dir="0">
-			<point name="" x="1" y="0" movestate="lefting"/>
+			<logic>
+				<!--检查是否是下降的 [当前点未碰撞则下降] 优先级高-->
+				<movelogic name="move" collide="false" x="0" y="-1" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="1" y="0" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+		</path>
+	</prepaths>
+	<prepaths name="right">
+		<path dir="0">
+			<logic>
+				<!--检查是否是下降的 [当前点未碰撞则下降] 优先级高-->
+				<movelogic name="move" collide="false" x="0" y="-1" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="-1" y="0" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
 		</path>
 	</prepaths>
 	<prepaths name="jump">
 		<path dir="0">
-			<point name="" x="0" y="1" movestate="uping"/>
-			<point name="" x="0" y="2" movestate="uping"/>
-			<point name="" x="1" y="3" movestate="uping"/>
-			<point name="" x="2" y="2" movestate="uping"/>
-			<point name="" x="3" y="1" movestate="uping"/>
-			<point name="" x="4" y="0" movestate="uping"/>
+			<logic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="1" y="1" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+			<logic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="1" y="0" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
 		</path>
 	</prepaths>
  </Config>

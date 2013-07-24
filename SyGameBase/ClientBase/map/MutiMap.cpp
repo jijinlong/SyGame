@@ -397,6 +397,21 @@ struct stCheckValid:public stCheckMoveAble{
 	{}
 	HexagonGrids<int> * grids;
 };
+struct stCheckValid1:public stCheckMoveAble{
+	bool exec(const GridIndex &index) 
+	{
+		int * value = grids->getObjectByIndex(index);
+		if (!value || *value != uniqueId)
+		{
+			return false;
+		}
+		return true;
+	}
+	stCheckValid1(HexagonGrids<int> * grids,int uniqueId):grids(grids),uniqueId(uniqueId)
+	{}
+	HexagonGrids<int> * grids;
+	int uniqueId;
+};
 void MutiMap::showGrids()
 {
 	stShowEachGrids exec(_grids,this);
@@ -419,6 +434,14 @@ CCPoint  MutiMap::getLocationByIndex(const GridIndex &index)
 bool  MutiMap::getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out)
 {
 	stCheckValid check(_grids);
+	return _grids->getNextGridIndex(src,dest,out,NULL,&check);
+}
+/**
+ * 寻找指定通路
+ */
+bool  MutiMap::getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out,int uniqueId)
+{
+	stCheckValid1 check(_grids,uniqueId);
 	return _grids->getNextGridIndex(src,dest,out,NULL,&check);
 }
 /**

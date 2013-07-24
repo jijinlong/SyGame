@@ -1,9 +1,10 @@
 #include "MutiMonster.h"
 #include "MutiMap.h"
 NS_CC_BEGIN
-std::map<unsigned int,MutiMonster::COBINE_ACTIONS > MutiMonster::conbineactionmaps;
+#define _SMALL_RECT 1 // 预占位 防止系统 有多占位BUG
+//std::map<unsigned int,MutiMonster::COBINE_ACTIONS > MutiMonster::conbineactionmaps;
 std::map<std::string,unsigned int> ActionPool::actionsMap;
-std::map<std::string,PrePathDecDirs> MutiMonster::prePaths;
+//std::map<std::string,PrePathDecDirs> MutiMonster::prePaths;
 void ActionPool::addAction(const std::string &name)
 {
 	unsigned int id = getActionIdByName(name);
@@ -116,6 +117,8 @@ void MutiMonster::start(const std::string &actionFile)
 	this->addChild(test);
 	test->setPosition(offset);
 	this->setAnchorPoint(ccp(offset.x/size.width,offset.y / size.height));
+
+	MutiMonsterQuickSerach::getMe().addObject(this);
 }
 /**
  * 执行某个动作 获取当前动作的优先级 然后放入到列表中 默认为0
@@ -145,125 +148,120 @@ void MutiMonster::tryAction(const std::string& name)
 void MutiMonster::nextStep()
 {
 //	 TODO
+#ifdef _SMALL_RECT
 	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
-	nowLocationIndex = this->maybeLocationIndex;
-//	当前路径不为空 或者目的地有效
-	if (isMoving())
-	{
-		MoveActionPoint &point = movePath.front();
-		if (point.moveState == MoveActionPoint::DOWNING)
-		{
-			if (this->checkOnlyButtomCollide(point.index)) // 检查是否只是下部碰撞
-			{
-				movePath.clear();// 停止				
-			}
-			else
-			{
-				getPreparePath("down",this->getStartMyIndex());
-			}
-		}
-		if (point.moveState == MoveActionPoint::UPING)
-		{
-			if (this->checkCollideInMap(point.index)) // 存在碰撞了 则下降
-			{
-				if (this->checkOnlyButtomCollide(getPreDownIndex())) // 无法下降
-				{
-					movePath.clear();// 停止	
-				}
-				else if (this->checkNotDownCollide(getPreDownIndex())) // 如果下部没碰撞 则下落
-				{
-					movePath.clear();// 重新设定路径
-					getPreparePath("down",this->getPreDownIndex());
-				}
-			}
-		}
-		if (point.moveState == MoveActionPoint::LEFTING)
-		{
-			// 向左移动
-			if (this->checkNotDownCollide(this->getStartMyIndex())) // 优先下降
-			{
-				movePath.clear();// 重新设定路径 
-				getPreparePath("down",this->getNowIndex());
-			}
-			else if (!this->checkNotLeftCollide(point.index))
-			{
-				movePath.clear(); // 左边碰撞了 则静止
-			}
-			else
-			{
-			//TODO	getPreparePath("left",point.index);
-			// 下边有物 左边无阻挡 则继续
-			}
-		}
-		if (point.moveState == MoveActionPoint::RIGHTING)
-		{
-			// 向右移动
-			if (this->checkNotDownCollide(this->getStartMyIndex())) // 优先下降
-			{
-				movePath.clear();// 重新设定路径 
-				getPreparePath("down",this->getNowIndex());
-			}
-			else if (!this->checkNotRightCollide(point.index))
-			{
-				movePath.clear(); // 左边碰撞了 则静止
-			}
-			else
-			{
-			//TODO	getPreparePath("right",point.index);
-			// 下边有物 左边无阻挡 则继续
-			}
-		}
-	}
-	if (nowAstarDestination.index.isValid() && nowAstarDestination.index.equal(getNowIndex()))
-	{
-	//	nowAstarDestination.index.x = -1;
-	}
-	// 检查是否在终点
-	// 不在继续走
-	if (nowAstarDestination.index.isValid() && !nowAstarDestination.index.equal(getNowIndex()) && !isMoving()) // 使用Astar 继续寻路
-		moveToUseAstar(nowAstarDestination.index);
-	else if(!isMoving())
-	{
-		if (!this->checkOnlyButtomCollide(this->getStartMyIndex()))
-			getPreparePath("down",this->getStartMyIndex()); // 尝试下坠
-	}
+#endif
+	//nowLocationIndex = this->maybeLocationIndex;
+	doMoveControl();
+	//doAIControl();
 	doAction();
 	
 }
-
-void MoveActionPoint::takeNode(script::tixmlCodeNode *node)
+void MutiMonster::doAIControl()
+{
+	// 检查是否在终点
+	// 不在继续走
+	if (nowAstarDestination.isValid() && !nowAstarDestination.equal(getNowIndex()) && !isMoving()) // 使用Astar 继续寻路
+		moveToUseAstar(nowAstarDestination);
+}
+/**
+ * 执行当前行为
+ * \param monster 怪物
+ * \return 该条件是否执行
+ **/
+bool MoveCheckLogic::doLogic(MutiMonster *monster)
+{
+	GridIndex temp = monster->getStartMyIndex();
+	if (monster->checkNotDirCollide(monster->getStartMyIndex(),offsets) && !isCollide)
+	{
+		temp.x += this->destination.x;
+		temp.y += this->destination.y;
+		monster->movePath.push_back(temp);
+		monster->tryAction(this->actionName);
+		return true;
+	}
+	if (!monster->checkNotDirCollide(monster->getStartMyIndex(),offsets,blockType) && isCollide)
+	{
+		temp.x += this->destination.x;
+		temp.y += this->destination.y;
+		monster->movePath.push_back(temp);
+		monster->tryAction(this->actionName);
+		return true;
+	}
+	return false;
+}
+void MoveCheckLogic::takeNode(script::tixmlCodeNode *node)
 {
 	actionName = node->getAttr("name");
-	index.x = node->getInt("x");
-	index.y = node->getInt("y");
-	std::string moveStateStr = node->getAttr("movestate");
-	if (moveStateStr == "uping")
+	std::string collideStr = node->getAttr("collide");
+	if (collideStr == "true")
 	{
-		moveState = MoveActionPoint::UPING;
+		isCollide = true;
 	}
-	if (moveStateStr == "downing")
+	else
 	{
-		moveState = MoveActionPoint::DOWNING;
+		isCollide = false;
 	}
-	if (moveStateStr == "lefting")
+	destination.x = node->getInt("x");
+	destination.y = node->getInt("y");
+	blockType = node->getInt("blocktype");
+	script::tixmlCodeNode offsetNode = node->getFirstChildNode("offset");
+	while (offsetNode.isValid())
 	{
-		moveState = MoveActionPoint::LEFTING;
+		GridIndex offset;
+		offset.x = offsetNode.getInt("x");
+		offset.y = offsetNode.getInt("y");
+		offsets.push_back(offset);
+		offsetNode = offsetNode.getNextNode("offset");
 	}
-	if (moveStateStr == "righting")
+}
+/**
+ * 移动控制器
+ */
+void MutiMonster::doMoveControl()
+{
+	if (!isControl())
 	{
-		moveState = MoveActionPoint::RIGHTING;
+		idleLogic.doLogic(this);
+	}
+	else// 外部控制了
+	{
+		MoveActionLogic &logic = logics.front();
+		logic.doLogic(this);
+		logics.pop_front();
+	}
+}
+void MoveActionLogic::takeNode(script::tixmlCodeNode *node)
+{
+	script::tixmlCodeNode movelogicNode = node->getFirstChildNode("movelogic");
+	while (movelogicNode.isValid())
+	{
+		MoveCheckLogic check;
+		check.takeNode(&movelogicNode);
+		checks.push_back(check);
+		movelogicNode = movelogicNode.getNextNode("movelogic");
+	}
+}
+void MoveActionLogic::doLogic(MutiMonster *monster)
+{
+	for (CHECKS_ITER iter = checks.begin();iter != checks.end();++iter)
+	{
+		if (iter->doLogic(monster))
+		{
+			return;
+		}
 	}
 }
 void PrePathDec::takeNode(script::tixmlCodeNode *node)
 {
 	dir = node->getInt("dir");
-	script::tixmlCodeNode pointNode = node->getFirstChildNode("point");
+	script::tixmlCodeNode pointNode = node->getFirstChildNode("logic");
 	while(pointNode.isValid())
 	{
-		MoveActionPoint point;
+		MoveActionLogic point;
 		point.takeNode(&pointNode);
 		indexs.push_back(point);
-		pointNode = pointNode.getNextNode("point");
+		pointNode = pointNode.getNextNode("logic");
 	}
 }
 void PrePathDecDirs::takeNode(script::tixmlCodeNode *node)
@@ -367,32 +365,6 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 			indexNode = indexNode.getNextNode("index");
 		}
 	}
-	script::tixmlCodeNode leftindexsNode = node->getFirstChildNode("leftindexs");
-	if (leftindexsNode.isValid())
-	{
-		script::tixmlCodeNode indexNode = myindexsNode.getFirstChildNode("index");
-		while (indexNode.isValid())
-		{
-			GridIndex index;
-			index.x = indexNode.getInt("x");
-			index.y = indexNode.getInt("y");
-			leftindexs.push_back(index); // 自己占据的格子数
-			indexNode = indexNode.getNextNode("index");
-		}
-	}
-	script::tixmlCodeNode rightindexsNode = node->getFirstChildNode("rightindexs");
-	if (rightindexsNode.isValid())
-	{
-		script::tixmlCodeNode indexNode = myindexsNode.getFirstChildNode("index");
-		while (indexNode.isValid())
-		{
-			GridIndex index;
-			index.x = indexNode.getInt("x");
-			index.y = indexNode.getInt("y");
-			rightindexs.push_back(index); // 自己占据的格子数
-			indexNode = indexNode.getNextNode("index");
-		}
-	}
 	script::tixmlCodeNode myRectNode = node->getFirstChildNode("rect");
 	if (myRectNode.isValid())
 	{
@@ -407,6 +379,11 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 		prePath.takeNode(&prePathNode);
 		prePaths[prePath.name] = prePath;
 		prePathNode = prePathNode.getNextNode("prepaths");
+	}
+	script::tixmlCodeNode idleNode = node->getFirstChildNode("idleaction");
+	if (idleNode.isValid())
+	{
+		idleLogic.takeNode(&idleNode);
 	}
 }
 void MutiMonster::doAction()
@@ -480,7 +457,7 @@ void MutiMonster::putMyCartoon(CartoonInfo *info)
 	 //处理动作
 	if (isMoving())
 	{
-		CCPoint dest = getLocationByIndex(movePath.front().index);
+		CCPoint dest = getLocationByIndex(movePath.front());
 		movePath.pop_front();
 		runAction(this->getParent(),info,dest,getNowTarget());
 	}
@@ -495,32 +472,61 @@ void MutiMonster::moveToUseAstar(const GridIndex &point)
 {
 		//使用Astar 移动
 	GridIndex nextIndex;
+#ifdef _SMALL_RECT
 	if (map->getNextPosition(getNowIndex(),point,nextIndex))
+#else
+	if (map->getNextPosition(getNowIndex(),point,nextIndex,uniqueSerachId))
+#endif
 	{
 		nowLocationIndex = getNowIndex();
+#ifdef _SMALL_RECT
 		maybeLocationIndex = nextIndex;
 		map->setBlock(maybeLocationIndex,GridIndex::MONSTER_BLOCK);
 		map->setBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
-	
-		MoveActionPoint movePoint;
-		movePoint.actionName = "move";
-		movePoint.index = nextIndex;
-		movePath.push_back(movePoint);
+#else
+		clearMyBlocks(nowLocationIndex);
+		setMyBlocks(nextIndex);
+#endif	
+		movePath.push_back(nextIndex);
+		tryAction("move");
+	}
+}
+void MutiMonster::setMyBlocks(const GridIndex &point)
+{
+	for (int i = 0; i < myindexs.size();i++)
+	{
+		GridIndex temp = myindexs[i];
+		temp.x += point.x;
+		temp.y += point.y;
+		map->setBlock(temp,uniqueSerachId);
+	}
+}
+void MutiMonster::clearMyBlocks(const GridIndex &point)
+{
+	for (int i = 0; i < myindexs.size();i++)
+	{
+		GridIndex temp = myindexs[i];
+		temp.x += point.x;
+		temp.y += point.y;
+		map->clearBlock(temp,uniqueSerachId);
 	}
 }
 void MutiMonster::tryMoveUseAstr(const GridIndex &index)
 {
-	nowAstarDestination.actionName = "move";
-	nowAstarDestination.index = index;
+	nowAstarDestination = index;
 }
 void MutiMonster::clearAstar()
 {
-	nowAstarDestination.index.x = -1;
-	nowAstarDestination.index.y = -1;
+	nowAstarDestination.x = -1;
+	nowAstarDestination.y = -1;
 }
 void MutiMonster::jumpTo()
 {
 	this->getPreparePath("jump",this->getStartMyIndex());
+}
+void MutiMonster::doControl(const std::string &name)
+{
+	this->getPreparePath(name,this->getStartMyIndex());
 }
 void MutiMonster::moveLeft()
 {
@@ -543,21 +549,7 @@ bool MutiMonster::checkIn(const CCPoint &point)
 	CCRect rect = CCRectMake(x,y,width,height);
 	return rect.containsPoint(pos);
 }
-/**
- * 检查当前一个引索 是否碰撞
- */
-bool MutiMonster::checkCollideInMap(const GridIndex& nextIndex)
-{
-	std::vector<GridIndex> tempindexs;
-	for (std::vector<GridIndex>::iterator iter = myindexs.begin(); iter != myindexs.end();++iter)
-	{
-		GridIndex temp;
-		temp.x = nextIndex.x + iter->x;
-		temp.y = nextIndex.y + iter->y;
-		tempindexs.push_back(temp);
-	}
-	return map->checkCollide(nextIndex,&tempindexs);
-}
+
 /**
  * 根据点获取地图上实际像素位置
  */
@@ -592,6 +584,9 @@ MutiMonster * MutiMonster::getNowTarget()
 void MutiMonster::setPosition(const GridIndex &point)
 {
 	CCSprite::setPosition(map->getLocationByIndex(point));
+#ifndef _SMALL_RECT
+	setMyBlocks(point);
+#endif
 }
 void MutiMonster::setPosition(const CCPoint &point)
 {
@@ -602,33 +597,11 @@ void MutiMonster::setPosition(const CCPoint &point)
 
 void MutiMonster::freshBlock()
 {
-	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
-	map->setBlock(getNowIndex(),GridIndex::MONSTER_BLOCK);
-	nowLocationIndex = getNowIndex();
-}
-/**
-* 检查只是底部碰撞了
-*/
-bool MutiMonster::checkOnlyButtomCollide(const GridIndex &nextIndex)
-{
-	if (map->checkCollide(nextIndex,NULL,GridIndex::HORIZONTAL_BLOCK | GridIndex::STATIC_BLOCK)) return true;
-	return false;
+//	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
+//	map->setBlock(getNowIndex(),GridIndex::MONSTER_BLOCK);
+//	nowLocationIndex = getNowIndex();
 }
 
-/**
-* 下部没有碰撞
-*/
-bool MutiMonster::checkNotDownCollide(const GridIndex &nextIndex)
-{
-	return checkNotDirCollide(nextIndex,botoomindexs,GridIndex::HORIZONTAL_BLOCK | GridIndex::STATIC_BLOCK);
-}
-/**
-* 左部没有碰撞
-*/
-bool MutiMonster::checkNotLeftCollide(const GridIndex &nextIndex)
-{
-	return checkNotDirCollide(nextIndex,leftindexs,GridIndex::HORIZONTAL_BLOCK);
-}
 bool MutiMonster::checkNotDirCollide(const GridIndex &nextIndex,std::vector<GridIndex> &dirindexs,int index)
 {
 	std::vector<GridIndex> tempindexs;
@@ -642,20 +615,7 @@ bool MutiMonster::checkNotDirCollide(const GridIndex &nextIndex,std::vector<Grid
 	if (map->checkCollide(nextIndex,&tempindexs,index)) return false;
 	return true;
 }
-/**
-* 上部没有碰撞
-*/
-bool MutiMonster::checkNotUpCollide(const GridIndex &nextIndex)
-{
-	return checkNotDirCollide(nextIndex,upindexs);
-}
-/**
-* 右部没有碰撞
-*/
-bool MutiMonster::checkNotRightCollide(const GridIndex &nextIndex)
-{
-	return checkNotDirCollide(nextIndex,rightindexs);
-}
+
 /**
 * 获取将要下降的点的引索
 */
@@ -672,14 +632,7 @@ void MutiMonster::getPreparePath(const std::string &name,const GridIndex &point)
 	PRE_PATHS_ITER iter = prePaths.find(name);
 	if (iter != prePaths.end() && iter->second.paths.size())
 	{
-		std::vector<MoveActionPoint>& points = iter->second.paths.at(0).indexs;
-		for (int i = 0; i < points.size();i++)
-		{
-			MoveActionPoint temp = points.at(i);
-			temp.index.x += point.x;
-			temp.index.y += point.y;
-			movePath.push_back(temp);
-		}
+		logics = *iter->second.getLogic(0);
 	}
 }
 NS_CC_END

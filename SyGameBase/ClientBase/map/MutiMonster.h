@@ -3,8 +3,10 @@
 #include "xmlScript.h"
 #include "HexagonGrids.h"
 #include "MutiObject.h"
+#include "quickidmanager.h"
 NS_CC_BEGIN
 class MutiMap;
+class MutiMonster;
 class ActionPool{
 public:
 	static std::map<std::string,unsigned int> actionsMap;
@@ -38,32 +40,50 @@ public:
 		actionType = SINGLE_ACTION;
 	}
 };
-
-class MoveActionPoint{
+/**
+ * 当前点是否能够执行
+ */
+class MoveCheckLogic{
 public:
-	GridIndex index; //当前移动的位置
-	std::string actionName; // 当前移动的行为
-	enum MOVESTATE{ // 标示当前一定的状态 相对于前一个点
-		NULL_STATE = -1,
-		UPING = 0, // 上升
-		DOWNING = 1, // 下降
-		LEFTING = 2, // 向左
-		RIGHTING = 3, // 向右
-	};
-	MOVESTATE moveState;
-	MoveActionPoint()
+	std::vector<GridIndex> offsets; // 检查的偏移列表
+	bool isCollide; // 判断是否碰撞
+	std::string actionName; // 行为名字
+	GridIndex destination; // 目的地
+	int blockType;
+	MoveCheckLogic()
 	{
-		moveState = NULL_STATE;
+		blockType = 1;
+		isCollide = false;
 	}
+	/**
+	 * 执行当前行为
+	 * \param monster 怪物
+	 * \return 该条件是否执行
+	 **/
+	bool doLogic(MutiMonster *monster);
 	void takeNode(script::tixmlCodeNode *node);
 };
+/**
+ * 当前点执行
+ */
+class MoveActionLogic{
+public:
+	std::vector<MoveCheckLogic> checks;
+	typedef std::vector<MoveCheckLogic>::iterator CHECKS_ITER;
+	MoveActionLogic()
+	{
+	}
+	void takeNode(script::tixmlCodeNode *node);
+	void doLogic(MutiMonster *monster);
+};
+typedef std::list<MoveActionLogic> MOVE_LOGICS;
 /**
  * 预定义的路径说明
  */
 class PrePathDec{
 public:
 	int dir; // 方向
-	std::vector<MoveActionPoint> indexs; // 引索列表
+	MOVE_LOGICS indexs; // 引索列表
 	void takeNode(script::tixmlCodeNode *node);
 };
 /**
@@ -74,12 +94,46 @@ public:
 	std::string name; // 名字
 	std::vector<PrePathDec> paths;
 	void takeNode(script::tixmlCodeNode *node);
+
+	MOVE_LOGICS* getLogic(int dir)
+	{
+		if (dir < paths.size())
+		{
+			return &paths.at(dir).indexs;
+		}
+		return NULL;
+	}
+};
+class MutiMonsterQuickSerach:public QuickIdManager{
+public:
+	static MutiMonsterQuickSerach &getMe()
+	{
+		static MutiMonsterQuickSerach me;
+		return me;
+	}
 };
 /**
  * 实现怪物在地图上的各种动作
  */
-class MutiMonster:public MutiObject,public script::tixmlCode{
+class MutiMonster:public MutiObject,public script::tixmlCode,public QuickObjectBase{
 public:
+	int uniqueSerachId;
+	 /**
+	 * 设置快速唯一索引
+	 * \param uniqueQuickId 设置快速唯一索引
+	 */
+	virtual void setUniqueQuickId(int uniqueQuickId)
+	{
+		this->uniqueSerachId = uniqueQuickId;
+	}
+	/**
+	 * 获取快速唯一索引
+	 * \return 快速唯一索引
+	 */
+	virtual int getUniqueQuickId()
+	{
+		return uniqueSerachId;
+	}
 	static MutiMonster * create();
 	int dir;
 	CCPoint offset; // 相对偏移
@@ -87,6 +141,7 @@ public:
 	MutiMap *map;
 	MutiMonster()
 	{
+		uniqueSerachId = 0;
 		dir = 0;
 		map = NULL;
 		objectType = MutiObject::MOSTER_TYPE;
@@ -108,6 +163,12 @@ public:
 	 * 下一个动作前夕 根据动作做出行为
 	 */
 	void nextStep();
+	void doAIControl();
+	void doMoveControl();
+	/**
+	 * 检查是否需要停止
+	 */
+	bool checkNeedStop(const GridIndex &index);
 	/**
 	 * 执行行为
 	 */
@@ -125,46 +186,18 @@ public:
 	CartoonInfo * makeMyCartoon(const unsigned int&,int dir);
 	void putMyCartoon(CartoonInfo *info);
 	typedef std::vector<CartoonConbineAction> COBINE_ACTIONS;
-	static std::map<unsigned int,COBINE_ACTIONS > conbineactionmaps; // 行为表
+	/*static*/ std::map<unsigned int,COBINE_ACTIONS > conbineactionmaps; // 行为表
 	typedef std::map<unsigned int,COBINE_ACTIONS >::iterator CONBINEACTIONMAPS_ITER;
 	unsigned int nowActionName;
 
-	static std::map<std::string,PrePathDecDirs> prePaths; // 各种预定义的路径
+	/*static*/ std::map<std::string,PrePathDecDirs> prePaths; // 各种预定义的路径
 	typedef std::map<std::string,PrePathDecDirs>::iterator PRE_PATHS_ITER;
 
 	bool checkIn(const CCPoint &point);
 	
 	std::vector<GridIndex> myindexs; // 自己的格子列表 从配置中加载
-	std::vector<GridIndex> leftindexs; // 左边区域
-	std::vector<GridIndex> botoomindexs; // 下边区域
-	std::vector<GridIndex> rightindexs; // 右边区域
-	std::vector<GridIndex> upindexs; // 上边区域
+	
 	GridIndex getStartMyIndex(); // 获取自己的起始格子
-	/**
-	 * 检查当前一个引索 是否碰撞
-	 */
-	bool checkCollideInMap(const GridIndex& nextIndex);
-	/**
-	 * 检查只是底部碰撞了
-	 */
-	bool checkOnlyButtomCollide(const GridIndex &nextIndex);
-
-	/**
-	 * 下部没有碰撞
-	 */
-	bool checkNotDownCollide(const GridIndex &nextIndex);
-	/**
-	 * 左部没有碰撞
-	 */
-	bool checkNotLeftCollide(const GridIndex &nextIndex);
-	/**
-	 * 上部没有碰撞
-	 */
-	bool checkNotUpCollide(const GridIndex &nextIndex);
-	/**
-	 * 右部没有碰撞
-	 */
-	bool checkNotRightCollide(const GridIndex &nextIndex);
 
 	bool checkNotDirCollide(const GridIndex &nextIndex,std::vector<GridIndex> &dirindexs,int index=1);
 	/**
@@ -201,26 +234,33 @@ public:
 	void setPosition(const CCPoint &point);
 
 	void freshBlock();
+
+	void setMyBlocks(const GridIndex &point);
+	void clearMyBlocks(const GridIndex &point);
+
+	void doControl(const std::string &name);
 public:
 	/**
 	 * 判断当前是否移动
 	 */
 	bool isMoving();
-	
+	bool isControl(){return logics.size();}
 	
 	/**
 	 * 当前目的地 使用于Astar
 	 */
-	MoveActionPoint nowAstarDestination;
+	GridIndex nowAstarDestination;
 	/**
 	 * 将移动的路径
 	 */
-	std::list<MoveActionPoint> movePath;
+	std::list<GridIndex> movePath;
+
+	MOVE_LOGICS logics;
 	/**
 	 * 当前目标集合
 	 */
 	std::list<MutiMonster*> targets;
-
+	
 	/**
 	 * 获取当前的目标
 	 */
@@ -245,7 +285,7 @@ public:
 
 	void moveLeft();
 public:
-
+	MoveActionLogic idleLogic;
 };
 
 NS_CC_END

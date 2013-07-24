@@ -78,7 +78,7 @@ public:
 	CCPoint getLocationByIndex(const GridIndex &index);
 	GridIndex getIndexByLocation(const CCPoint &point);
 	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out);
-
+	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out,int uniqueId);
 	bool checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid = 0,int blockType = 1);
 	std::vector<CCSprite*> tempDebugBlocks;
 protected:

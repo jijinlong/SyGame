@@ -681,6 +681,10 @@ public:
 		{
 			monster->tryAction("attack");
 		}
+		if (walkType == WALK_RIGHT)
+		{
+			monster->doControl("right");
+		}
 	}
 };
 
