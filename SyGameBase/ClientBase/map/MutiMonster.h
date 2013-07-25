@@ -246,6 +246,8 @@ public:
 	void clearMyBlocks(const GridIndex &point);
 
 	void doControl(const std::string &name);
+
+	void doCheckTargets();// 检查当前目标
 public:
 	/**
 	 * 判断当前是否移动

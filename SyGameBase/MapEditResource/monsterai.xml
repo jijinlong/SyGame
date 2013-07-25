@@ -1,10 +1,30 @@
+<!--首份bossAI 文件-->
 <code name="dobirth">
 	<print content="hello,world"/>
-	<putskill name="attack"/>
+	<move targetx="" targety=""/><!--移动到某点-->
+	<setattacklasttime value=""/> <!--设置攻击的最大时间-->
+	<seteyeshort value=""/> <!--设置视野-->
+	<setshortdistance value=""/> <!--设置攻击距离-->
+</code>
+<code name="doobjectenter"> 
+	<locksuittarget type="replace"/> <!--寻找最优的目标-->
+</code>
+<code name="doattackobject">
+	<putskill name="attack"/> <!--攻击-->
+</code>
+<code name="dotried">
+	<moverandomarround/> <!--绕圈-->
 </code>
 
+<code name="doattackme">
+	<locksuittarget type="replace"/> <!--寻找最优的目标-->
+</code>
 <Config>
 	<ai id="0">
-		<event name="BIRTH" code="dobirth"/>
+		<event name="BIRTH" code="dobirth"/> <!--出生-->
+		<event name="TARGET_ENTER" code="doobjectenter"/> <!--对象进入视野-->
+		<event name="MEET_TARGET" code="doattackobject"/> <!--正面碰到对象-->
+		<event name="ATTACK_TRIED" code="dotried"/> <!--攻击累了-->
+		<event name="ATTACK_ME" code="doattackme"/> <!--攻击我了-->
 	</ai>
 </Config>

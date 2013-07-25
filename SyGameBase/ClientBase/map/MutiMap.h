@@ -81,6 +81,8 @@ public:
 	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out,int uniqueId);
 	bool checkCollide(const GridIndex &location,std::vector<GridIndex> *relateGrid = 0,int blockType = 1);
 	std::vector<CCSprite*> tempDebugBlocks;
+	AStarSeachInHexagonGrids<int>* getGrids(){return _grids;}
+
 protected:
 	AStarSeachInHexagonGrids<int>* _grids; // 网格系统
 	std::list<MutiImage*> _images; // 图片集合

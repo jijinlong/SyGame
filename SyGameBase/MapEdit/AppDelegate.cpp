@@ -55,7 +55,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     pDirector->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
-    pDirector->setAnimationInterval(1.0 / 20);
+    pDirector->setAnimationInterval(1.0 / 40);
 
     // create a scene. it's an autorelease object
     CCScene *pScene = StartScene::scene();

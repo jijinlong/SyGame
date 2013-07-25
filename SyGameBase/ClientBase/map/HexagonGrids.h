@@ -2,6 +2,7 @@
 #include "vector"
 #include "cocos2d.h"
 #include <algorithm>
+#include "xmlScript.h"
 NS_CC_BEGIN
 /**
  * 六边形的网格系统
@@ -66,81 +67,6 @@ public:
 		
 	}
 }; 
-/**
- * 遍历一圈
- */
-struct stOneCircleSearch:public stSearchLogic{
-public:
-	virtual bool getNext(GridIndex &index)
-	{
-		static GridIndex indexs[6]={
-			GridIndex(0,1),
-			GridIndex(-1,-1),
-			GridIndex(1,-1),
-			GridIndex(1,0),
-			GridIndex(0,1),
-			GridIndex(0,1)
-		}; // 辐射表
-		if (startIndex >= 6) return false;
-		index.x += indexs[startIndex].x;
-		index.y += indexs[startIndex].y;
-		startIndex ++;
-		return true;
-	}
-	stOneCircleSearch()
-	{
-		startIndex = 0;
-	}
-	int startIndex;
-};
-/**
- * 右半圈1格范围
- */
-struct stRightHalfSearch:public stSearchLogic{
-public:
-	virtual bool getNext(GridIndex &index)
-	{
-		static GridIndex indexs[3]={
-			GridIndex(1,1),
-			GridIndex(0,-1),
-			GridIndex(0,-1),
-		};// 辐射表
-		if (startIndex >= 3) return false;
-		index.x += indexs[startIndex].x;
-		index.y += indexs[startIndex].y;
-		startIndex ++;
-		return true;
-	}
-	stRightHalfSearch()
-	{
-		startIndex = 0;
-	}
-	int startIndex;
-};
-/**
- * 左半圈1格范围
- */
-struct stLeftHalfSearch:public stSearchLogic{
-public:
-	virtual bool getNext(GridIndex &index)
-	{
-		static GridIndex indexs[3]={
-			GridIndex(0,1),
-			GridIndex(-1,-1),
-			GridIndex(1,-1),
-		}; // 辐射表
-		if (startIndex >= 3) return false;
-		index.x += indexs[startIndex].x;
-		index.y += indexs[startIndex].y;
-		startIndex ++;
-		return true;
-	}
-	stLeftHalfSearch()
-	{
-		startIndex = 0;
-	}
-	int startIndex;
-};
 /**
  * 六边形网格系统
  */
@@ -536,4 +462,84 @@ public:
 		return index;
 	}
 };
+/**
+ * 遍历一圈
+ */
+class XmlSearch:public stSearchLogic{
+public:
+	virtual bool getNext(GridIndex &index)
+	{
+		if (startIndex >= indexs.size()) return false;
+		index.x += indexs[startIndex].x;
+		index.y += indexs[startIndex].y;
+		startIndex ++;
+		return true;
+	}
+	XmlSearch()
+	{
+		startIndex = 0;
+	}
+	void takeNode(script::tixmlCodeNode *node)
+	{
+		script::tixmlCodeNode offsetNode = node->getFirstChildNode("point");
+		while (offsetNode.isValid())
+		{
+			GridIndex index;
+			index.x = offsetNode.getInt("x");
+			index.y = offsetNode.getInt("y");
+			indexs.push_back(index);
+			offsetNode = offsetNode.getNextNode("point");
+		}
+	}
+	int startIndex;
+	std::vector<GridIndex> indexs;
+};
+/**
+ * 搜寻策略管理器
+ */
+class SerachTypeManager:public script::tixmlCode{
+public:
+	static SerachTypeManager &getMe()
+	{
+		static SerachTypeManager stm;
+		return stm;
+	}
+	std::map<std::string,XmlSearch> searches;
+	stSearchLogic nullLogic;
+	typedef std::map<std::string,XmlSearch>::iterator SEARCHES_ITER;
+	void init()
+	{
+		std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath("searchtypes.xml");
+		unsigned long nSize = 0;
+		unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
+		if (!nSize)return;
+		map->initFromString((char*)buffer);
+	}
+	void takeNode(script::tixmlCodeNode *node)
+	{
+		if (node && node->equal("Config"))
+		{
+			script::tixmlCodeNode typeNode = node->getFirstChildNode("search"):
+			while (typeNode.isValid())
+			{
+				std::string name = typeNode.getAttr("name");
+				XmlSearch search;
+				search.takeNode(&typeNode);
+				searches[name] = serach;
+				typeNode = typeNode.getNextNode("search");
+			}
+		}
+	}
+	XmlCircleSearch & getSeachByName(const std::string &name)
+	{
+		SEARCHES_ITER iter = searches.find(name);
+		if (iter != searches.end())
+		{
+			return iter->second;
+		}
+		return nullLogic;
+	}
+};
+
+#define SEARCH_TYPE(name) SerachTypeManager::getMe().getSeachByName(name)
 NS_CC_END

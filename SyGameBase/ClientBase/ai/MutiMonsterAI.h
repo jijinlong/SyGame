@@ -29,6 +29,7 @@ public:
 		ATTACK_ME = 4, // 被人攻击
 		IDLE_ACTION = 5, // 空闲时间段
 		MEET_TARGET = 6, // 对象在攻击范围内 
+		HAD_TARGET = 7, // 有目标的状态
 	};
 	/**
  	 * 增加一个code
@@ -48,13 +49,22 @@ public:
 	int type;
 	AIAction action;
 };
+class MutiMonsterRefrence
+{
+public:
+	MutiMonster * monster;
+	DWORD uniqueId;
+
+	bool isValid(){return true;} // 当前引用是否有效
+};
 /**
  * ai 的执行者
  * */
 class MutiAIStub{
 public:
 	MutiMonster *npc;
-	std::vector<MutiMonster> targetPool; // 对象池 0 号对象为默认处理池
+	std::vector<MutiMonsterRefrence> targetPool; // 对象池 0 号对象为默认处理池
+	typedef std::vector<MutiMonsterRefrence>::iterator TARGETPOOL_ITER;
 	MutiAIStub()
 	{
 		npc = NULL;
@@ -127,6 +137,31 @@ public:
      * 触发技能
      * */    
     int putskill(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 行走到 目标
+	 * <movetotarget/>
+	 **/
+	
+	/**
+	 * 设定距离最短的为当前攻击对象 重新设定lock对象
+	 * <lockmindistacetarget/>
+	 */
+	
+	/**
+	 * 将权值最大者锁定 重新设定
+	 * <locksuittarget/>
+	 **/
+
+	/**
+	 * 行走到目的地
+	 * <move targetx="" targety=""/>
+	 */
+	
+	/**
+	 * 沿着目标绕圈
+	 * <moverandarround/>
+	 */
 };
 
 #define theAILib MonsterAILib::getMe()
