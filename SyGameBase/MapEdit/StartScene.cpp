@@ -7,6 +7,8 @@
 #include "MutiImage.h"
 #include "UIFileList.h"
 #include "MutiMonster.h"
+#include "Layer3D.h"
+#include "CCSprite3D.h"
 USING_NS_CC;
 
 
@@ -67,6 +69,16 @@ CCScene* StartScene::scene()
 
 bool StartScene::init()
 {
+	CCSprite3D *d3 = CCSprite3D::create("terran.md2", "terran.png");
+	if (d3)
+	{
+		this->addChild(d3);
+	}
+	Layer3D *layer3D = Layer3D::create();
+	if (layer3D)
+	{
+	//	this->addChild(layer3D);
+	}
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 	window = UIWindow::create();
