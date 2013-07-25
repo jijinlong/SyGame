@@ -1,5 +1,6 @@
 #include "MutiMonster.h"
 #include "MutiMap.h"
+#include "MutiMonsterAI.h"
 NS_CC_BEGIN
 #define _SMALL_RECT 1 // 预占位 防止系统 有多占位BUG
 //std::map<unsigned int,MutiMonster::COBINE_ACTIONS > MutiMonster::conbineactionmaps;
@@ -93,6 +94,11 @@ MutiMonster * MutiMonster::create()
 	CC_SAFE_DELETE(monster);
 	return NULL;
 }
+MutiAIStub* MutiMonster::getStub() // 获取编号
+{
+	stub.npc = this;
+	return &stub;
+}
 /**
  * 尝试从动作列表中获取一个动作 并行为
  * 若无动作则执行延时
@@ -117,8 +123,9 @@ void MutiMonster::start(const std::string &actionFile)
 	this->addChild(test);
 	test->setPosition(offset);
 	this->setAnchorPoint(ccp(offset.x/size.width,offset.y / size.height));
-
 	MutiMonsterQuickSerach::getMe().addObject(this);
+
+	theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::BIRTH); // 处理出生事件
 }
 /**
  * 执行某个动作 获取当前动作的优先级 然后放入到列表中 默认为0

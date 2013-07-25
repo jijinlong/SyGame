@@ -69,6 +69,7 @@ CCScene* StartScene::scene()
 
 bool StartScene::init()
 {
+	theAILib.initWithFile("monsterai.xml");
 	CCSprite3D *d3 = CCSprite3D::create("terran.md2", "terran.png");
 	if (d3)
 	{

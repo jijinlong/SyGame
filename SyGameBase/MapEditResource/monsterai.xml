@@ -1,0 +1,10 @@
+<code name="dobirth">
+	<print content="hello,world"/>
+	<putskill name="attack"/>
+</code>
+
+<Config>
+	<ai id="0">
+		<event name="BIRTH" code="dobirth"/>
+	</ai>
+</Config>

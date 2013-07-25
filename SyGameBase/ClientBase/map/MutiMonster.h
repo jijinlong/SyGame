@@ -4,6 +4,7 @@
 #include "HexagonGrids.h"
 #include "MutiObject.h"
 #include "quickidmanager.h"
+#include "MutiMonsterAI.h"
 NS_CC_BEGIN
 class MutiMap;
 class MutiMonster;
@@ -112,6 +113,7 @@ public:
 		return me;
 	}
 };
+class MutiAIStub;
 /**
  * 实现怪物在地图上的各种动作
  */
@@ -139,8 +141,13 @@ public:
 	CCPoint offset; // 相对偏移
 	CCSize size; // 我的有效面积
 	MutiMap *map;
+
+	int monsterAIID; // 怪物的AI编号
+	MutiAIStub stub;
+	MutiAIStub* getStub(); // 获取编号
 	MutiMonster()
 	{
+		monsterAIID = 0;
 		uniqueSerachId = 0;
 		dir = 0;
 		map = NULL;
