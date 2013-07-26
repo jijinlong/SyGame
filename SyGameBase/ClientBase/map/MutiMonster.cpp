@@ -159,9 +159,10 @@ void MutiMonster::nextStep()
 	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
 #endif
 	//nowLocationIndex = this->maybeLocationIndex;
-	doMoveControl();
-	//doAIControl();
+	//doMoveControl();
+	doAIControl();
 	doAction();
+	doCheckTargets();
 	
 }
 void MutiMonster::doAIControl()
@@ -170,6 +171,8 @@ void MutiMonster::doAIControl()
 	// 不在继续走
 	if (nowAstarDestination.isValid() && !nowAstarDestination.equal(getNowIndex()) && !isMoving()) // 使用Astar 继续寻路
 		moveToUseAstar(nowAstarDestination);
+	if (nowAstarDestination.isValid() && nowAstarDestination.equal(getNowIndex()))
+		theAILib.execEvent(this->monsterAIID,this->getStub(),MutiAI::MOVE_TO_DESTIONATION); // 移动到目的地
 }
 /**
  * 执行当前行为
@@ -653,13 +656,16 @@ int MutiMonster::calcDistance(MutiMonster *monster)
 }
 //TODO AI 的事件触发 主要是发现目标 查看目标状态
 struct stSeachTargets:stExecEachMonster{
-	void exec(MutiMonster *monster)
+	void exec(MutiMonster *temp)
 	{
-		MutiMonster * target = monster;
-		if (monster->stub.getTargetCount() < monster->data.maxTargets)
+		MutiMonster * target = temp;
+		if (target != this->monster)
 		{
-			monster->stub.addTarget(target);
-			theAILib.execEvent(monster->monsterAIID,monster->getStub(),MutiAI::TARGET_ENTER);
+			if (monster->stub.getTargetCount() < monster->data.maxTargets)
+			{
+				monster->stub.addTarget(target);
+				theAILib.execEvent(monster->monsterAIID,monster->getStub(),MutiAI::TARGET_ENTER);
+			}
 		}
 	}
 	stSeachTargets(MutiMonster *monster):monster(monster)
@@ -680,7 +686,7 @@ void MutiMonster::doCheckTargets()
 			iter->uniqueId = -1;
 		}
 		// 检查是否远离了
-		if (iter->monster->calcDistance(this) > data.eyeshort)
+		if (iter->monster && iter->monster->calcDistance(this) > data.eyeshort)
 		{
 			theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET_LEAVE);
 		}
@@ -696,15 +702,28 @@ void MutiMonster::doCheckTargets()
 	{
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET); // 有物体状态
 	}
-	if (stub.getTarget()->calcDistance(this) > data.eyeshort)
+	MutiMonsterRefrence *ref = stub.getTargetRef();
+	if (ref && ref->checkTimeOut(data.maxLastAttackTime))
 	{
+		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::ATTACK_TRIED); // 有物体状态
+	}
+	int target = this->calcDistance(stub.getTarget());
+	if (target > data.eyeshort)
+	{
+		stub.removeTarget();
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::TARGET_LEAVE); // 锁定的目标离开了
 	}
 	// 检查是否在攻击范围内
-	if (stub.getTarget()->calcDistance(this) < data.attackdistance)
+	if (target >= 0 && target < data.attackdistance)
 	{
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::MEET_TARGET); // 可以攻击的对象了
 	}
 }
-
+/**
+ * 获取周围随机一个有效点
+ */
+GridIndex MutiMonster::getAroundRandomPoint()
+{
+	return GridIndex(-1,-1);
+}
 NS_CC_END

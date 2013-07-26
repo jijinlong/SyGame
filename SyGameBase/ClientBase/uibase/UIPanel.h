@@ -247,6 +247,10 @@ public:
 		}
 		vTakeNode(node);
 	}
+	virtual void parseCode(script::tixmlCodeNode *code)
+	{
+		theUILib.parseCode(code); // 汇聚可执行节点
+	}
 	virtual void vTakeNode(script::tixmlCodeNode *node){}
 	BaseDialog()
 	{

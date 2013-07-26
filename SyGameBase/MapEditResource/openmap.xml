@@ -1,3 +1,7 @@
+<code name="openMapCreate">
+	<panelbind name="openmap" btnname="open" event="openmaplogic"/>
+	<panelbind name="openmap" btnname="cancel" event="hideme"/>
+</code>
 <Config>
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
 	<start name="openmap" x="0" y="0" width="0" height="0"  local="34" 

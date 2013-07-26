@@ -31,6 +31,8 @@ public:
 		MEET_TARGET = 6, // 对象在攻击范围内 
 		HAD_TARGET = 7, // 有目标的状态
 		HAD_TARGET_LEAVE = 8, // 有对象离开
+		MOVE_TO_DESTIONATION = 9,// 移动到目的地
+		ATTACK_TRIED = 10, // 连续攻击时间过长
 	};
 	/**
  	 * 增加一个code
@@ -54,9 +56,16 @@ class MutiMonsterRefrence
 {
 public:
 	MutiMonster * monster;
-	DWORD uniqueId;
-
+	int uniqueId;
+	cc_timeval attackStartTime; // 攻击持续时间
 	bool isValid(){return true;} // 当前引用是否有效
+	MutiMonsterRefrence()
+	{
+		CCTime::gettimeofdayCocos2d(&attackStartTime,NULL);
+		monster = NULL;
+		uniqueId  = -1;
+	}
+	bool checkTimeOut(int timeout);
 };
 /**
  * ai 的执行者
@@ -74,9 +83,10 @@ public:
 	{
 		this->npc = npc;
 	}
+	void removeTarget();
 	int getTargetCount(); // 当前对象的数量
 	MutiMonster * getTarget(); // 获取当前对象
-
+	MutiMonsterRefrence * getTargetRef(); // 获取当前对象池
 	void addTarget(MutiMonster *monster); // 增加对象
 };
 /**
@@ -147,26 +157,55 @@ public:
 	 * 行走到 目标
 	 * <movetotarget/>
 	 **/
-	
+	int movetotarget(MutiAIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 设定距离最短的为当前攻击对象 重新设定lock对象
 	 * <lockmindistacetarget/>
 	 */
-	
+	int lockmindistacetarget(MutiAIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 将权值最大者锁定 重新设定
 	 * <locksuittarget/>
 	 **/
-
+	int locksuittarget(MutiAIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 行走到目的地
 	 * <move targetx="" targety=""/>
 	 */
-	
+	int move(MutiAIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 沿着目标绕圈
 	 * <moverandarround/>
 	 */
+	int moverandarround(MutiAIStub* stub,script::tixmlCodeNode * node);
+	
+	/**
+	 * 清除当前移动路径
+	 */
+	int clearmovepath(MutiAIStub* stub,script::tixmlCodeNode * node);
+	
+	/**
+	 * 设置当前攻击时间
+	 */
+	int resetattacktime(MutiAIStub* stub,script::tixmlCodeNode * node);
+	/**
+	 * 检查攻击的持续时间
+	 */
+	int checkattacklasttime(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 检查当前的位置
+	 */
+	int checknowposition(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 更改事件响应函数
+	 **/
+	
+	/**
+	 * 检查当前的目标
+	 */
+	int checknowtarget(MutiAIStub* stub,script::tixmlCodeNode * node);
 };
 
 #define theAILib MonsterAILib::getMe()

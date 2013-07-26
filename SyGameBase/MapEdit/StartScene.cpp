@@ -128,27 +128,29 @@ bool StartScene::init()
 		list->show(".");
 		window->pushModel(list);
 	}
-	for (int i = 0; i < 5;i++)
+	for (int i = 0; i < 1;i++)
 	{
 		MutiMonster *monster = MutiMonster::create();
 		if (monster)
 		{
+			monster->monsterAIID = 1;
 			monster->start("monster1.xml");
 			map->addMonster(monster);
-			monster->tryMoveUseAstr(GridIndex(5+i,5));
+		//	monster->tryMoveUseAstr(GridIndex(5+i,5));
 			monster->setPosition(GridIndex(0,i));
+			
 		}
 	}
 	MutiMonster *monster = MutiMonster::create();
 	if (monster)
 	{
+		monster->monsterAIID = 0;
 		monster->start("monster1.xml");
 		map->addMonster(monster);
-		
 		monster->setPosition(GridIndex(1,0));
 
 		//monster->jumpTo();
-		monster->moveLeft();
+	//	monster->moveLeft();
 	}
 	CCSprite *sprite = CCSprite::create("cell.png");
 	if (sprite)

@@ -119,6 +119,16 @@ public:
 	int eyeshort; // 视野距离
 	int maxTargets; // 最多统计数量
 	int attackdistance; // 攻击距离
+	int id;
+	int maxLastAttackTime;
+	MutiMonsterData()
+	{
+		maxLastAttackTime = 10;
+		id = 0;
+		eyeshort = 4;
+		maxTargets = 10;
+		attackdistance = 2;
+	}
 };
 /**
  * 实现怪物在地图上的各种动作
@@ -255,6 +265,8 @@ public:
 	void doControl(const std::string &name);
 
 	void doCheckTargets();// 检查当前目标
+
+	GridIndex getAroundRandomPoint(); // 获取随机点
 public:
 	/**
 	 * 判断当前是否移动

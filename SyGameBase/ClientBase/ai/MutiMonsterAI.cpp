@@ -49,16 +49,64 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,std::string name)
 
 int MutiAIStub::getTargetCount() // 当前对象的数量
 {
-	return targetPool.size();
+	int count = 0;
+	for (TARGETPOOL_ITER iter = targetPool.begin();iter != targetPool.end();++iter)
+	{
+		if (iter->monster)
+		{
+			count ++;
+		}
+	}
+	return count;
+}
+
+void MutiAIStub::removeTarget()
+{
+	if (targetPool.size()) targetPool.at(0).monster = NULL;
 }
 MutiMonster * MutiAIStub::getTarget() // 获取当前对象
 {
 	if (targetPool.size()) return targetPool.at(0).monster;
 	return NULL;
 }
+MutiMonsterRefrence * MutiAIStub::getTargetRef()
+{
+	if (targetPool.size()) return &targetPool.at(0);
+	return NULL;
+}
 void MutiAIStub::addTarget(MutiMonster *monster) // 增加对象
 {
-	
+	for (TARGETPOOL_ITER iter = targetPool.begin();iter != targetPool.end();++iter)
+	{
+		if (iter->monster == monster)
+		{
+			return;
+		}
+	}
+	MutiMonsterRefrence ref;
+	ref.monster = monster;
+	ref.uniqueId = monster->uniqueSerachId;
+	CCTime::gettimeofdayCocos2d(&ref.attackStartTime,NULL);
+	for (TARGETPOOL_ITER iter = targetPool.begin();iter != targetPool.end();++iter)
+	{
+		if (!iter->monster)
+		{
+			iter->monster = monster;
+			iter->uniqueId = monster->uniqueSerachId;
+			CCTime::gettimeofdayCocos2d(&iter->attackStartTime,NULL);
+			return;
+		}
+	}
+	targetPool.push_back(ref);
+
+}
+bool MutiMonsterRefrence::checkTimeOut(int timeout)
+{
+	cc_timeval nowTime;
+	CCTime::gettimeofdayCocos2d(&nowTime,NULL);
+	float dis = CCTime::timersubCocos2d(&attackStartTime,&nowTime) / 1000;
+	if (dis >= timeout) return true;
+	return false;
 }
 #define BIND_AI_ACTION(func)\
 	{\
@@ -76,6 +124,12 @@ void MonsterAILib::bindActions()
 	BIND_AI_ACTION(exec);
 // 相关npc ai 的扩展
 	BIND_AI_ACTION(putskill);
+	BIND_AI_ACTION(move);
+	BIND_AI_ACTION(movetotarget);
+	BIND_AI_ACTION(checkattacklasttime);
+	BIND_AI_ACTION(resetattacktime);
+	BIND_AI_ACTION(clearmovepath);
+	BIND_AI_ACTION(checknowtarget);
 }
 void MonsterAILib::initWithFile(const char *fileName)
 {
@@ -147,5 +201,134 @@ int MonsterAILib::putskill(MutiAIStub* stub,script::tixmlCodeNode * node)
 		stub->npc->tryAction(node->getAttr("name"));
 	}
 	return 1;
+}
+
+/**
+ * 行走到 目标
+ * <movetotarget/>
+ **/
+int MonsterAILib::movetotarget(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	MutiMonster *target = stub->getTarget();
+	if (stub && target)
+	{
+		stub->npc->tryMoveUseAstr(target->getNowIndex());
+	}
+	return 1;
+}
+/**
+ * 设定距离最短的为当前攻击对象 重新设定lock对象
+ * <lockmindistacetarget/>
+ */
+int MonsterAILib::lockmindistacetarget(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	return 1;
+}
+/**
+ * 将权值最大者锁定 重新设定
+ * <locksuittarget/>
+ **/
+int MonsterAILib::locksuittarget(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	return 1;
+}
+/**
+ * 行走到目的地
+ * <move targetx="" targety=""/>
+ */
+int MonsterAILib::move(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->npc)
+	{
+		stub->npc->tryMoveUseAstr(GridIndex(node->getInt("x"),node->getInt("y")));
+	}
+	return 1;
+}
+/**
+ * 沿着目标绕圈
+ * <moverandarround/>
+ */
+int MonsterAILib::moverandarround(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	return 1;
+}
+
+int MonsterAILib::clearmovepath(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->npc)
+	{
+		stub->npc->movePath.clear();
+	}
+	return 1;
+}
+
+/**
+ * 设置当前攻击时间
+ */
+int MonsterAILib::resetattacktime(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->npc)
+	{
+		MutiMonsterRefrence * ref = stub->getTargetRef();
+		if (ref)
+		{
+			 CCTime::gettimeofdayCocos2d(&ref->attackStartTime,NULL);
+		}
+	}
+	return 1;
+}
+/**
+ * 检查攻击的持续时间
+ */
+int MonsterAILib::checkattacklasttime(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->npc)
+	{
+		int lastTime = node->getInt("value");
+		MutiMonsterRefrence * ref = stub->getTargetRef();
+		if (ref)
+		{
+			cc_timeval nowTime;
+			CCTime::gettimeofdayCocos2d(&nowTime,NULL);
+			float disTime = CCTime::timersubCocos2d(&ref->attackStartTime,&nowTime) / 1000;
+			if (disTime >= lastTime)
+			{
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+/**
+ * 检查当前的位置
+ */
+int MonsterAILib::checknowposition(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->npc)
+	{
+		GridIndex nowIndex = stub->npc->getNowIndex();
+		
+		if (nowIndex.equal(GridIndex(node->getInt("x"),node->getInt("y"))))
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+/**
+ * 检查当前的目标
+ */
+int MonsterAILib::checknowtarget(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->npc)
+	{
+		MutiMonster *monster = stub->getTarget();	
+		if (monster)
+		{
+			return monster->data.id = node->getInt("id");
+		}
+	}
+	return 0;
 }
 NS_CC_END
