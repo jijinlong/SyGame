@@ -89,6 +89,16 @@ void MutiMap::execEachBg(stExecEachBackgroud *bg)
 		bg->exec(*iter);
 	}
 }
+void MutiMap::execAllMonster(stExecEachMonster *exec)
+{
+	for (MONSTERS_ITER iter = _monsters.begin();iter != _monsters.end();++iter)
+	{
+		if (*iter)
+		{
+			exec->exec(*iter);
+		}
+	}
+}
 /**
  * 从配置文件中读取信息
  */

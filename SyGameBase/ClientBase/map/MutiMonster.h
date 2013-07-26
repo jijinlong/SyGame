@@ -114,11 +114,18 @@ public:
 	}
 };
 class MutiAIStub;
+class MutiMonsterData{
+public:
+	int eyeshort; // 视野距离
+	int maxTargets; // 最多统计数量
+	int attackdistance; // 攻击距离
+};
 /**
  * 实现怪物在地图上的各种动作
  */
 class MutiMonster:public MutiObject,public script::tixmlCode,public QuickObjectBase{
 public:
+	MutiMonsterData data;
 	int uniqueSerachId;
 	 /**
 	 * 设置快速唯一索引
@@ -219,7 +226,7 @@ public:
 	 * 获取当前的引索
 	 */
 	GridIndex getNowIndex();
-
+	int calcDistance(MutiMonster *monster);
 	/**
 	 * 检查当前行为中是否包含自己
 	 */

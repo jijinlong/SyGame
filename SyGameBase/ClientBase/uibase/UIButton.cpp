@@ -1,5 +1,5 @@
 #include "UIButton.h"
-
+#include "UILib.h"
 NS_CC_BEGIN
 /**
  * 创建
@@ -173,6 +173,8 @@ bool UIButton::touchEnd(float x,float y)
 		{
 			// 触发事件
 			doEvent(UIBase::EVENT_CLICK_DOWN,this);
+			UIStub stub(this,NULL);
+			theUILib.execCode(&stub,this->onClickCodeName.c_str());
 			tag = true;
 		}
 		else
@@ -315,6 +317,8 @@ bool UITextButton::touchEnd(float x,float y)
 		{
 			// 触发事件
 			doEvent(UIBase::EVENT_CLICK_DOWN,this);
+			UIStub stub(this,NULL);
+			theUILib.execCode(&stub,this->onClickCodeName.c_str());
 		}
 		
 	}

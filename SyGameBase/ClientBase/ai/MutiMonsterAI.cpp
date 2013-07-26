@@ -35,13 +35,30 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,std::string name)
 		}
 		events[BIRTH] = code;
 	}
+	
 	// 以后扩展欢迎使用宏
 	BIND_AI_EVENT(TARGET_ENTER); // 对象进入视野	
 	BIND_AI_EVENT(TARGET_LEAVE); // 对象离开视野
 	BIND_AI_EVENT(IDLE_ACTION); // 空闲行为
 	BIND_AI_EVENT(ATTACK_ME); // 攻击我了
 	BIND_AI_EVENT(MEET_TARGET); // 目标在攻击范围内
+	BIND_AI_EVENT(HAD_TARGET_LEAVE); // 有对象离开
+	BIND_AI_EVENT(HAD_TARGET); //有对象
 	return true;
+}
+
+int MutiAIStub::getTargetCount() // 当前对象的数量
+{
+	return targetPool.size();
+}
+MutiMonster * MutiAIStub::getTarget() // 获取当前对象
+{
+	if (targetPool.size()) return targetPool.at(0).monster;
+	return NULL;
+}
+void MutiAIStub::addTarget(MutiMonster *monster) // 增加对象
+{
+	
 }
 #define BIND_AI_ACTION(func)\
 	{\
@@ -78,20 +95,21 @@ void MonsterAILib::takeNode(script::tixmlCodeNode* node)
 		script::tixmlCodeNode codePtr = aiNode.getFirstChildNode("event");
 		MutiAI *ai = new MutiAI();
 		aiNode.getAttr("id",ai->id);
+		if (ai->id >= npcAis.size())
+		{
+			npcAis.resize(ai->id + 1);
+		}
+		if (!npcAis[ai->id])
+		{
+			npcAis[ai->id] = ai;	
+		}
+		else
+			delete ai;
 		while (codePtr.isValid())
 		{
 			std::string name = codePtr.getAttr("name");
 			std::string code = codePtr.getAttr("code");
-			if (ai->id >= npcAis.size()) npcAis.resize(ai->id + 1);
-			if (!npcAis[ai->id])
-			{
-				npcAis[ai->id] = ai;	
-				ai->addCode(findCode(code.c_str()),name);
-			}
-			else
-			{
-				delete ai;
-			}	
+			npcAis[ai->id]->addCode(findCode(code.c_str()),name);
 			codePtr = codePtr.getNextNode("event");	
 		}	
 		aiNode = aiNode.getNextNode("ai");

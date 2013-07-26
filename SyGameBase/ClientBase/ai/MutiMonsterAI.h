@@ -30,6 +30,7 @@ public:
 		IDLE_ACTION = 5, // 空闲时间段
 		MEET_TARGET = 6, // 对象在攻击范围内 
 		HAD_TARGET = 7, // 有目标的状态
+		HAD_TARGET_LEAVE = 8, // 有对象离开
 	};
 	/**
  	 * 增加一个code
@@ -73,6 +74,10 @@ public:
 	{
 		this->npc = npc;
 	}
+	int getTargetCount(); // 当前对象的数量
+	MutiMonster * getTarget(); // 获取当前对象
+
+	void addTarget(MutiMonster *monster); // 增加对象
 };
 /**
  * 执行库

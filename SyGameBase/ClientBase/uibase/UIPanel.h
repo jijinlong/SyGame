@@ -11,6 +11,7 @@
 #include "UIImage.h"
 #include "UIEditField.h"
 #include "UIChoice.h"
+#include "UILib.h"
 NS_CC_BEGIN
 class UIWindow;
 struct stExecPanelEach{
@@ -93,8 +94,10 @@ public:
 	 */
 	void makeXmlFile(const std::string &name);
 	bool initXFromNode(script::tixmlCodeNode *node);
+	UIWindow *window;
 	UIPanel()
 	{
+		window = NULL;
 		_moveable = true;
 		_width = 0;
 		_height = 0;
@@ -115,7 +118,7 @@ public:
 	void loadFromFile(const char *fileName);
 
 	void saveToFile(const char *fileName);
-
+	UIPanel * getPanel(){return this;}
 	void execEach(stExecPanelEach *exec);
 	/**
 	 * 展示自己是 只响应自身事件
@@ -237,6 +240,8 @@ public:
 				}
 				else
 					window->addPanel(this);
+				UIStub stub(this,window);
+				theUILib.execCode(&stub,this->onCreateCodeName.c_str());
 				this->setZOrder(12);
 			}
 		}
@@ -247,7 +252,7 @@ public:
 	{
 		window = NULL;
 	}
-	UIWindow *window;
+	
 protected:
 	virtual void doInitEvent(){}
 };

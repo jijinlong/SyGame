@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\ai;.\3d;.\map;.\pngplus;.\libpng;.\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
+				AdditionalIncludeDirectories=".\uilib;.\ai;.\3d;.\map;.\pngplus;.\libpng;.\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -744,11 +744,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
@@ -821,6 +821,18 @@
 			</File>
 			<File
 				RelativePath=".\ai\var.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="uilib"
+			>
+			<File
+				RelativePath=".\uilib\UILib.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uilib\UILib.h"
 				>
 			</File>
 		</Filter>

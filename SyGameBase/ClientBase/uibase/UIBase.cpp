@@ -3,6 +3,7 @@
 #include "UILabel.h"
 #include "UIEditField.h"
 #include "UIPanel.h"
+#include "UIWindow.h"
 NS_CC_BEGIN
 //! convert from wstring to UTF8 using self-coding-converting
 inline void WStrToUTF8(std::string& dest, const std::wstring& src){
@@ -63,7 +64,7 @@ bool UIBase::bind(int uiEvnet,UICallback *callback)
 {
 	if (uiEvnet >= event_functions.size())
 		event_callbacks.resize(uiEvnet + 1);
-	if (event_callbacks[uiEvnet]) delete event_callbacks[uiEvnet];
+	if (event_callbacks[uiEvnet]) return false;
 	event_callbacks[uiEvnet] = callback;
 	return true;
 }
@@ -87,6 +88,17 @@ void UIBase::doEvent(int uiEvent,UIBase *base)
 			callback->callback(base);
 		}
 	}
+}
+UIWindow *UIBase::getDepthWindow()
+{
+	CCNode * temp = this;
+	UIWindow * window = dynamic_cast<UIWindow*>(temp);
+	while (!window)
+	{
+		temp = temp->getParent();
+		window = dynamic_cast<UIWindow*>(temp);
+	}
+	return window;
 }
 /**
 * ÉèÖÃ ¿É¼û
@@ -118,6 +130,8 @@ TiXmlElement * UIBase::makeNode(TiXmlElement *parent,const std::string &name)
 	baseNode->SetAttribute("uniqueid",uniqueId);
 	baseNode->SetAttribute("name",name);
 	baseNode->SetAttribute("uniquename",uniqueName);
+	baseNode->SetAttribute("oncreate",this->onCreateCodeName);
+	baseNode->SetAttribute("onclick",this->onClickCodeName);
 	return baseNode;
 }
 /**

@@ -11,6 +11,7 @@
 #include "UIWindow.h"
 #include "UIXmlBag.h"
 #include "UICenterBag.h"
+#include "UILib.h"
 NS_CC_BEGIN
 
 UIPanel * UIPanel::createFromNode(script::tixmlCodeNode *snode)
@@ -459,6 +460,15 @@ UIButton * UIPanel::createBtn(script::tixmlCodeNode &btnNode)
 			btn->setSize(w,h);
 			addGloabUI(btn);
 			nameuis[uniquename] = btn;
+
+			btnNode.getAttr("oncreate",btn->onCreateCodeName);
+			btnNode.getAttr("onclick",btn->onClickCodeName);
+			if (btn->onCreateCodeName != "")
+			{
+				UIStub stub(btn,this->getWindow());
+
+				theUILib.execCode(&stub,btn->onCreateCodeName.c_str()); // ´´½¨´úÂë
+			}
 		}
 	}
 	return btn;
@@ -659,6 +669,9 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	int zOrder = node->getInt("zorder");
 	this->setZOrder(zOrder);
 	std::string moveable = node->getAttr("moveable");
+	node->getAttr("oncreate",this->onCreateCodeName);
+	UIStub stub(this,window);
+	
 	if (moveable == "false")
 	{
 		this->setMovable(false);
@@ -667,8 +680,6 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	{
 		this->setMovable(true);
 	}
-
-	
 
 	std::string visible = node->getAttr("visible");
 	if (visible == "false")
@@ -913,6 +924,7 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 	if (w && h)
 		this->setSize(w,h);
 	this->setPosition(x,y);
+	
 	return true;
 }
 
@@ -951,7 +963,6 @@ UIBase* UIPanel::getUIByName(std::string name)
 }
 UIWindow *UIPanel::getWindow()
 {
-	UIWindow *window = static_cast<UIWindow*>(this->getParent());
 	return window;
 }
 void UIPanel::bindBtnClick(const std::string &btnName,UICallback *callback)

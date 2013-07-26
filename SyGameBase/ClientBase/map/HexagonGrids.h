@@ -505,7 +505,7 @@ public:
 		return stm;
 	}
 	std::map<std::string,XmlSearch> searches;
-	stSearchLogic nullLogic;
+	XmlSearch nullLogic;
 	typedef std::map<std::string,XmlSearch>::iterator SEARCHES_ITER;
 	void init()
 	{
@@ -513,24 +513,24 @@ public:
 		unsigned long nSize = 0;
 		unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
 		if (!nSize)return;
-		map->initFromString((char*)buffer);
+		initFromString((char*)buffer);
 	}
 	void takeNode(script::tixmlCodeNode *node)
 	{
 		if (node && node->equal("Config"))
 		{
-			script::tixmlCodeNode typeNode = node->getFirstChildNode("search"):
+			script::tixmlCodeNode typeNode = node->getFirstChildNode("search");
 			while (typeNode.isValid())
 			{
 				std::string name = typeNode.getAttr("name");
 				XmlSearch search;
 				search.takeNode(&typeNode);
-				searches[name] = serach;
+				searches[name] = search;
 				typeNode = typeNode.getNextNode("search");
 			}
 		}
 	}
-	XmlCircleSearch & getSeachByName(const std::string &name)
+	XmlSearch & getSeachByName(const std::string &name)
 	{
 		SEARCHES_ITER iter = searches.find(name);
 		if (iter != searches.end())

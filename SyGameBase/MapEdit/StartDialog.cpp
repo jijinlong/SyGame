@@ -6,8 +6,53 @@
 #include "MutiCartoon.h"
 #include "MutiImage.h"
 #include "MutiMonster.h"
+#include "UILib.h"
 NS_CC_BEGIN
-
+/**
+ * 关闭自己
+ */
+class CloseMe:public UICallback
+{
+public:
+	void callback(UIBase *base)
+	{
+		UIPanel *panel = base->getPanel();
+		if (panel)
+		{
+			panel->setVisible(false);
+			if (panel->isModel())
+			{
+				panel->getWindow()->popModel();
+			}
+		}
+	}
+};
+/**
+ * 打开地图逻辑
+ */
+class OpenMapLogic:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		UIPanel *panel = base->getPanel();
+		if (panel)
+		{
+			std::string value = panel->getEditFieldValue("filename");
+			// 创建一个map
+			MutiMap *map = MutiMap::create(value.c_str());
+			if (map)
+			{
+				MapManager::getMe().replaceMap(map); // 增加地图
+			}
+			panel->setVisible(false); // 将自身隐藏
+			if (panel->isModel())
+			{
+				panel->getWindow()->popModel();
+			}
+		}
+	}
+	//CCScene *scene;
+};
 
 void MainDialog::doInitEvent()
 {	
@@ -57,55 +102,14 @@ void MainDialog::doInitEvent()
 	{
 		showMonsterEditBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::showControlMonster));
 	}
+	UICallbackManager::getMe().addCallback("openmaplogic",new OpenMapLogic()); // 绑定按钮的响应事件
+	UICallbackManager::getMe().addCallback("hideme",new CloseMe());// 绑定按钮的响应事件
 }
 
-/**
- * 关闭自己
- */
-class CloseMe:public UICallback
-{
-public:
-	void callback(UIBase *base)
-	{
-		UIPanel *panel = base->getPanel();
-		if (panel)
-		{
-			panel->setVisible(false);
-			if (panel->isModel())
-			{
-				panel->getWindow()->popModel();
-			}
-		}
-	}
-};
-/**
- * 打开地图逻辑
- */
-class OpenMapLogic:public UICallback{
-public:
-	void callback(UIBase *base)
-	{
-		UIPanel *panel = base->getPanel();
-		if (panel)
-		{
-			std::string value = panel->getEditFieldValue("filename");
-			// 创建一个map
-			MutiMap *map = MutiMap::create(value.c_str());
-			if (map)
-			{
-				MapManager::getMe().replaceMap(map); // 增加地图
-			}
-			panel->setVisible(false); // 将自身隐藏
-			if (panel->isModel())
-			{
-				panel->getWindow()->popModel();
-			}
-		}
-	}
-	//CCScene *scene;
-};
+
 void MainDialog::openMap(UIBase *base)
 {
+	return;
 	UIWindow *window = getWindow();
 	/**
 	 * 展示一个dialog 携带对应的btn 的处理事件

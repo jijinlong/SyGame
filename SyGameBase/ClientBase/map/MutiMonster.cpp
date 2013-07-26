@@ -642,23 +642,32 @@ void MutiMonster::getPreparePath(const std::string &name,const GridIndex &point)
 		logics = *iter->second.getLogic(0);
 	}
 }
-/* TODO AI 的事件触发 主要是发现目标 查看目标状态
-struct stSeachTargets:stExecEach<int>{
-	void exec(const GridIndex& index)
+
+int MutiMonster::calcDistance(MutiMonster *monster)
+{
+	if (!monster) return -1;
+	GridIndex nowIndex = this->getNowIndex();
+	GridIndex destIndex = monster->getNowIndex();
+	
+	return abs(nowIndex.x - destIndex.x) + abs(nowIndex.y - destIndex.y);
+}
+//TODO AI 的事件触发 主要是发现目标 查看目标状态
+struct stSeachTargets:stExecEachMonster{
+	void exec(MutiMonster *monster)
 	{
-		MutiMonster * target = NULL;
-		if (monster->stub.getTargets() < monster->data.maxTargets)
+		MutiMonster * target = monster;
+		if (monster->stub.getTargetCount() < monster->data.maxTargets)
 		{
+			monster->stub.addTarget(target);
 			theAILib.execEvent(monster->monsterAIID,monster->getStub(),MutiAI::TARGET_ENTER);
 		}
 	}
-	stSeachTargets(MutiMonster *monster)
+	stSeachTargets(MutiMonster *monster):monster(monster)
 	{
 	
 	}
 	MutiMonster *monster;
-	AStarSeachInHexagonGrids<int>* grids;
-}
+};
 void MutiMonster::doCheckTargets()
 {
 	theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::IDLE_ACTION); // 空闲片执行
@@ -676,13 +685,13 @@ void MutiMonster::doCheckTargets()
 			theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET_LEAVE);
 		}
 	}
-	if (stub.getTargets() >= data.maxTargets)
+	if (stub.getTargetCount() >= data.maxTargets)
 	{
 		return;
 	}
-	stSeachTargets exec;
+	stSeachTargets exec(this);
 	// 新设置对象
-	map->getGrids()->exec(this->getNowIndex(),SEARCH_TYPE("circle"),&exec);
+	map->execAllMonster(&exec);
 	if (stub.getTargetCount())
 	{
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET); // 有物体状态
@@ -697,5 +706,5 @@ void MutiMonster::doCheckTargets()
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::MEET_TARGET); // 可以攻击的对象了
 	}
 }
-*/
+
 NS_CC_END

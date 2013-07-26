@@ -13,6 +13,7 @@ typedef void (UIBase::*UI_EVENT_HANDLE)(UIBase*);
 #define REGISTER_EVENT 
 class UIItem;
 class UIPanel;
+class UIWindow;
 struct stBagExecEach{
 	virtual  void exec(UIItem *item) = 0;
 };
@@ -63,6 +64,8 @@ public:
 	int uniqueId; // 唯一编号
 	std::string name; // 控件名字
 	std::string uniqueName;
+	std::string onCreateCodeName; // 创建代码
+	std::string onClickCodeName; // 点击代码
 	enum{
 		UI_LABEL = 0, // 静态文本框
 		UI_IMAGE_BUTTON = 1, // 图像按钮
@@ -89,7 +92,7 @@ public:
 		EVENT_TOUCH_OUT, // 出来
 		EVENT_TOUCH_NO_CHILD_IN,
 	};
-	UIPanel * getPanel();
+	virtual UIPanel * getPanel();
 	/**
 	 * 创建一个基本的ui 用于持久化
 	 */
@@ -100,7 +103,7 @@ public:
 	virtual bool bind(int uiEvent,const FunctionInfo& function);
 	virtual bool bind(int uiEvnet,UICallback *callback);
 	virtual void doEvent(int uiEvent,UIBase *base);
-	
+	UIWindow *getDepthWindow();
 	UIBase()
 	{
 		eventPriority = 0;

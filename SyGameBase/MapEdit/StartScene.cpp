@@ -9,6 +9,7 @@
 #include "MutiMonster.h"
 #include "Layer3D.h"
 #include "CCSprite3D.h"
+#include "UILib.h"
 USING_NS_CC;
 
 
@@ -70,6 +71,7 @@ CCScene* StartScene::scene()
 bool StartScene::init()
 {
 	theAILib.initWithFile("monsterai.xml");
+	theUILib.initWithFile("uilib.xml");
 	CCSprite3D *d3 = CCSprite3D::create("terran.md2", "terran.png");
 	if (d3)
 	{

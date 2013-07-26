@@ -147,6 +147,13 @@ void UIWindow::setEndFunction(const FunctionInfo &function)
  */
 void UIWindow::pushModel(UIPanel *panel)
 {
+	for (std::vector<UIPanel*>::iterator iter = _models.begin(); iter != _models.end();++iter)
+	{
+		if (*iter == panel)
+		{
+			return;
+		}
+	}
 	_models.push_back(panel);
 	panel->setZOrder(_models.size() + 100);
 	panel->beginModel();

@@ -25,6 +25,9 @@ struct stExecEachBackgroud{
 public:
 	virtual void exec(MutiMap *map) = 0;
 };
+struct stExecEachMonster{
+	virtual void exec(MutiMonster *monster) = 0;
+};
 class MutiMap:public CCParallaxNode,public script::tixmlCode{
 public:
 	static MutiMap * create(script::tixmlCodeNode *node);
@@ -67,7 +70,7 @@ public:
 		isHide = false;
 		_grids = NULL;
 	}
-
+	void execAllMonster(stExecEachMonster *exec);
 	void showGrids();
 	/**
 	 * 设置阻挡点信息
