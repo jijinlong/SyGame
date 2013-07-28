@@ -77,8 +77,8 @@ bool StartScene::init()
 	{
 		this->addChild(d3);
 	}
-	Layer3D *layer3D = Layer3D::create();
-	if (layer3D)
+	//Layer3D *layer3D = Layer3D::create();
+	//if (layer3D)
 	{
 	//	this->addChild(layer3D);
 	}
@@ -90,7 +90,7 @@ bool StartScene::init()
 	this->addChild(window);
 	if ( !CCLayer::init() )
     {
-        return false;
+        return false;  
     }
 	
     this->setTouchEnabled(true);

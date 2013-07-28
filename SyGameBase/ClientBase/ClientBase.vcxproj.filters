@@ -1,0 +1,530 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{ef6511de-6535-4a53-ae6c-4abf6f6f0476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uibase">
+      <UniqueIdentifier>{384110f0-8842-4a57-b294-e4bc1086601c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{1b86380b-5d03-4805-a7d3-532abb8ab999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tinyxml">
+      <UniqueIdentifier>{c5d8a8c5-2e4e-47dc-a56f-4ad28a0f9be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="action">
+      <UniqueIdentifier>{4c176d05-86fd-4660-87c9-9324658c9af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="map">
+      <UniqueIdentifier>{abc5fcd8-866f-4f1e-aa0c-e2715ef43ea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libpng">
+      <UniqueIdentifier>{6c49c998-cb24-4861-9b80-6deb9c36f38c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3d">
+      <UniqueIdentifier>{11cafebd-f197-41a7-a082-e52e2ae5e07f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ai">
+      <UniqueIdentifier>{90c91be3-bcda-4a93-ba33-eb24ea777266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uilib">
+      <UniqueIdentifier>{f97fb228-db11-4870-b4a4-9a20224dff95}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="zlib\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzio.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\CursorTextField.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIBase.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIButton.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UICenterBag.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIChoice.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIDescInfo.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIEditField.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIFileList.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIImage.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIItem.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UILabel.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UILineValue.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIList.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UINumber.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIPanel.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIRichTextArea.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIScrollView.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UISuperBag.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UITextArea.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIValue.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIWindow.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="uibase\UIXmlBag.cpp">
+      <Filter>uibase</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\Base64.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\KnifeEffect.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\PngPack.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\quickidmanager.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\serialize.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\xmlScript.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="action\Cartoon.cpp">
+      <Filter>action</Filter>
+    </ClCompile>
+    <ClCompile Include="map\MutiCaroon.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="map\MutiImage.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="map\MutiMap.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="map\MutiMonster.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="map\MutiObject.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\png.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngerror.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngget.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngmem.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngpread.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngread.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngrio.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngrtran.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngrutil.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngset.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngtrans.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwio.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwrite.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwtran.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwutil.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\CCMD2Model.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\CCSprite3D.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="ai\MutiMonsterAI.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="ai\var.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="uilib\UILib.cpp">
+      <Filter>uilib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="zlib\crc32.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\deflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffast.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffixed.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inftrees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\trees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\CursorTextField.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIBase.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIButton.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UICenterBag.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIChoice.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIDescInfo.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIEditField.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIFileList.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIImage.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIItem.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UILabel.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UILineValue.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIList.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UINumber.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIPanel.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIRichTextArea.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIScrollView.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UISuperBag.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UITextArea.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIValue.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIWindow.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase\UIXmlBag.h">
+      <Filter>uibase</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\Astar.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\Base64.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\CalcDir.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\KnifeEffect.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\PngPack.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\Prop.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\quickidmanager.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\serialize.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinystr.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\xmlScript.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="action\Cartoon.h">
+      <Filter>action</Filter>
+    </ClInclude>
+    <ClInclude Include="map\HexagonGrids.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="map\MutiCartoon.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="map\MutiImage.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="map\MutiMap.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="map\MutiMonster.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="map\MutiObject.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\color.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\config.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\consumer.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\convert_color_space.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\end_info.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\error.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\ga_pixel.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\generator.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\gray_pixel.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\image.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\image_info.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\index_pixel.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\info.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\info_base.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\io_base.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\packed_pixel.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\palette.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\pixel_buffer.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\pixel_traits.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\png.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\png.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngconf.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngdebug.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pnginfo.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pnglibconf.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngpriv.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngstruct.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\reader.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\require_color_space.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\rgb_pixel.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\rgba_pixel.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\streaming_base.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\tRNS.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\types.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\writer.hpp">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\CCMD2Model.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\CCSprite3D.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="ai\MutiMonsterAI.h">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="ai\scriptLib.h">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="ai\var.h">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="uilib\UILib.h">
+      <Filter>uilib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libpng\ReadMe.txt">
+      <Filter>libpng</Filter>
+    </None>
+    <None Include="pngplus\ReadMe.txt">
+      <Filter>libpng</Filter>
+    </None>
+  </ItemGroup>
+</Project>

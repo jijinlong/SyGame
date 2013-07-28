@@ -719,11 +719,42 @@ void MutiMonster::doCheckTargets()
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::MEET_TARGET); // 可以攻击的对象了
 	}
 }
+struct stExecEachGrid:public stExecEach
+{
+	virtual void exec(const GridIndex& index)
+	{
+		int *value = grids->getObjectByIndex(index);
+		if (value && 0 == *value )
+		{
+			indexs.push_back(index);
+		}
+	}
+	GridIndex getIndex()
+	{
+		if (indexs.size())
+			return indexs.at(CCRANDOM_0_1() * indexs.size());
+		return GridIndex(-1,-1);
+	}
+	std::vector<GridIndex> indexs;
+	AStarSeachInHexagonGrids<int>* grids;
+	stExecEachGrid(AStarSeachInHexagonGrids<int> *grids):grids(grids){
+	
+	}
+};
 /**
  * 获取周围随机一个有效点
  */
 GridIndex MutiMonster::getAroundRandomPoint()
 {
-	return GridIndex(-1,-1);
+	stExecEachGrid exec(this->map->getGrids());
+	this->map->getGrids()->exec(this->getNowIndex(),SEARCH_TYPE("arround"),&exec);
+	return exec.getIndex();
+}
+
+GridIndex MutiMonster::getRandomPointInRect()//获取区域内随机点
+{
+	stExecEachGrid exec(this->map->getGrids());
+	this->map->getGrids()->exec(this->getNowIndex(),SEARCH_TYPE("rect"),&exec);
+	return exec.getIndex();
 }
 NS_CC_END

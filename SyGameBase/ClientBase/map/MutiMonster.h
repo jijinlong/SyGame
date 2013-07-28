@@ -123,7 +123,7 @@ public:
 	int maxLastAttackTime;
 	MutiMonsterData()
 	{
-		maxLastAttackTime = 10;
+		maxLastAttackTime = 3;
 		id = 0;
 		eyeshort = 4;
 		maxTargets = 10;
@@ -266,7 +266,9 @@ public:
 
 	void doCheckTargets();// 检查当前目标
 
-	GridIndex getAroundRandomPoint(); // 获取随机点
+	GridIndex getAroundRandomPoint(); // 获取周围随机点
+
+	GridIndex getRandomPointInRect(); //获取区域内随机点
 public:
 	/**
 	 * 判断当前是否移动

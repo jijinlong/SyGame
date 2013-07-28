@@ -21,7 +21,8 @@
 	</checknowtarget>
 </code>
 <code name="dotried">
-	<moverandomarround/> <!--ÈÆÈ¦-->
+	<moverandarround/> <!--ÈÆÈ¦-->
+	<resetattacktime/>
 </code>
 
 <code name="doattackme">

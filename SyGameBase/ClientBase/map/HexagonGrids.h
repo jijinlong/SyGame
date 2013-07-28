@@ -51,7 +51,7 @@ public:
  **/
 struct stSearchLogic{
 public:
-	virtual bool getNext(GridIndex &index)
+	virtual bool getNext(GridIndex &index) const
 	{
 		return false;
 	}
@@ -59,7 +59,6 @@ public:
 /**
  * 回调 针对单元格的处理
  */
-template<typename CELLOBJECT>
 struct stExecEach{
 public:
 	virtual void exec(const GridIndex& index)
@@ -107,12 +106,12 @@ public:
 	 * searchType 搜索类型
 	 * execEach 每个元素会被执行
 	 */
-	void exec(const GridIndex& index,const stSearchLogic &seachType,typename stExecEach<CELLOBJECT> *execEach)
+	void exec(const GridIndex& index,const stSearchLogic &searchType, stExecEach *execEach)
 	{
 		GridIndex next = index;
 		while (searchType.getNext(next)) // 获取下一个点
 		{ 
-			eachEach->exec(getObjectByIndex(next)); // 执行该节点
+			execEach->exec(next); // 执行该节点
 		}
 	}
 	/**
@@ -129,14 +128,14 @@ public:
 	/**
 	 * 针对单元格进行处理
 	 */
-	void execOne(const GridIndex &index,typename stExecEach<CELLOBJECT> *execEach)
+	void execOne(const GridIndex &index, stExecEach *execEach)
 	{
 		execEach->exec(index); // 执行该节点
 	}
 	/**
 	 * 遍历所有的网格
 	 */
-	void execAll(typename stExecEach<CELLOBJECT> *execEach)
+	void execAll( stExecEach *execEach)
 	{
 		for (int i = 0; i < width;i++)
 			for (int j = 0; j < height;j++)
@@ -260,7 +259,7 @@ public:
 	/**
 	 * 获取下一个可以移动的格子
 	 */
-	bool getNextGridIndex(const GridIndex &src,const GridIndex &dest,GridIndex &out,typename stExecEach<CELLOBJECT> *execEach = NULL,stCheckMoveAble*check = NULL)
+	bool getNextGridIndex(const GridIndex &src,const GridIndex &dest,GridIndex &out, stExecEach *execEach = NULL,stCheckMoveAble*check = NULL)
 	{
 		//DisMap是以destPos为中心的边长为2 * radius + 1 的正方形
 		const int width = (2 * minRadius + 1);
@@ -467,12 +466,12 @@ public:
  */
 class XmlSearch:public stSearchLogic{
 public:
-	virtual bool getNext(GridIndex &index)
+	virtual bool getNext(GridIndex &index) const
 	{
 		if (startIndex >= indexs.size()) return false;
 		index.x += indexs[startIndex].x;
 		index.y += indexs[startIndex].y;
-		startIndex ++;
+		(*(int*)&startIndex) ++;
 		return true;
 	}
 	XmlSearch()
@@ -491,6 +490,10 @@ public:
 			offsetNode = offsetNode.getNextNode("point");
 		}
 	}
+	void reset()
+	{
+		startIndex = 0;
+	}
 	int startIndex;
 	std::vector<GridIndex> indexs;
 };
@@ -503,6 +506,10 @@ public:
 	{
 		static SerachTypeManager stm;
 		return stm;
+	}
+	SerachTypeManager()
+	{
+		init();
 	}
 	std::map<std::string,XmlSearch> searches;
 	XmlSearch nullLogic;
@@ -535,6 +542,7 @@ public:
 		SEARCHES_ITER iter = searches.find(name);
 		if (iter != searches.end())
 		{
+			iter->second.reset();
 			return iter->second;
 		}
 		return nullLogic;

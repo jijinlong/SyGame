@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{2e428ec1-2927-4618-ae2c-2e2fdda972a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PinTu">
+      <UniqueIdentifier>{7e220161-6a78-4dfe-8f97-f0aaa83569c4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NewResource\000.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\001.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\002.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\003.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\004.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\005.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\006.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\007.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\block.b64">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\bule_big.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\guide.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\hp_back.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\hp_red.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\itemdata.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\localshop.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\mainscene.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\map.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\monsteraction.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\monsterdata.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\moveop.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\PackTool.exe">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\playerinfo.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\s-2.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\skill01.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\skill02.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\skill03.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\skill04.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\skills.xml">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\start.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\stop01.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\stop02.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\test.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\uinew.pack">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\walk01.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\walk02.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\walk03.png">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\NewResource\walk04.png">
+      <Filter>Resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pintu\PinTuAboutNet.cpp">
+      <Filter>PinTu</Filter>
+    </ClCompile>
+    <ClCompile Include="pintu\PinTuItem.cpp">
+      <Filter>PinTu</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutRequest_C.cpp" />
+    <ClCompile Include="AppDelegate.cpp" />
+    <ClCompile Include="BollActor.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="StartDialog.cpp" />
+    <ClCompile Include="StartScene.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pintu\PinTuAboutNet.h">
+      <Filter>PinTu</Filter>
+    </ClInclude>
+    <ClInclude Include="pintu\PinTuItem.h">
+      <Filter>PinTu</Filter>
+    </ClInclude>
+    <ClInclude Include="AppDelegate.h" />
+    <ClInclude Include="BollActor.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="StartDialog.h" />
+    <ClInclude Include="StartScene.h" />
+    <ClInclude Include="UIManager.h" />
+  </ItemGroup>
+</Project>

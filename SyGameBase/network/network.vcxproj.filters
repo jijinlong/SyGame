@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="net">
+      <UniqueIdentifier>{a5f82a21-8b0d-40f3-9a00-cdfbdb6390a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="message">
+      <UniqueIdentifier>{c04eae44-3a7f-471a-9433-869e0c961082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node">
+      <UniqueIdentifier>{2305c92b-8d58-4554-8ed5-fec017b59fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pool">
+      <UniqueIdentifier>{82556b78-ae5c-4005-9df8-47864c232f4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="socket">
+      <UniqueIdentifier>{13016d6e-697b-4770-90a4-ce83487a7863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="des">
+      <UniqueIdentifier>{83eee3e5-5ae6-4dde-8e9c-2a5293bd03b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sys">
+      <UniqueIdentifier>{e6d5710f-b02f-416d-98e2-629825fbd552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{9977e419-1a3c-4f67-b142-4b9c3ced5def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory">
+      <UniqueIdentifier>{315a3561-b79a-44e7-a200-31ab6b8fa0d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="connection.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="netlib.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="node.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="nodecenter.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="package.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="cmd_serialize.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="dealcmddelegate.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="mcenter.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="nullcommand.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="remotefunction.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="serialize.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="stream.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="usercommand.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="epollpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="iocppool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="kqueuepool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="selectpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="clientsocket.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="serversocket.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="socket.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="des.h">
+      <Filter>des</Filter>
+    </ClInclude>
+    <ClInclude Include="des1.h">
+      <Filter>des</Filter>
+    </ClInclude>
+    <ClInclude Include="cmdobject.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="libtag.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="netcommon.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="port.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="singleton.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="sString.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="sys.h">
+      <Filter>sys</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\crc32.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\deflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffast.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffixed.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inftrees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\trees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="memorymanager.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="memorynode.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="quickidmanager.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="refmemory.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="refpoint.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="net.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="netlib.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="mcenter.cpp">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="remotefunction.cpp">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="node.cpp">
+      <Filter>node</Filter>
+    </ClCompile>
+    <ClCompile Include="nodecenter.cpp">
+      <Filter>node</Filter>
+    </ClCompile>
+    <ClCompile Include="epollpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="iocppool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="kqueuepool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="selectpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="clientsocket.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="connection.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="package.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="serversocket.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="socket.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="des.cpp">
+      <Filter>des</Filter>
+    </ClCompile>
+    <ClCompile Include="des1.cpp">
+      <Filter>des</Filter>
+    </ClCompile>
+    <ClCompile Include="quickmanager.cpp">
+      <Filter>sys</Filter>
+    </ClCompile>
+    <ClCompile Include="serialize.cpp">
+      <Filter>sys</Filter>
+    </ClCompile>
+    <ClCompile Include="sString.cpp">
+      <Filter>sys</Filter>
+    </ClCompile>
+    <ClCompile Include="sys.cpp">
+      <Filter>sys</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzio.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="memorymamanger.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="memorynode.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="refmemory.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="network.cd" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

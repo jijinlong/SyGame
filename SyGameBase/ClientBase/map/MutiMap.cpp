@@ -224,7 +224,7 @@ void MutiMap::addSprite(CCSprite *sprite)
 {
 	CCNode::addChild(sprite);
 }
-struct stWriteGrids:stExecEach<int>{
+struct stWriteGrids:stExecEach{
 	void exec(const GridIndex& index)
 	{
 		int * value = grids->getObjectByIndex(index);
@@ -370,7 +370,7 @@ void MutiMap::show()
 			(*iter)->setVisible(true);
 	}
 }
-struct stShowEachGrids:stExecEach<int>{
+struct stShowEachGrids:stExecEach{
 	void exec(const GridIndex& index)
 	{
 		int * value = grids->getObjectByIndex(index);

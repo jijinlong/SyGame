@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9AC50738-7700-4E57-8669-3E9D13156FC1}</ProjectGuid>
+    <RootNamespace>ClientBase</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\uilib;.\ai;.\3d;.\map;.\pngplus;.\libpng;.\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;$(SolutionDir)netcom;$(SolutionDir)Cocos2dEgine\cocos2dx;$(SolutionDir)network;$(SolutionDir)Cocos2dEgine\cocos2dx\include;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="zlib\adler32.c" />
+    <ClCompile Include="zlib\compress.c" />
+    <ClCompile Include="zlib\crc32.c" />
+    <ClCompile Include="zlib\deflate.c" />
+    <ClCompile Include="zlib\gzio.c" />
+    <ClCompile Include="zlib\infback.c" />
+    <ClCompile Include="zlib\inffast.c" />
+    <ClCompile Include="zlib\inflate.c" />
+    <ClCompile Include="zlib\inftrees.c" />
+    <ClCompile Include="zlib\trees.c" />
+    <ClCompile Include="zlib\uncompr.c" />
+    <ClCompile Include="zlib\zutil.c" />
+    <ClCompile Include="uibase\CursorTextField.cpp" />
+    <ClCompile Include="uibase\UIBase.cpp" />
+    <ClCompile Include="uibase\UIButton.cpp" />
+    <ClCompile Include="uibase\UICenterBag.cpp" />
+    <ClCompile Include="uibase\UIChoice.cpp" />
+    <ClCompile Include="uibase\UIDescInfo.cpp" />
+    <ClCompile Include="uibase\UIEditField.cpp" />
+    <ClCompile Include="uibase\UIFileList.cpp" />
+    <ClCompile Include="uibase\UIImage.cpp" />
+    <ClCompile Include="uibase\UIItem.cpp" />
+    <ClCompile Include="uibase\UILabel.cpp" />
+    <ClCompile Include="uibase\UILineValue.cpp" />
+    <ClCompile Include="uibase\UIList.cpp" />
+    <ClCompile Include="uibase\UINumber.cpp" />
+    <ClCompile Include="uibase\UIPanel.cpp" />
+    <ClCompile Include="uibase\UIRichTextArea.cpp" />
+    <ClCompile Include="uibase\UIScrollView.cpp" />
+    <ClCompile Include="uibase\UISuperBag.cpp" />
+    <ClCompile Include="uibase\UITextArea.cpp" />
+    <ClCompile Include="uibase\UIValue.cpp" />
+    <ClCompile Include="uibase\UIWindow.cpp" />
+    <ClCompile Include="uibase\UIXmlBag.cpp" />
+    <ClCompile Include="misc\Base64.cpp" />
+    <ClCompile Include="misc\KnifeEffect.cpp" />
+    <ClCompile Include="misc\PngPack.cpp" />
+    <ClCompile Include="misc\quickidmanager.cpp" />
+    <ClCompile Include="misc\serialize.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="tinyxml\xmlScript.cpp" />
+    <ClCompile Include="action\Cartoon.cpp" />
+    <ClCompile Include="map\MutiCaroon.cpp" />
+    <ClCompile Include="map\MutiImage.cpp" />
+    <ClCompile Include="map\MutiMap.cpp" />
+    <ClCompile Include="map\MutiMonster.cpp" />
+    <ClCompile Include="map\MutiObject.cpp" />
+    <ClCompile Include="libpng\png.c" />
+    <ClCompile Include="libpng\pngerror.c" />
+    <ClCompile Include="libpng\pngget.c" />
+    <ClCompile Include="libpng\pngmem.c" />
+    <ClCompile Include="libpng\pngpread.c" />
+    <ClCompile Include="libpng\pngread.c" />
+    <ClCompile Include="libpng\pngrio.c" />
+    <ClCompile Include="libpng\pngrtran.c" />
+    <ClCompile Include="libpng\pngrutil.c" />
+    <ClCompile Include="libpng\pngset.c" />
+    <ClCompile Include="libpng\pngtrans.c" />
+    <ClCompile Include="libpng\pngwio.c" />
+    <ClCompile Include="libpng\pngwrite.c" />
+    <ClCompile Include="libpng\pngwtran.c" />
+    <ClCompile Include="libpng\pngwutil.c" />
+    <ClCompile Include="3d\CCMD2Model.cpp" />
+    <ClCompile Include="3d\CCSprite3D.cpp" />
+    <ClCompile Include="ai\MutiMonsterAI.cpp" />
+    <ClCompile Include="ai\var.cpp" />
+    <ClCompile Include="uilib\UILib.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="zlib\crc32.h" />
+    <ClInclude Include="zlib\deflate.h" />
+    <ClInclude Include="zlib\inffast.h" />
+    <ClInclude Include="zlib\inffixed.h" />
+    <ClInclude Include="zlib\inflate.h" />
+    <ClInclude Include="zlib\inftrees.h" />
+    <ClInclude Include="zlib\trees.h" />
+    <ClInclude Include="zlib\zconf.h" />
+    <ClInclude Include="zlib\zlib.h" />
+    <ClInclude Include="zlib\zutil.h" />
+    <ClInclude Include="uibase\CursorTextField.h" />
+    <ClInclude Include="uibase\UIBase.h" />
+    <ClInclude Include="uibase\UIButton.h" />
+    <ClInclude Include="uibase\UICenterBag.h" />
+    <ClInclude Include="uibase\UIChoice.h" />
+    <ClInclude Include="uibase\UIDescInfo.h" />
+    <ClInclude Include="uibase\UIEditField.h" />
+    <ClInclude Include="uibase\UIFileList.h" />
+    <ClInclude Include="uibase\UIImage.h" />
+    <ClInclude Include="uibase\UIItem.h" />
+    <ClInclude Include="uibase\UILabel.h" />
+    <ClInclude Include="uibase\UILineValue.h" />
+    <ClInclude Include="uibase\UIList.h" />
+    <ClInclude Include="uibase\UINumber.h" />
+    <ClInclude Include="uibase\UIPanel.h" />
+    <ClInclude Include="uibase\UIRichTextArea.h" />
+    <ClInclude Include="uibase\UIScrollView.h" />
+    <ClInclude Include="uibase\UISuperBag.h" />
+    <ClInclude Include="uibase\UITextArea.h" />
+    <ClInclude Include="uibase\UIValue.h" />
+    <ClInclude Include="uibase\UIWindow.h" />
+    <ClInclude Include="uibase\UIXmlBag.h" />
+    <ClInclude Include="misc\Astar.h" />
+    <ClInclude Include="misc\Base64.h" />
+    <ClInclude Include="misc\CalcDir.h" />
+    <ClInclude Include="misc\KnifeEffect.h" />
+    <ClInclude Include="misc\PngPack.h" />
+    <ClInclude Include="misc\Prop.h" />
+    <ClInclude Include="misc\quickidmanager.h" />
+    <ClInclude Include="misc\serialize.h" />
+    <ClInclude Include="tinyxml\tinystr.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+    <ClInclude Include="tinyxml\xmlScript.h" />
+    <ClInclude Include="action\Cartoon.h" />
+    <ClInclude Include="map\HexagonGrids.h" />
+    <ClInclude Include="map\MutiCartoon.h" />
+    <ClInclude Include="map\MutiImage.h" />
+    <ClInclude Include="map\MutiMap.h" />
+    <ClInclude Include="map\MutiMonster.h" />
+    <ClInclude Include="map\MutiObject.h" />
+    <ClInclude Include="pngplus\color.hpp" />
+    <ClInclude Include="pngplus\config.hpp" />
+    <ClInclude Include="pngplus\consumer.hpp" />
+    <ClInclude Include="pngplus\convert_color_space.hpp" />
+    <ClInclude Include="pngplus\end_info.hpp" />
+    <ClInclude Include="pngplus\error.hpp" />
+    <ClInclude Include="pngplus\ga_pixel.hpp" />
+    <ClInclude Include="pngplus\generator.hpp" />
+    <ClInclude Include="pngplus\gray_pixel.hpp" />
+    <ClInclude Include="pngplus\image.hpp" />
+    <ClInclude Include="pngplus\image_info.hpp" />
+    <ClInclude Include="pngplus\index_pixel.hpp" />
+    <ClInclude Include="pngplus\info.hpp" />
+    <ClInclude Include="pngplus\info_base.hpp" />
+    <ClInclude Include="pngplus\io_base.hpp" />
+    <ClInclude Include="pngplus\packed_pixel.hpp" />
+    <ClInclude Include="pngplus\palette.hpp" />
+    <ClInclude Include="pngplus\pixel_buffer.hpp" />
+    <ClInclude Include="pngplus\pixel_traits.hpp" />
+    <ClInclude Include="libpng\png.h" />
+    <ClInclude Include="pngplus\png.hpp" />
+    <ClInclude Include="libpng\pngconf.h" />
+    <ClInclude Include="libpng\pngdebug.h" />
+    <ClInclude Include="libpng\pnginfo.h" />
+    <ClInclude Include="libpng\pnglibconf.h" />
+    <ClInclude Include="libpng\pngpriv.h" />
+    <ClInclude Include="libpng\pngstruct.h" />
+    <ClInclude Include="pngplus\reader.hpp" />
+    <ClInclude Include="pngplus\require_color_space.hpp" />
+    <ClInclude Include="pngplus\rgb_pixel.hpp" />
+    <ClInclude Include="pngplus\rgba_pixel.hpp" />
+    <ClInclude Include="pngplus\streaming_base.hpp" />
+    <ClInclude Include="pngplus\tRNS.hpp" />
+    <ClInclude Include="pngplus\types.hpp" />
+    <ClInclude Include="pngplus\writer.hpp" />
+    <ClInclude Include="3d\CCMD2Model.h" />
+    <ClInclude Include="3d\CCSprite3D.h" />
+    <ClInclude Include="ai\MutiMonsterAI.h" />
+    <ClInclude Include="ai\scriptLib.h" />
+    <ClInclude Include="ai\var.h" />
+    <ClInclude Include="uilib\UILib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libpng\ReadMe.txt" />
+    <None Include="pngplus\ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

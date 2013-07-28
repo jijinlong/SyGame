@@ -44,6 +44,7 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,std::string name)
 	BIND_AI_EVENT(MEET_TARGET); // 目标在攻击范围内
 	BIND_AI_EVENT(HAD_TARGET_LEAVE); // 有对象离开
 	BIND_AI_EVENT(HAD_TARGET); //有对象
+	BIND_AI_EVENT(ATTACK_TRIED); // 攻击累了
 	return true;
 }
 
@@ -59,7 +60,32 @@ int MutiAIStub::getTargetCount() // 当前对象的数量
 	}
 	return count;
 }
-
+void MutiAIStub::pickSuitTarget() // 挑选合适的对象
+{
+	int minWeight = 0,target = 0;
+	for ( unsigned int index = 0; index < targetPool.size();index++)
+	{
+		if (targetPool[index].monster)
+		{
+			if (!minWeight)
+			{
+				minWeight = targetPool[index].weight;
+				target = index;
+			}
+			else if (minWeight < targetPool[index].weight)
+			{
+				minWeight = targetPool[index].weight;
+				target = index;
+			}
+		}
+	}
+	if (targetPool.empty() && target < targetPool.size() && target != 0)
+	{
+		MutiMonsterRefrence ref = targetPool[0];
+		targetPool[0] = targetPool[target];
+		targetPool[target] = ref;
+	}
+}
 void MutiAIStub::removeTarget()
 {
 	if (targetPool.size()) targetPool.at(0).monster = NULL;
@@ -130,6 +156,8 @@ void MonsterAILib::bindActions()
 	BIND_AI_ACTION(resetattacktime);
 	BIND_AI_ACTION(clearmovepath);
 	BIND_AI_ACTION(checknowtarget);
+	BIND_AI_ACTION(checknowposition);
+	BIND_AI_ACTION(moverandarround);
 }
 void MonsterAILib::initWithFile(const char *fileName)
 {
@@ -230,6 +258,8 @@ int MonsterAILib::lockmindistacetarget(MutiAIStub* stub,script::tixmlCodeNode * 
  **/
 int MonsterAILib::locksuittarget(MutiAIStub* stub,script::tixmlCodeNode * node)
 {
+	// 权值最大的挑选为首位
+	if (stub) stub->pickSuitTarget();
 	return 1;
 }
 /**
@@ -250,6 +280,11 @@ int MonsterAILib::move(MutiAIStub* stub,script::tixmlCodeNode * node)
  */
 int MonsterAILib::moverandarround(MutiAIStub* stub,script::tixmlCodeNode * node)
 {
+	MutiMonster *target = stub->getTarget();
+	if (stub && target)
+	{
+		stub->npc->tryMoveUseAstr(target->getAroundRandomPoint());
+	}
 	return 1;
 }
 

@@ -58,14 +58,25 @@ public:
 	MutiMonster * monster;
 	int uniqueId;
 	cc_timeval attackStartTime; // 攻击持续时间
+	int weight;
 	bool isValid(){return true;} // 当前引用是否有效
 	MutiMonsterRefrence()
 	{
 		CCTime::gettimeofdayCocos2d(&attackStartTime,NULL);
 		monster = NULL;
 		uniqueId  = -1;
+		weight = 0;
 	}
 	bool checkTimeOut(int timeout);
+
+	MutiMonsterRefrence & operator=(const MutiMonsterRefrence &ref)
+	{
+		monster = ref.monster;
+		uniqueId = ref.uniqueId;
+		attackStartTime = ref.attackStartTime;
+		weight = ref.weight;
+		return *this;
+	}
 };
 /**
  * ai 的执行者
@@ -88,6 +99,7 @@ public:
 	MutiMonster * getTarget(); // 获取当前对象
 	MutiMonsterRefrence * getTargetRef(); // 获取当前对象池
 	void addTarget(MutiMonster *monster); // 增加对象
+	void pickSuitTarget(); // 挑选合适的对象
 };
 /**
  * 执行库

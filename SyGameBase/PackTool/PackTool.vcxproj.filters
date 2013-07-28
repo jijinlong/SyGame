@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="libpng">
+      <UniqueIdentifier>{5d59b0fa-01cc-4c51-be06-78c7f5e9919d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pngplus">
+      <UniqueIdentifier>{49511ba7-0f07-4acc-a87e-94cb01177e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{32b0f7f4-3cd0-43ef-aabb-fe1d824c6223}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="des.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PackTool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PackToolDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PngPack.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="serialize.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\example.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\png.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngerror.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngget.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngmem.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngpread.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngread.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngrio.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngrtran.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngrutil.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngset.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngtrans.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwio.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwrite.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwtran.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="libpng\pngwutil.c">
+      <Filter>libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzio.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="des.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PackTool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PackToolDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PngPack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="serialize.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\png.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngconf.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngdebug.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pnginfo.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pnglibconf.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngpriv.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="libpng\pngstruct.h">
+      <Filter>libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\color.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\config.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\consumer.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\convert_color_space.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\end_info.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\error.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\ga_pixel.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\generator.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\gray_pixel.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\image.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\image_info.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\index_pixel.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\info.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\info_base.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\io_base.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\packed_pixel.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\palette.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\pixel_buffer.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\pixel_traits.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\png.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\reader.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\require_color_space.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\rgb_pixel.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\rgba_pixel.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\streaming_base.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\tRNS.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\types.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="pngplus\writer.hpp">
+      <Filter>pngplus</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\crc32.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\deflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffast.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffixed.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inftrees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\trees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\PackTool.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\PackTool.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="libpng\ReadMe.txt">
+      <Filter>libpng</Filter>
+    </None>
+    <None Include="pngplus\ReadMe.txt">
+      <Filter>pngplus</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PackTool.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
