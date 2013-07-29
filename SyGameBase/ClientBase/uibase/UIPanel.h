@@ -163,6 +163,7 @@ public:
 		ss << object;
 		setEditFielValue(name,ss.str());
 	}
+	void setUILabelvalue(const std::string &name,const std::string& value);
 	void hide();
 protected:
 	CCPoint nowTouchPoint;
@@ -206,8 +207,22 @@ public:
 		CC_SAFE_DELETE(node);
 		return NULL;
 	}
+	static CHILD* create(UIWindow *window,script::tixmlCodeNode* snode)
+	{
+		CHILD *node = new CHILD();
+		if (node)
+		{
+			node->window = window;
+			node->initWithNode(snode);
+			node->autorelease();
+			return node;
+		}
+		CC_SAFE_DELETE(node);
+		return NULL;
+	}
 	bool initFromFile(const char *fileName)
 	{
+		uiXmlName = fileName;
 		std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(fileName);
 		unsigned long nSize = 0;
 		unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
@@ -215,9 +230,18 @@ public:
 		if (script::tixmlCode::initFromString((char*)buffer))
 		{
 			doInitEvent();
+			UIStub stub(this,window);
+			theUILib.execCode(&stub,this->onCreateCodeName.c_str());
 			return true;
 		}
 		return false;
+	}
+	void initWithNode(script::tixmlCodeNode* node)
+	{	
+		takeNode(node);
+		doInitEvent();
+		UIStub stub(this,window);
+		theUILib.execCode(&stub,this->onCreateCodeName.c_str());
 	}
 	/**
 	 * 从配置文件中加载配置
@@ -230,6 +254,7 @@ public:
  			// 加载Label TextArea Button 生成界面系统
 			// 创建欢迎动画
 			script::tixmlCodeNode mainNode = node->getFirstChildNode("start");
+			if (!mainNode.isValid()) mainNode = node->getFirstChildNode("panel");
 			std::string root = mainNode.getAttr("root");
 			if (mainNode.isValid())
 			{
@@ -239,9 +264,7 @@ public:
 					window->addUI(this);
 				}
 				else
-					window->addPanel(this);
-				UIStub stub(this,window);
-				theUILib.execCode(&stub,this->onCreateCodeName.c_str());
+					window->addPanel(this);		
 				this->setZOrder(12);
 			}
 		}
@@ -256,7 +279,7 @@ public:
 	{
 		window = NULL;
 	}
-	
+	std::string uiXmlName;
 protected:
 	virtual void doInitEvent(){}
 };

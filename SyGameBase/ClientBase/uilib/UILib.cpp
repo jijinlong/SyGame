@@ -2,6 +2,7 @@
 #include "UIWindow.h"
 #include "UIPanel.h"
 #include "UIBase.h"
+#include "UIFileList.h"
 NS_CC_BEGIN
 #define BIND_LIB_ACTION(func)\
 	{\
@@ -25,6 +26,10 @@ void UILib::bindActions()
 	BIND_LIB_ACTION(hidepanel);
 	BIND_LIB_ACTION(bind);
 	BIND_LIB_ACTION(panelbind);
+	BIND_LIB_ACTION(panel_label_set_value);
+	BIND_LIB_ACTION(parent_p_label_set_value);
+	BIND_LIB_ACTION(parent_p_bind);
+	BIND_LIB_ACTION(files_show);
 }
 void UILib::initWithFile(const char *fileName)
 {
@@ -146,6 +151,82 @@ int UILib::panelbind(UIStub* stub,script::tixmlCodeNode * node)
 				if (target)
 					target->bindBtnClick(node->getAttr("btnname"),UICALLBACK(node->getAttr("event")));
 			}	
+		}
+	}
+	return 1;
+}
+/**
+ * 设置panel 上UILabel 的值
+ */
+int UILib::panel_label_set_value(UIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->base)
+	{
+		UIPanel *panel = stub->base->getPanel();
+		if (panel)
+		{
+			UIWindow *window = panel->getWindow();
+			if (window)
+			{
+				UIPanel *target = window->getPanel(node->getAttr("name"));
+				if (target)
+				{
+					target->setUILabelvalue(node->getAttr("labelname"),node->getAttr("value"));
+				}
+			}	
+		}
+	}
+	return 1;
+}
+
+/**
+ * 设置父类
+ */
+int UILib::parent_p_label_set_value(UIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->base)
+	{
+		UIPanel *panel = stub->base->getPanel();
+		if (panel)
+		{
+			panel->setUILabelvalue(node->getAttr("labelname"),node->getAttr("value"));
+		}
+	}
+	return 1;
+}
+
+/**
+ * 设置父类的bind
+ */
+int UILib::parent_p_bind(UIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->base)
+	{
+		UIPanel *panel = stub->base->getPanel();
+		if (panel)
+		{
+			panel->bindBtnClick(node->getAttr("btnname"),UICALLBACK(node->getAttr("event")));
+		}
+	}
+	return 1;
+}
+
+/**
+ * 展示所有文件
+ */
+int UILib::files_show(UIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->base)
+	{
+		UIWindow *window = stub->base->getDepthWindow();
+		if (window)
+		{
+			UIFileList *list = UIFileList::create(window,node->getAttr("showxml"));
+			if (list)
+			{
+				list->show(".");
+				window->pushModel(list);
+			}
 		}
 	}
 	return 1;

@@ -19,7 +19,7 @@
 #include "UIEditField.h"
 #include "UIWindow.h"
 NS_CC_BEGIN
-class Monster2DEdit{
+class Monster2DEdit:public BaseDialog<Monster2DEdit>{
 public:
 	virtual void doInitEvent();
 };

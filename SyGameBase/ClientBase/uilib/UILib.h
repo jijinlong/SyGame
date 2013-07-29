@@ -116,6 +116,26 @@ public:
 	 * 绑定自身panel 的处理逻辑 
 	 */
 	int panelbind(UIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 设置panel 上UILabel 的值
+	 */
+	int panel_label_set_value(UIStub* stub,script::tixmlCodeNode * node);
+	
+	/**
+	 * 设置父类
+	 */
+	int parent_p_label_set_value(UIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 设置父类的bind
+	 */
+	int parent_p_bind(UIStub* stub,script::tixmlCodeNode * node);
+	
+	/**
+	 * 展示所有文件
+	 */
+	int files_show(UIStub* stub,script::tixmlCodeNode * node);
 };
 
 #define theUILib UILib::getMe()

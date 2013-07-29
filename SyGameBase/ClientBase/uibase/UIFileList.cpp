@@ -27,21 +27,22 @@ void UIFileList::doInitEvent()
 struct stOpenSubDir:public UICallback{
 	void callback(UIBase *base)
 	{
-		UIFileList *fileList = UIFileList::create(window,"filelist.xml");
+		UIFileList *fileList = UIFileList::create(window,uiXmlName.c_str());
 		if (fileList)
 		{
 			fileList->show(root.c_str());
 			window->pushModel(fileList);
 		}
 	}
-	stOpenSubDir(UIWindow *window,const std::string& subdir):window(window),root(subdir)
+	stOpenSubDir(UIWindow *window,const std::string& subdir,const std::string &uixmlName):window(window),root(subdir),uiXmlName(uixmlName)
 	{
 	
 	}
 	UIWindow *window;
 	std::string root;
+	std::string uiXmlName;
 };
-void UIFileList::show(const char *root)
+void UIFileList::show(const char *root,const char * listName,const char *dirItemName,const char *fileItemName)
 {
 	/**
 	 * 遍历文件
@@ -54,7 +55,7 @@ void UIFileList::show(const char *root)
     filePathName += ('\\'); 
     filePathName += ("*"); 
   
-	UISuperBag *list = LIST(this,"list");
+	UISuperBag *list = LIST(this,listName);
 	if (!list) return;
 	//list->clear();
     HANDLE m_hFind = FindFirstFile(filePathName.c_str(), &fd); 
@@ -65,11 +66,11 @@ void UIFileList::show(const char *root)
 			std::string fname = fd.cFileName;
 			std::string subDir = std::string(root) + std::string("\\") + fname;
 			// 目录
-			UIFileItem *fileItem = UIFileItem::create("diritem.xml");
+			UIFileItem *fileItem = UIFileItem::create(dirItemName);
 			if (fileItem)
 			{
 				fileItem->setFileType(UIFileItem::__DIR__);
-				fileItem->getPanel()->bindBtnClick("open",new stOpenSubDir(this->getWindow(),subDir));
+				fileItem->getPanel()->bindBtnClick("open",new stOpenSubDir(this->getWindow(),subDir,uiXmlName));
 			}
 			list->addItem(fileItem);
 		} 
@@ -78,7 +79,7 @@ void UIFileList::show(const char *root)
 			// 文件
 			std::string fname = fd.cFileName;
 
-			UIFileItem *fileItem = UIFileItem::create("fileitem.xml");
+			UIFileItem *fileItem = UIFileItem::create(fileItemName);
 			if (fileItem)
 			{
 				fileItem->setFileType(UIFileItem::__FILE_);
@@ -98,11 +99,11 @@ void UIFileList::show(const char *root)
 					std::string fname = fd.cFileName;
 					std::string subDir = std::string(root) + std::string("\\") + fname;
 					// 目录
-					UIFileItem *fileItem = UIFileItem::create("diritem.xml");
+					UIFileItem *fileItem = UIFileItem::create(dirItemName);
 					if (fileItem)
 					{
 						fileItem->setFileType(UIFileItem::__DIR__);
-						fileItem->getPanel()->bindBtnClick("open",new stOpenSubDir(this->getWindow(),subDir));
+						fileItem->getPanel()->bindBtnClick("open",new stOpenSubDir(this->getWindow(),subDir,uiXmlName));
 					}
 					list->addItem(fileItem);
 				} 
@@ -110,7 +111,7 @@ void UIFileList::show(const char *root)
 				{
 					// 文件
 					std::string fname = fd.cFileName;
-					UIFileItem *fileItem = UIFileItem::create("fileitem.xml");
+					UIFileItem *fileItem = UIFileItem::create(fileItemName);
 					if (fileItem)
 					{
 						fileItem->setFileType(UIFileItem::__FILE_);

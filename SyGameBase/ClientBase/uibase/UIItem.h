@@ -2,7 +2,7 @@
 #include <vector>
 #include "cocos2d.h"
 #include "xmlScript.h"
-
+#include "UILib.h"
 NS_CC_BEGIN
 class UIPanel;
 /**
@@ -67,7 +67,7 @@ public:
 	virtual bool doTouch(int touchType,const CCPoint &touchPoint);
 	UIPanel * getPanel();
 	virtual void setSize(float width,float height);
-private:
+protected:
 	UIPanel *panel;
 };
 template<typename CHILD>
@@ -95,6 +95,11 @@ public:
 		if (script::tixmlCode::initFromString((char*)buffer))
 		{
 			doInitEvent();
+			if (panel)
+			{
+				UIStub stub(panel,NULL);
+				theUILib.execCode(&stub,onCreateName.c_str());
+			}
 			return true;
 		}
 		return false;
@@ -114,13 +119,17 @@ public:
 		{
 			script::tixmlCodeNode itemNode = node->getFirstChildNode("item");
 			if (itemNode.isValid())
+			{
 				XmlUIItem::initWithNode(&itemNode);
+				onCreateName = itemNode.getAttr("oncreate");
+			}
 		}
 		vTakeNode(node);
 	}
 	virtual void vTakeNode(script::tixmlCodeNode *node){}
 protected:
 	virtual void doInitEvent(){}
+	std::string onCreateName;
 };
 /**
  * Í¨ÓÃµÄitem

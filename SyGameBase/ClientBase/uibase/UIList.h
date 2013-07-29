@@ -94,6 +94,8 @@ public:
 	 * …Ë÷√Œª÷√
 	 */
 	virtual void setPosition(float x,float y);
+
+	
 };
 
 NS_CC_END

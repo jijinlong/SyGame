@@ -904,10 +904,13 @@ bool UIPanel::initXFromNode(script::tixmlCodeNode *node)
 		{
 			XmlBagItem *item = XmlBagItem::create(&itemNode);
 			xmlList->setItem(item,count++);
+			item->doCreateEvent();
 			itemNode = itemNode.getNextNode("item");
 		}
 		xmlList->show();
-		listNode = listNode.getNextNode("bag");
+		UIStub stub(xmlList,window);
+		theUILib.execCode(&stub,xmlList->onCreateCodeName.c_str());
+		listNode = listNode.getNextNode("list");
 	}
 	/**
 	 * //TODO 创建带富文本框
@@ -1013,6 +1016,15 @@ void UIPanel::hide()
 	if (this->isModel())
 	{
 		this->getWindow()->popModel();
+	}
+}
+
+void UIPanel::setUILabelvalue(const std::string &name,const std::string& value)
+{
+	GET_UI_BYNAME(this,UILabel,label,name.c_str());
+	if (label)
+	{
+		label->setContent(value.c_str());
 	}
 }
 NS_CC_END

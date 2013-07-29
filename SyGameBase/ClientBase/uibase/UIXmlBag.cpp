@@ -1,5 +1,6 @@
 #include "UIXmlBag.h"
 #include "UIPanel.h"
+#include "UILib.h"
 NS_CC_BEGIN
 //////////////////////////// °ü¹ü /////////////////////////////////////
 UIRectBag* UIRectBag::create()
@@ -296,6 +297,7 @@ bool XmlBagItem::initWithNode(script::tixmlCodeNode *node)
 	panel->setAnchorPoint(ccp(0,0));
 	if (panel->back)
 	panel->back->setAnchorPoint(ccp(0,0));
+	onCreateName = node->getAttr("oncreate");
 	return true;
 }
 bool XmlBagItem::doTouch(int touchType,const CCPoint &touchPoint)
@@ -312,5 +314,11 @@ void XmlBagItem::setSize(float width,float height)
 	{
 		panel->setSize(width,height);
 	}
+}
+
+void XmlBagItem::doCreateEvent()
+{
+	UIStub stub(panel,panel->getWindow());
+	theUILib.execCode(&stub,this->onCreateName.c_str());
 }
 NS_CC_END

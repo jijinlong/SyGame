@@ -1,0 +1,20 @@
+<!--增加一个方向上的n个帧-->
+<code name="doAddFrames">
+	<files_show name="files" showxml="monsteredit/show_file_images_for_add_frame.xml"/>
+</code>
+<code name="do_hide_add_dir_frames">
+	<hidepanel name="monsteredit/add_dir_frames"/> <!--创建monster-->
+</code>
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<start name="monsteredit/add_dir_frames" x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true">	
+		<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0"> <!---->
+			<face viewx="0" viewy="0" vieww="250" viewh="300" back="viewback.png"/>
+		</list>
+		<editfield uniquename="needtime" x="150" y="-40" content="方向" width="200" height="28"/>
+		<button uniquename="addframe" x="150" y="-180" w="64" h="32" name="增加" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doAddFrames"/>
+		<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
+			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_hide_add_dir_frames"/>
+	</start>
+</Config>

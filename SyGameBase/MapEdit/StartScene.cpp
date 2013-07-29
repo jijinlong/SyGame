@@ -10,6 +10,7 @@
 #include "Layer3D.h"
 #include "CCSprite3D.h"
 #include "UILib.h"
+#include "Monster2DEdit.h"
 USING_NS_CC;
 
 
@@ -122,11 +123,10 @@ bool StartScene::init()
 		map->showGrids();
 		MapManager::getMe().replaceMap(map);
 	}
-	UIFileList *list = UIFileList::create(window,"filelist.xml");
-	if (list)
+	Monster2DEdit *edit = Monster2DEdit::create(window,"monsteredit/createmonster.xml");
+	if (edit)
 	{
-		list->show(".");
-		window->pushModel(list);
+		window->pushModel(edit);
 	}
 	for (int i = 0; i < 1;i++)
 	{

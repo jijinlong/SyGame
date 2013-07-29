@@ -588,7 +588,7 @@ bool MutiMonster::isNowAction(const std::string &name)
 }
 MutiMonster * MutiMonster::getNowTarget()
 {
-	return NULL;
+	return stub.getTarget();
 }
 
 void MutiMonster::setPosition(const GridIndex &point)

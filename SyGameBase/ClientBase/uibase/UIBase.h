@@ -115,7 +115,7 @@ public:
 	{
 		for (UI_CALLBACK_ITER iter = event_callbacks.begin(); iter != event_callbacks.end();++iter)
 		{
-			if(*iter) delete *iter;
+//			if(*iter) delete *iter;
 		}
 	}
 	std::vector<FunctionInfo> event_functions;

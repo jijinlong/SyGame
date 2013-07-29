@@ -1,29 +1,20 @@
+<!--增加一个动作-->
 <code name="doAddFrame">
-	<showpanel name="show_file_images_for_add_frame"/>
+	<showpanel name="monsteredit/add_dir_frames" model="true"/>
 </code>
-
-<code name="onCreateImages">
-	<panelbind name="show_file_images_for_add_frame" btnname="ok" event="doAddImages"/> <!--内部C++ 逻辑-->
+<code name="do_hide_add_monster_frames">
+	<hidepanel name="monsteredit/add_monster_frames"/> <!--创建monster-->
 </code>
 <Config>
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
-	<panel name="add_monster_frames" x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true">	
-		<panel uniquename="extinfo" moveable="false" x="" y="60">
-			<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0"> <!---->
-				<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png"/>
-			</list>
-			<button uniquename="addframe" x="150" y="-180" w="64" h="32" name="增加图片" downimg="btn_common_down.png"
-				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onClick="doAddFrame"/>
-		</panel>
-		<button uniquename="ok" x="-44" y="-80" w="64" h="32" name="保存" downimg="btn_common_down.png"
-			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+	<start name="monsteredit/add_monster_frames" x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true">	
+		<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0"> <!---->
+			<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png"/>
+		</list>
+		<editfield uniquename="needtime" x="150" y="-40" content="输入时长" width="200" height="28"/>
+		<button uniquename="addframe" x="150" y="-180" w="64" h="32" name="增加" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doAddFrame"/>
 		<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
-			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-	</panel>
-	
-	<panel name="show_file_images_for_add_frame" onCreate="onCreateImages" local="34" movable="true">
-		<fileshow name="files" itemname="file_images_item"/> <!--展示在文件列表里的每个条目-->
-		<button uniquename="ok" x="-44" y="-80" w="64" h="32" name="确定" downimg="btn_common_down.png"
-			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-	</panel>
+			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_hide_add_monster_frames"/>
+	</start>
 </Config>

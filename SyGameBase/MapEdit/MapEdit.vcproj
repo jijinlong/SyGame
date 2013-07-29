@@ -190,6 +190,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Monster2DEdit.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\StartDialog.cpp"
 				>
 			</File>
@@ -217,6 +221,10 @@
 			</File>
 			<File
 				RelativePath=".\MapManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Monster2DEdit.h"
 				>
 			</File>
 			<File

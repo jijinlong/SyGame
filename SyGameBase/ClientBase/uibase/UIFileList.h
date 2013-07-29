@@ -32,7 +32,7 @@ public:
 	 */
 	virtual void doInitEvent();
 
-	void show(const char *root);
+	void show(const char *root,const char * listName="list",const char *dirItemName="diritem.xml",const char *fileItemName="fileitem.xml");
 };
 
 NS_CC_END
