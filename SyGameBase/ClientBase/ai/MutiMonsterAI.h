@@ -6,6 +6,7 @@
 
 #include "scriptLib.h"
 #include "cocos2d.h"
+#include <bitset>
 NS_CC_BEGIN
 class MutiMonster;
 class MutiAIStub;
@@ -82,12 +83,14 @@ public:
 	cc_timeval attackStartTime; // 攻击持续时间
 	int weight;
 	bool isValid(){return true;} // 当前引用是否有效
+	bool hadMeet; // 是否遇到
 	MutiMonsterRefrence()
 	{
 		CCTime::gettimeofdayCocos2d(&attackStartTime,NULL);
 		monster = NULL;
 		uniqueId  = -1;
 		weight = 0;
+		hadMeet = false;
 	}
 	bool checkTimeOut(int timeout);
 
@@ -98,6 +101,19 @@ public:
 		attackStartTime = ref.attackStartTime;
 		weight = ref.weight;
 		return *this;
+	}
+	std::bitset<32> notifyStates;
+	bool checkNotify(int aiEvent)
+	{
+		return notifyStates.test(aiEvent);
+	}
+	void setNotify(int aiEvent)
+	{
+		notifyStates.set(aiEvent);
+	}
+	void resetNotify(int aiEvent)
+	{
+		notifyStates.reset(aiEvent);
 	}
 };
 /**
@@ -122,6 +138,19 @@ public:
 	MutiMonsterRefrence * getTargetRef(); // 获取当前对象池
 	void addTarget(MutiMonster *monster); // 增加对象
 	void pickSuitTarget(); // 挑选合适的对象
+	std::bitset<32> notifyStates;
+	bool checkNotify(int aiEvent)
+	{
+		return notifyStates.test(aiEvent);
+	}
+	void setNotify(int aiEvent)
+	{
+		notifyStates.set(aiEvent);
+	}
+	void resetNotify(int aiEvent)
+	{
+		notifyStates.reset(aiEvent);
+	}
 };
 /**
  * 执行库

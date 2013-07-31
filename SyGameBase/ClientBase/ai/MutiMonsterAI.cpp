@@ -3,18 +3,20 @@
 NS_CC_BEGIN
 bool MutiAI::action(MutiAIStub *stub,int event)
 {
-	if (event >= events.size()) return false;
-	std::vector<MutiEvent> &evts = timeEvts.at(event);
-	if (!evts.empty())
+	if (event < timeEvts.size())
 	{
-		cc_timeval nowTime;
-		CCTime::gettimeofdayCocos2d(&nowTime,NULL);
-		for (std::vector<MutiEvent>::iterator iter = evts.begin(); iter != evts.end();++iter)
+		std::vector<MutiEvent> &evts = timeEvts.at(event);
+		if (!evts.empty())
 		{
-			if (!iter->startTime.tv_sec || iter->execCount >= iter->execMaxCount)
+			cc_timeval nowTime;
+			CCTime::gettimeofdayCocos2d(&nowTime,NULL);
+			for (std::vector<MutiEvent>::iterator iter = evts.begin(); iter != evts.end();++iter)
 			{
-				CCTime::gettimeofdayCocos2d(&iter->startTime,NULL); // 重置时间
-				iter->execCount = 0;
+				if (!iter->startTime.tv_sec || iter->execCount >= iter->execMaxCount)
+				{
+					CCTime::gettimeofdayCocos2d(&iter->startTime,NULL); // 重置时间
+					iter->execCount = 0;
+				}
 			}
 		}
 	}
@@ -70,9 +72,9 @@ bool MutiAI::timer(MutiAIStub * stub,int event)
 		timeEvt.tapTime = tapTime;\
 		timeEvt.execMaxCount = info->getInt("execcount");\
 		if (timeEvt.execMaxCount) timeEvt.execMaxCount = 1; \
-		if (event >= events.size())\
+		if (event >= timeEvts.size())\
 		{\
-			events.resize(event + 1);\
+			timeEvts.resize(event + 1);\
 		}\
 		timeEvts[event].push_back(timeEvt);\
 	}

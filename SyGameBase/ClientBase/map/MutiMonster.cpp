@@ -698,14 +698,20 @@ void MutiMonster::doCheckTargets()
 	stSeachTargets exec(this);
 	// 新设置对象
 	map->execAllMonster(&exec);
-	if (stub.getTargetCount())
+	if (stub.getTargetCount() && !stub.checkNotify(MutiAI::HAD_TARGET))
 	{
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET); // 有物体状态
+		stub.setNotify(MutiAI::HAD_TARGET);
+	}
+	else
+	{
+		stub.resetNotify(MutiAI::HAD_TARGET); // 无物体状态触发
 	}
 	MutiMonsterRefrence *ref = stub.getTargetRef();
-	if (ref && ref->checkTimeOut(data.maxLastAttackTime))
+	if (ref && ref->checkTimeOut(data.maxLastAttackTime) && !ref->checkNotify(MutiAI::ATTACK_TRIED))
 	{
-		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::ATTACK_TRIED); // 有物体状态
+		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::ATTACK_TRIED); // 对当前对象感到厌倦,直至外部设置 或者 当前对象重置
+		ref->setNotify(MutiAI::ATTACK_TRIED);
 	}
 	int target = this->calcDistance(stub.getTarget());
 	if (target > data.eyeshort)
@@ -714,9 +720,14 @@ void MutiMonster::doCheckTargets()
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::TARGET_LEAVE); // 锁定的目标离开了
 	}
 	// 检查是否在攻击范围内
-	if (target >= 0 && target < data.attackdistance)
+	if (target >= 0 && target < data.attackdistance && !ref->checkNotify(MutiAI::MEET_TARGET))
 	{
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::MEET_TARGET); // 可以攻击的对象了
+		ref->setNotify(MutiAI::MEET_TARGET);
+	}
+	else
+	{
+		ref->resetNotify(MutiAI::MEET_TARGET); // 对象离开攻击范围了
 	}
 }
 struct stExecEachGrid:public stExecEach
