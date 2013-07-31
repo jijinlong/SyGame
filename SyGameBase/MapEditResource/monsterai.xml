@@ -32,7 +32,7 @@
 <Config>
 	<ai id="0">
 		<event name="BIRTH" code="dobirth"/> <!--出生-->
-		<event name="TARGET_ENTER" code="doobjectenter"/> <!--对象进入视野-->
+		<event name="TARGET_ENTER" code="doobjectenter" taptime="3"/> <!--对象进入视野-->
 		<event name="MEET_TARGET" code="doattackobject"/> <!--正面碰到对象-->
 		<event name="ATTACK_TRIED" code="dotried"/> <!--攻击累了-->
 	</ai>

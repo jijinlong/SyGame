@@ -10,6 +10,23 @@ NS_CC_BEGIN
 class MutiMonster;
 class MutiAIStub;
 class MonsterAILib;
+class MutiEvent{
+public:
+	int tapTime; // 间隔时间
+	int execCount; // 将触发的次数
+	int execMaxCount;
+	cc_timeval startTime; // 开启时间
+	script::tixmlCodeNode* code; // 执行代码
+	MutiEvent()
+	{
+		startTime.tv_sec = 0;
+		code = NULL;
+		tapTime = 0;
+		execCount = 0;
+		execMaxCount = 0;
+	}
+	bool checkTimeOut(cc_timeval & nowTime);
+};
 class MutiAI{
 public:
 	MutiAI()
@@ -21,6 +38,10 @@ public:
  	 * 执行一个事件
  	 * */
 	bool action(MutiAIStub * stub,int event);
+	/**
+	 * 定时执行事件
+	 */
+	bool timer(MutiAIStub * stub,int event);
 	enum{
 		DEATH = 0, // 死亡
 		BIRTH = 1, // 出生
@@ -40,9 +61,10 @@ public:
  	 * \param name 代码名称
  	 * \return ture 成功 false 失败
  	 * */
-	bool addCode(script::tixmlCodeNode* code,std::string name);
+	bool addCode(script::tixmlCodeNode* code,script::tixmlCodeNode *info);
 private:
 	std::vector<script::tixmlCodeNode*> events;	
+	std::vector<std::vector<MutiEvent> > timeEvts; // 带时间的事件 触发后会多次执行 事件在有效期内不可重入
 };
 typedef int (MonsterAILib::*AIAction)(MutiAIStub *,script::tixmlCodeNode *);
 
@@ -156,6 +178,7 @@ public:
      * \param event 事件
      * */
     void execEvent(DWORD npcAIID,MutiAIStub *stub,int event);
+	void tapExecEvent(DWORD npcAIID,MutiAIStub *stub,int event);
     std::vector<MutiAI*> npcAis;
 /////////////////////////////////////////////////////////////////////////    
 //			相关扩展

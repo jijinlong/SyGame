@@ -4,9 +4,54 @@ NS_CC_BEGIN
 bool MutiAI::action(MutiAIStub *stub,int event)
 {
 	if (event >= events.size()) return false;
+	std::vector<MutiEvent> &evts = timeEvts.at(event);
+	if (!evts.empty())
+	{
+		cc_timeval nowTime;
+		CCTime::gettimeofdayCocos2d(&nowTime,NULL);
+		for (std::vector<MutiEvent>::iterator iter = evts.begin(); iter != evts.end();++iter)
+		{
+			if (!iter->startTime.tv_sec || iter->execCount >= iter->execMaxCount)
+			{
+				CCTime::gettimeofdayCocos2d(&iter->startTime,NULL); // 重置时间
+				iter->execCount = 0;
+			}
+		}
+	}
+	if (event >= events.size()) return false;
 	script::tixmlCodeNode *code = events.at(event);
 	if (!code) return false;
 	return theAILib.execCode(stub,code);
+}
+bool MutiEvent::checkTimeOut(cc_timeval & nowTime)
+{
+	float tap = CCTime::timersubCocos2d(&startTime,&nowTime) / 1000;
+	if (tap >= this->tapTime)
+	{
+		return true;
+	}
+	return false;
+}
+/**
+ * 定时执行事件
+ */
+bool MutiAI::timer(MutiAIStub * stub,int event)
+{
+	if (event >= events.size()) return false;
+	std::vector<MutiEvent> &evts = timeEvts.at(event);
+	if (evts.empty()) return false;
+	cc_timeval nowTime;
+	CCTime::gettimeofdayCocos2d(&nowTime,NULL);
+	for (std::vector<MutiEvent>::iterator iter = evts.begin(); iter != evts.end();++iter)
+	{
+		if (iter->startTime.tv_sec && iter->checkTimeOut(nowTime) && iter->execCount < iter->execMaxCount)
+		{
+			theAILib.execCode(stub,iter->code);
+			iter->startTime = nowTime;
+			iter->execCount ++;
+		}
+	}
+	return true;
 }
 #define BIND_AI_EVENT(event)\
 	if (name == std::string(#event))\
@@ -17,34 +62,50 @@ bool MutiAI::action(MutiAIStub *stub,int event)
 		}\
 		events[event] = code;\
 	}
-bool MutiAI::addCode(script::tixmlCodeNode *code,std::string name)
+#define BIND_TIME_AI_EVT(event)\
+	if (name == std::string(#event))\
+	{\
+		MutiEvent timeEvt;\
+		timeEvt.code = code;\
+		timeEvt.tapTime = tapTime;\
+		timeEvt.execMaxCount = info->getInt("execcount");\
+		if (timeEvt.execMaxCount) timeEvt.execMaxCount = 1; \
+		if (event >= events.size())\
+		{\
+			events.resize(event + 1);\
+		}\
+		timeEvts[event].push_back(timeEvt);\
+	}
+bool MutiAI::addCode(script::tixmlCodeNode *code,script::tixmlCodeNode *info)
 {
-	if (name == std::string("DEATH"))
+	std::string name = info->getAttr("name");
+	int tapTime = info->getInt("taptime");
+	if (tapTime == 0)
 	{
-		if (DEATH >= events.size())
-		{
-			events.resize(DEATH + 1);
-		} 
-		events[DEATH] = code;
+		BIND_AI_EVENT(DEATH); // 死亡
+		BIND_AI_EVENT(BIRTH); // 出生
+		BIND_AI_EVENT(TARGET_ENTER); // 对象进入视野	
+		BIND_AI_EVENT(TARGET_LEAVE); // 对象离开视野
+		BIND_AI_EVENT(IDLE_ACTION); // 空闲行为
+		BIND_AI_EVENT(ATTACK_ME); // 攻击我了
+		BIND_AI_EVENT(MEET_TARGET); // 目标在攻击范围内
+		BIND_AI_EVENT(HAD_TARGET_LEAVE); // 有对象离开
+		BIND_AI_EVENT(HAD_TARGET); //有对象
+		BIND_AI_EVENT(ATTACK_TRIED); // 攻击累了
 	}
-	else if (name == std::string("BIRTH"))
+	else
 	{
-		if (BIRTH >= events.size())
-		{
-			events.resize(BIRTH + 1);
-		}
-		events[BIRTH] = code;
+		BIND_TIME_AI_EVT(DEATH); // 死亡
+		BIND_TIME_AI_EVT(BIRTH); // 出生
+		BIND_TIME_AI_EVT(TARGET_ENTER); // 对象进入视野	
+		BIND_TIME_AI_EVT(TARGET_LEAVE); // 对象离开视野
+		BIND_TIME_AI_EVT(IDLE_ACTION); // 空闲行为
+		BIND_TIME_AI_EVT(ATTACK_ME); // 攻击我了
+		BIND_TIME_AI_EVT(MEET_TARGET); // 目标在攻击范围内
+		BIND_TIME_AI_EVT(HAD_TARGET_LEAVE); // 有对象离开
+		BIND_TIME_AI_EVT(HAD_TARGET); //有对象
+		BIND_TIME_AI_EVT(ATTACK_TRIED); // 攻击累了
 	}
-	
-	// 以后扩展欢迎使用宏
-	BIND_AI_EVENT(TARGET_ENTER); // 对象进入视野	
-	BIND_AI_EVENT(TARGET_LEAVE); // 对象离开视野
-	BIND_AI_EVENT(IDLE_ACTION); // 空闲行为
-	BIND_AI_EVENT(ATTACK_ME); // 攻击我了
-	BIND_AI_EVENT(MEET_TARGET); // 目标在攻击范围内
-	BIND_AI_EVENT(HAD_TARGET_LEAVE); // 有对象离开
-	BIND_AI_EVENT(HAD_TARGET); //有对象
-	BIND_AI_EVENT(ATTACK_TRIED); // 攻击累了
 	return true;
 }
 
@@ -191,7 +252,7 @@ void MonsterAILib::takeNode(script::tixmlCodeNode* node)
 		{
 			std::string name = codePtr.getAttr("name");
 			std::string code = codePtr.getAttr("code");
-			npcAis[ai->id]->addCode(findCode(code.c_str()),name);
+			npcAis[ai->id]->addCode(findCode(code.c_str()),&codePtr);
 			codePtr = codePtr.getNextNode("event");	
 		}	
 		aiNode = aiNode.getNextNode("ai");
@@ -219,6 +280,17 @@ void MonsterAILib::execEvent(DWORD npcAIID,MutiAIStub *stub,int event)
 		if (ai)
 		{
 			ai->action(stub,event);	
+		}
+	}	
+}
+void MonsterAILib::tapExecEvent(DWORD npcAIID,MutiAIStub *stub,int event)
+{
+	if (npcAIID < npcAis.size())
+	{
+		MutiAI * ai = npcAis.at(npcAIID);
+		if (ai)
+		{
+			ai->timer(stub,event);	
 		}
 	}	
 }
