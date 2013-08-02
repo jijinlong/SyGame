@@ -51,8 +51,10 @@ public:
 	float _height; // 高
 	float _eachUpSpan; // 每个高 span
 	float _eachLeftSpan; // 每个左span
+	bool vertical;
 	UIList()
 	{
+		vertical = true;
 		_width = _height = 0;
 		_eachUpSpan = _eachLeftSpan = 0;
 		nowItemId = -1;

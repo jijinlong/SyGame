@@ -35,9 +35,19 @@ bool UIList::setItem(UIItem *item,int id)
 */
 CCPoint UIList::getPixelPosition(int id)
 {
-	int x = 0;
-	int y = id; // y 轴向下
-	return getPixelPosition(x,y);
+	if (vertical)
+	{
+		int x = 0;
+		int y = id; // y 轴向下
+		return getPixelPosition(x,y);
+	}
+	else
+	{
+		int x = id;
+		int y = 0; // y 轴向下
+		return getPixelPosition(x,y);
+	}
+	
 }
 
 CCPoint UIList::getPixelPosition(int x,int y)
@@ -48,51 +58,87 @@ CCPoint UIList::getPixelPosition(int x,int y)
 }
 const CCSize & UIList::getContentSize()
 {
-	return CCSizeMake(_eachWidth+_eachLeftSpan,_items.size()*(_height + _eachUpSpan));
+	if (vertical)
+		return CCSizeMake(_eachWidth+_eachLeftSpan,_items.size()*(_height + _eachUpSpan));
+	else
+		return CCSizeMake((_eachWidth+_eachLeftSpan) *_items.size(),(_height + _eachUpSpan));
 }
 int UIList::getNowTouchBagIdByCursorPosition(const CCPoint& point)
 {
-	CCPoint pos = this->convertToNodeSpace(point);
-	if ( pos.x >= 0 && pos.y <= _eachUpSpan + _eachHeight  && pos.x <= getViewWidth() && pos.y >= -getViewHeight())
+	if (vertical)
 	{
-		if (pos.y >= 0)
-			return 0;
-		else
+		CCPoint pos = this->convertToNodeSpace(point);
+		if ( pos.x >= 0 && pos.y <= _eachUpSpan + _eachHeight  && pos.x <= getViewWidth() && pos.y >= -getViewHeight())
 		{
-			int dy = (pos.y) / (_eachUpSpan + _eachHeight) ;
+			if (pos.y >= 0)
+				return 0;
+			else
+			{
+				int dy = (pos.y) / (_eachUpSpan + _eachHeight) ;
 
-			return 1 - dy ;
+				return 1 - dy ;
+			}
+		}
+	}
+	else
+	{
+		CCPoint pos = this->convertToNodeSpace(point);
+		if ( pos.x >= 0 && pos.y <= getViewHeight()  && pos.x <= getViewWidth() && pos.y >= 0)
+		{
+				return (pos.x) / (_eachWidth + _eachLeftSpan) ;
+
 		}
 	}
 	return -1;
 }
 float UIList::getViewWidth()
 {
-	return (_eachWidth + _eachLeftSpan);
+	if (vertical)
+		return (_eachWidth + _eachLeftSpan);
+	else
+		return _items.size() * (_eachWidth + _eachLeftSpan);
 }
 float UIList::getViewHeight()
 {
-	return _items.size() * (_eachUpSpan + _eachHeight) ;
+	if (vertical)
+		return _items.size() * (_eachUpSpan + _eachHeight) ;
+	else
+		return  (_eachUpSpan + _eachHeight);
 }
 /**
 * 检查坐标是否在区域内
 */
 bool UIList::checkIn(int x,int y)
 {
-	if ( x >= 0 && y <= _eachUpSpan + _eachHeight && x <= getViewWidth() && y >= -getViewHeight())
+	if (vertical)
 	{
-		return true;
+		if ( x >= 0 && y <= _eachUpSpan + _eachHeight && x <= getViewWidth() && y >= -getViewHeight())
+		{
+			return true;
+		}
+	}else
+	{
+		if ( x >= 0 && y <= getViewHeight() && x <= getViewWidth() && y >= 0)
+		{
+			return true;
+		}
 	}
 	return false;
 }
 
 float UIList::getPixelWidth()
 {
-	return (_eachWidth + _eachLeftSpan);
+	if (vertical)
+		return (_eachWidth + _eachLeftSpan);
+	else
+		return (_eachWidth + _eachLeftSpan) * (_items.size());
 }
 float UIList::getPixelHeight()
 { 
-	return (_eachHeight + _eachUpSpan) * (_items.size());
+	if (vertical)
+		return (_eachHeight + _eachUpSpan) * (_items.size());
+	else
+		return (_eachHeight + _eachUpSpan); 
 }
 ///////////////////创建UIXmlList///////////////////////
 
@@ -131,7 +177,11 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 	if (node->equal("list"))
 	{
 		backName = node->getAttr("back");
-		
+		std::string vertical = node->getAttr("vertical");
+		if (vertical == "false")
+		{
+			this->vertical = false;
+		}
 		this->setAnchorPoint(ccp(0,0));
 		this->_eachHeight = node->getInt("eachheight");
 		this->_eachWidth = node->getInt("eachwidth");
