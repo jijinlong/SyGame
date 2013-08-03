@@ -1,0 +1,8 @@
+<Config>
+	<item backimg="panel_back.png" x="" y="">
+		<button uniquename="open" x="32" y="15" name="打开" w="48" h="48"
+		downimg="btn_common_up.png" upimg="btn_common_down.png" r="255" g="0" b="" desc="" fontsize="32"/>
+		<label x="64" y="15" content="文件:" fontsize="32" r="" g="255" b="" uniquename="bgname"/>
+		<choice uniquename="show" x="43" y="32" upname="show_choice_up.png" downname="show_choice_down.png"/>
+	</item>
+</Config>

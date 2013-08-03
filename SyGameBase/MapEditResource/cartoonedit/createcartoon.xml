@@ -1,0 +1,39 @@
+<!--创建n个帧-->
+<code name="doShowAddDirFrame">
+	<files_show name="files" showxml="cartoonedit/show_file_images_for_add_frame.xml"/>
+</code>
+
+<code name="doHideMe">
+	<hidepanel name="cartoonedit/createcartoon"/> <!--创建monster-->
+</code>
+
+<code name="dochoicetimeframe">
+	<panel_p_choice name="locationframe" choice="false"/>
+</code>
+
+<code name="dochoicelocationframe">
+	<panel_p_choice name="timeframe" choice="false"/>
+</code>
+
+<code name="doTest">
+	<parent_p_bind btnname="test" event="testcatoon"/> 
+</code>
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<panel name="cartoonedit/createcartoon" x="0" y="300" w="450" h="450"  local="2" moveable="true" oncreate="doCreateMonster">
+		
+		<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0" oncreate="" vertical="false"> <!--每个方向-->
+			<face viewx="-180" viewy="-220" vieww="600" viewh="300" scrolltype="verticle"/>
+		</list>
+		
+		<choice uniquename="timeframe" x="100" y="120" upname="show_choice_down.png" downname="show_choice_up.png" onclick="dochoicetimeframe"/> <!--设定时间帧-->
+		<choice uniquename="locationframe" x="100" y="60" upname="show_choice_down.png" downname="show_choice_up.png" onclick="dochoicelocationframe"/> <!--设定位置帧-->
+		<editfield uniquename="needtime" x="150" y="-40" content="输入时长" width="200" height="28"/>
+		<button uniquename="test" x="150" y="-80" w="64" h="32" name="测试" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doTest"/>
+		<button uniquename="ok" x="-44" y="-300" w="64" h="32" name="增加" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doShowAddDirFrame"/>
+		<button uniquename="cancel" x="44" y="-300" w="64" h="32" name="取消" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" />
+	</panel>
+</Config>
