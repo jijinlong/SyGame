@@ -1018,7 +1018,14 @@ void UIPanel::hide()
 		this->getWindow()->popModel();
 	}
 }
-
+std::string UIPanel::getUILablevalue(const std::string &name)
+{
+	GET_UI_BYNAME(this,UILabel,label,name.c_str());
+	if (label)
+	{
+		return label->getContent();
+	}
+}
 void UIPanel::setUILabelvalue(const std::string &name,const std::string& value)
 {
 	GET_UI_BYNAME(this,UILabel,label,name.c_str());

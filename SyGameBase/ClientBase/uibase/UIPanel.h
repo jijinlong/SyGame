@@ -164,6 +164,7 @@ public:
 		setEditFielValue(name,ss.str());
 	}
 	void setUILabelvalue(const std::string &name,const std::string& value);
+	std::string getUILablevalue(const std::string &name);
 	void hide();
 protected:
 	CCPoint nowTouchPoint;

@@ -25,6 +25,8 @@ public:
 	{
 		if (window)
 		{
+			UIPanel *target = base->getPanel();
+			std::string fileName = target->getUILablevalue("filename");
 			UIPanel *dirFrameDialog = window->getPanel("cartoonedit/createcartoon");
 			if (dirFrameDialog)
 			{
@@ -33,7 +35,7 @@ public:
 				if (list)
 				{
 					stFrameItem *fileItem = stFrameItem::create("cartoonedit/frame_item.xml");
-					fileItem->name = "cell.png";
+					fileItem->name = fileName ;
 					fileItem->getPanel()->setUILabelvalue("bgname",fileItem->name);
 					list->addItem(fileItem);
 					CCSprite * content = CCSprite::create(fileItem->name.c_str());
@@ -87,6 +89,7 @@ public:
 			}
 			cartoonInfo.cartoonType = CartoonInfo::SELF;
 			cartoonInfo.frameType = CartoonInfo::TIME_FRAMES;
+			cartoonInfo.needTime = 1;
 			GET_UI_BYNAME(dirFrameDialog,UIChoice,choice,"locationframe");
 			if (choice && choice->isChoiced())
 			{

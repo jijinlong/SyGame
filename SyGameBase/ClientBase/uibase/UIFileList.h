@@ -33,6 +33,10 @@ public:
 	virtual void doInitEvent();
 
 	void show(const char *root,const char * listName="list",const char *dirItemName="diritem.xml",const char *fileItemName="fileitem.xml");
+
+	std::vector<std::string> showes;
+
+	bool checkIn(const std::string &name);
 };
 
 NS_CC_END

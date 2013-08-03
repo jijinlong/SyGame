@@ -33,6 +33,9 @@
     <ClCompile Include="StartScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Cartoon2DEdit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppDelegate.h">
@@ -53,7 +56,7 @@
     <ClInclude Include="StartScene.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Monster2DEdit.h">
+    <ClInclude Include="Cartoon2DEdit.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

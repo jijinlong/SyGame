@@ -1,6 +1,6 @@
 <!--创建n个帧-->
 <code name="doShowAddDirFrame">
-	<files_show name="files" showxml="cartoonedit/show_file_images_for_add_frame.xml"/>
+	<files_show name="files" showxml="cartoonedit/show_file_images_for_add_frame.xml" showfile="png" dirshow="cartoonedit/diritem.xml" fileshow="cartoonedit/fileitem.xml"/>
 </code>
 
 <code name="doHideMe">
@@ -34,6 +34,6 @@
 		<button uniquename="ok" x="-44" y="-300" w="64" h="32" name="增加" downimg="btn_common_down.png"
 				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doShowAddDirFrame"/>
 		<button uniquename="cancel" x="44" y="-300" w="64" h="32" name="取消" downimg="btn_common_down.png"
-				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" />
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doHideMe"/>
 	</panel>
 </Config>

@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppDelegate.cpp" />
+    <ClCompile Include="Cartoon2DEdit.cpp" />
     <ClCompile Include="Layer3D.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
@@ -95,10 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppDelegate.h" />
+    <ClInclude Include="Cartoon2DEdit.h" />
     <ClInclude Include="Layer3D.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapManager.h" />
-    <ClInclude Include="Monster2DEdit.h" />
     <ClInclude Include="StartDialog.h" />
     <ClInclude Include="StartScene.h" />
   </ItemGroup>

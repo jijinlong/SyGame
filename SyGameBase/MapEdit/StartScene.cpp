@@ -10,7 +10,7 @@
 #include "Layer3D.h"
 #include "CCSprite3D.h"
 #include "UILib.h"
-#include "Monster2DEdit.h"
+#include "Cartoon2DEdit.h"
 USING_NS_CC;
 
 
@@ -123,7 +123,7 @@ bool StartScene::init()
 		map->showGrids();
 		MapManager::getMe().replaceMap(map);
 	}
-	Monster2DEdit *edit = Monster2DEdit::create(window,"monsteredit/createmonster.xml");
+	Cartoon2DEdit *edit = Cartoon2DEdit::create(window,"cartoonedit/createcartoon.xml");
 	if (edit)
 	{
 		window->pushModel(edit);

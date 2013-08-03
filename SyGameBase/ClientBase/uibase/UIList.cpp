@@ -199,16 +199,23 @@ bool UIViewList::initWithNode(script::tixmlCodeNode *node)
 			view = UIScrollView::create(viewx,viewy,vieww,viewh);
 			std::string viewback = viewNode.getAttr("back");
 			scrollTypeStr = node->getAttr("scrollable");
+			std::string scrollVerticle = viewNode.getAttr("scrolltype");
 			if (view)
 			{
 				((UIScrollView*)view)->addContent(this);
 				((UIScrollView*)view)->setScrollType(UIScrollView::UP_DOWN);
+				if (viewback != "")
 				((UIScrollView*)view)->setBack(viewback.c_str());
 				view->setEditable(false);
 				if (scrollTypeStr == "true")
 				((UIScrollView*)view)->setScrollAble(true);
 				else
 				((UIScrollView*)view)->setScrollAble(false);
+				
+				if(scrollVerticle=="verticle")
+				{
+					((UIScrollView*)view)->setScrollType(UIScrollView::LEFT_RIGHT);
+				}
 			}
 		}
 		if (backName != "")

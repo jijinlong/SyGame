@@ -42,6 +42,15 @@ struct stOpenSubDir:public UICallback{
 	std::string root;
 	std::string uiXmlName;
 };
+bool UIFileList::checkIn(const std::string &name)
+{
+	if (showes.empty()) return true;
+	for (std::vector<std::string>::iterator iter = showes.begin();iter != showes.end();++iter)
+	{
+		if (name.find(*iter) != std::string::npos) return true;
+	}
+	return false;
+}
 void UIFileList::show(const char *root,const char * listName,const char *dirItemName,const char *fileItemName)
 {
 	/**
@@ -78,13 +87,16 @@ void UIFileList::show(const char *root,const char * listName,const char *dirItem
 		{
 			// 文件
 			std::string fname = fd.cFileName;
-
-			UIFileItem *fileItem = UIFileItem::create(fileItemName);
-			if (fileItem)
+			if (checkIn(fname))
 			{
-				fileItem->setFileType(UIFileItem::__FILE_);
+				UIFileItem *fileItem = UIFileItem::create(fileItemName);
+				if (fileItem)
+				{
+					fileItem->setFileType(UIFileItem::__FILE_);
+					fileItem->getPanel()->setUILabelvalue("filename",fname);
+				}
+				list->addItem(fileItem);
 			}
-			list->addItem(fileItem);
 		}
 	}
     BOOL bSearchFinished = FALSE; 
@@ -111,12 +123,16 @@ void UIFileList::show(const char *root,const char * listName,const char *dirItem
 				{
 					// 文件
 					std::string fname = fd.cFileName;
-					UIFileItem *fileItem = UIFileItem::create(fileItemName);
-					if (fileItem)
+					if (checkIn(fname))
 					{
-						fileItem->setFileType(UIFileItem::__FILE_);
+						UIFileItem *fileItem = UIFileItem::create(fileItemName);
+						if (fileItem)
+						{
+							fileItem->setFileType(UIFileItem::__FILE_);
+							fileItem->getPanel()->setUILabelvalue("filename",fname);
+						}
+						list->addItem(fileItem);
 					}
-					list->addItem(fileItem);
 				}
 			}
 		} 
