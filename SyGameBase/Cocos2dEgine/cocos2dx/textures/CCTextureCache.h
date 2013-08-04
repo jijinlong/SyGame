@@ -54,7 +54,7 @@ class CCImage;
 */
 class CC_DLL CCTextureCache : public CCObject
 {
-protected:
+public:
     CCDictionary* m_pTextures;
     //pthread_mutex_t                *m_pDictLock;
 

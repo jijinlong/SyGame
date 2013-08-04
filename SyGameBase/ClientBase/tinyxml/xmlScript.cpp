@@ -67,6 +67,22 @@ namespace script{
 		}
 		return 0;
 	}
+	bool xmlNodeAttr::getBool(const char *name)
+	{
+		ATTR_ITER iter = attrs.find(name);
+		if (iter!=attrs.end())
+		{
+			if (iter->second.c_str() == "true")
+			{
+				return true;
+			}
+			if (iter->second.c_str() == "false")
+			{
+				return false;
+			}
+		}
+		return 0;
+	}
 	const char *xmlNodeAttr::getAttr(const char *name)
 	{
 		ATTR_ITER iter = attrs.find(name);

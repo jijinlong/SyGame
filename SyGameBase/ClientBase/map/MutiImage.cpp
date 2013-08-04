@@ -1,5 +1,7 @@
 #include "MutiImage.h"
 #include <png.hpp>
+#include "FileSet.h"
+#include "LocalSprite.h"
 NS_CC_BEGIN
 MutiImage * MutiImage::create(script::tixmlCodeNode *node)
 {
@@ -120,6 +122,7 @@ bool MutiBigImage::init(const char *pngName)
 			int imgId = i / width_pixel_width + (j / height_pixel_height) * width_size;
 			tmpImgs[imgId].set_pixel(i % width_pixel_width,j % height_pixel_height,img.get_pixel(i,j));
 		}
+	FileSet fileSet;
 	for (int i = 0; i < tmpImgs.size();i++)
 	{
 		CCImage image; 
@@ -146,14 +149,25 @@ bool MutiBigImage::init(const char *pngName)
 		}
 		if (saveTemp)
 		{
+			{
 			std::stringstream pngNameC;
 			pngNameC << "temps" << x <<"_"<< y << pngName;
+			fileSet.addFile(pngNameC.str());
+			}
+			{
+			std::stringstream pngNameC;
+			pngNameC << "tmp\\temps" << x <<"_"<< y << pngName;
 			pImage.write(pngNameC.str().c_str());
+			}
 		}
 	}
+
 	if (saveTemp)
 	{
 		saveToXml(width_pixel_width,offset,img.get_height(),height_pixel_height,pngName,width_size,tmpImgs.size());
+		std::stringstream setInfo;
+		setInfo<<pngName;
+		fileSet.save(setInfo.str().c_str());
 	}
 	// 尝试创建一个info.xml 来说明该分割的文件
 	return true;
@@ -223,15 +237,31 @@ void MutiBigImage::takeNode(script::tixmlCodeNode *node)
 			int image_height = imageNode.getInt("image_height");
 			int imgSize = imageNode.getInt("imgsize");
 			std::string pngName = imageNode.getAttr("pngname");
+			std::string fileSetName = imageNode.getAttr("fileset");
+			FileSet fileSet;
+			if (fileSetName == "true")
+			{
+				fileSet.createFromFile(pngName.c_str());
+			}
 			for (int i = 0; i < imgSize;i++)
 			{
 				int y = i / width_size;
 				int x = i % width_size;      
 				std::stringstream name;
 				name << "temps" << x <<"_"<< y << pngName;
-				CCSprite * sprite = CCSprite::create(name.str().c_str());
-				this->addChild(sprite);
-				sprite->setPosition(ccp(offset.x + x * width_pixel_width,image_height - y * height_pixel_height - offset.y));
+				CCSprite * sprite = NULL;
+				if (fileSetName != "true")
+				{
+					sprite = CCSprite::create(name.str().c_str());
+					this->addChild(sprite);
+				}
+				else
+				{
+					sprite = LocalSprite::create(name.str().c_str(),&fileSet);
+					this->addChild(sprite);
+				}
+				if (sprite)
+					sprite->setPosition(ccp(offset.x + x * width_pixel_width,image_height - y * height_pixel_height - offset.y));
 			}
 			size = CCSizeMake(width_pixel_width * width_size,image_height);
 		}

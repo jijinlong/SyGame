@@ -97,7 +97,7 @@ void MainDialog::doInitEvent()
 	{
 		editBlockChoice->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::editBlock));
 	}
-	GET_UI_BYNAME(this,UIButton,showMonsterEditBtn,"controlmonster") // 打开一个地图 将会替换当前的地图
+	GET_UI_BYNAME(this,UIButton,showMonsterEditBtn,"controlmonster") //  
 	if (showMonsterEditBtn)
 	{
 		showMonsterEditBtn->bind(UIBase::EVENT_CLICK_DOWN,ui_function(MainDialog::showControlMonster));

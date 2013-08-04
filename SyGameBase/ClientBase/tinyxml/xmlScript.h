@@ -73,6 +73,7 @@ namespace script{
 		bool getAttr(const char *name,std::string &contnt);
 		float getFloat(const char *name);
 		int getInt(const char *name);
+		bool getBool(const char *name);
 		/**
  		 * 获取当前节点
  		 * \param name 名字

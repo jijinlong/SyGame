@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <fileset name="temp.cartoon.bin">
+        <file name="skill01.png" startpos="0" size="50641" />
+        <file name="skill02.png" startpos="50641" size="76402" />
+        <file name="skill03.png" startpos="127043" size="130633" />
+        <file name="skill04.png" startpos="257676" size="98969" />
+    </fileset>
+</Config>

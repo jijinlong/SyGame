@@ -1,0 +1,10 @@
+<code name="doCreateFileItem">
+	<parent_p_bind btnname="open" event="do_add_image"/>
+</code>
+<Config>
+	<item backimg="panel_back.png" x="" y="">
+		<button uniquename="open" x="32" y="16" name="打开" w="48" h="48"
+		downimg="btn_common_up.png" upimg="btn_common_down.png" r="255" g="0" b="" desc="" fontsize="32" oncreate="doCreateFileItem"/>
+		<label x="128" y="16" fontsize="32" r="" g="255" b="" uniquename="filename" />
+	</item>
+</Config>

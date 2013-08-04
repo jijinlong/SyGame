@@ -76,7 +76,7 @@ bool StartScene::init()
 	CCSprite3D *d3 = CCSprite3D::create("terran.md2", "terran.png");
 	if (d3)
 	{
-		this->addChild(d3);
+//		this->addChild(d3);
 	}
 	//Layer3D *layer3D = Layer3D::create();
 	//if (layer3D)
@@ -104,13 +104,8 @@ bool StartScene::init()
 	
 	MapManager::getMe().window = window;
 
-	this->schedule(schedule_selector(StartScene::step), 0.75f); 
-
-	MutiBigImage *image = MutiBigImage::createFromXml("bigimage.pngxmlext");
-	if (image)
-	{
-	//	this->addChild(image);
-	}
+	this->schedule(schedule_selector(StartScene::step), 0.75f);   
+	
 	MutiBigTerrain *terrain = MutiBigTerrain::create("grass.png",2,2);
 	if (terrain)
 	{
@@ -128,6 +123,7 @@ bool StartScene::init()
 	{
 		window->pushModel(edit);
 	}
+#ifdef MONSTER_TEST
 	for (int i = 0; i < 1;i++)
 	{
 		MutiMonster *monster = MutiMonster::create();
@@ -152,6 +148,7 @@ bool StartScene::init()
 		//monster->jumpTo();
 	//	monster->moveLeft();
 	}
+#endif
 	CCSprite *sprite = CCSprite::create("cell.png");
 	if (sprite)
 	{

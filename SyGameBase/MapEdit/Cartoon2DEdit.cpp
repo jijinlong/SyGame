@@ -9,6 +9,7 @@
 #include "UILib.h"
 #include "Cartoon.h"
 #include "UIFileList.h"
+#include "FileSet.h"
 NS_CC_BEGIN
 class stFrameItem:public BaseUIItem<stFrameItem>
 {
@@ -58,6 +59,7 @@ struct stTakeEachImage:stBagExecEach{
 	{}
 	Cartoon2DEdit *edit;
 	CartoonInfo *cartoonInfo;
+	std::vector<std::string> frames;
 	void exec(UIItem *item)
 	{
 		stFrameItem *frameItem = (stFrameItem*) item;
@@ -67,7 +69,7 @@ struct stTakeEachImage:stBagExecEach{
 			CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
 			frame->retain();
 			cartoonInfo->frames.push_back(frame);
-			
+			frames.push_back(frameItem->name.c_str());
 		}
 	}
 };
@@ -86,6 +88,12 @@ public:
 			{
 				stTakeEachImage take(edit,&cartoonInfo);
 				list->execEachItem(&take);
+				FileSet fileSet;
+				for (int index = 0; index < take.frames.size();index++)
+				{
+					fileSet.addFile(take.frames[index]);
+				}	
+				fileSet.save("temp.cartoon",".\\"); // 保存一个动画的二进制数据
 			}
 			cartoonInfo.cartoonType = CartoonInfo::SELF;
 			cartoonInfo.frameType = CartoonInfo::TIME_FRAMES;
@@ -100,6 +108,7 @@ public:
 			edit->cartoon->runAction(CCRepeatForever::create(animate));
 
 			cartoonInfo.release();
+		
 		}
 	}
 	stTestCartoon(UIWindow *window,Cartoon2DEdit *edit):window(window),edit(edit){}

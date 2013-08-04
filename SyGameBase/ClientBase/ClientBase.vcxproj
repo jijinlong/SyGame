@@ -70,6 +70,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="action\FileSet.cpp" />
+    <ClCompile Include="action\LocalSprite.cpp" />
     <ClCompile Include="zlib\adler32.c" />
     <ClCompile Include="zlib\compress.c" />
     <ClCompile Include="zlib\crc32.c" />
@@ -142,6 +144,9 @@
     <ClCompile Include="uilib\UILib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="action\FileSet.h" />
+    <ClInclude Include="action\LocalSprite.h" />
+    <ClInclude Include="action\SkillAction.h" />
     <ClInclude Include="zlib\crc32.h" />
     <ClInclude Include="zlib\deflate.h" />
     <ClInclude Include="zlib\inffast.h" />

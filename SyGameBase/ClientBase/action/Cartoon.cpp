@@ -381,6 +381,27 @@ void FollowAnimationAction::startWithTarget(CCNode *pTarget)
 	return pAnimate;
  
 }
+
+CartoonAction* CartoonAction::create(CCAnimation *animation)
+{
+	CartoonAction *pAnimate = new CartoonAction();
+	if (pAnimate->init(animation))
+	{
+		pAnimate->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(pAnimate);
+	}
+	return pAnimate;
+}
+bool CartoonAction::init(CCAnimation *animation)
+{
+	 CCAnimation * pAnimation = animation;
+	 if (!pAnimation) return false;
+	 initWithAnimation(pAnimation);
+	 return true;
+}
 /**
  * 初始化动作
  */

@@ -11,7 +11,7 @@
 	<panel name="monsteredit/createmonster" x="0" y="200" w="450" h="450"  local="2" backimg="panel_back.png" moveable="true" oncreate="doCreateMonster">
 		<panel uniquename="extinfo" moveable="false" x="" y="60">
 			<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0" oncreate=""> <!--每个方向-->
-				<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png"/>
+				<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png" scrolltype="verticle"/>
 			</list>
 		</panel>
 		<button uniquename="ok" x="-44" y="-200" w="64" h="32" name="增加" downimg="btn_common_down.png"

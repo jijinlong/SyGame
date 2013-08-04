@@ -427,7 +427,7 @@ void MutiMap::showGrids()
 	stShowEachGrids exec(_grids,this);
 	for (int i = 3; i < 10;i++)
 	{
-		setBlock(GridIndex(i,2), GridIndex::STATIC_BLOCK);
+	//	setBlock(GridIndex(i,2), GridIndex::STATIC_BLOCK);
 	}
 	_grids->execAll(&exec);
 	//stCheckValid check(_grids);

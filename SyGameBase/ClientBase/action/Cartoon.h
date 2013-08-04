@@ -46,6 +46,8 @@ public:
 	int actionType; // 动作类型 子类定义
 	std::vector<CCSpriteFrame*> frames; // 临时创建的变量	
 	int nextConbineType; // 下一个合并类型
+
+	int delayTime; // 延时
 	enum{
 		SEQUENCE = 0,// 序列 
 		TOGETHER = 1, // 一起
@@ -76,6 +78,7 @@ public:
 		nextCartoon = NULL;
 		actionTag = -1;
 		frameType = MOVE_FRAMES;
+		delayTime = 0;
 	}
 	CartoonInfo &operator = (const CartoonInfo &info)
 	{
@@ -87,6 +90,7 @@ public:
 		this->frameType = info.frameType;
 		this->frames = info.frames;
 		this->needTime = info.needTime;
+		this->delayTime = info.delayTime;
 		return *this;
 	}
 };
@@ -133,6 +137,8 @@ public:
 	{
 		CCAnimate::update(time);
 	}
+	static CartoonAction* create(CCAnimation *animation);
+	bool init(CCAnimation *animation);
 	/**
 	 * 创建卡通动作
 	 */

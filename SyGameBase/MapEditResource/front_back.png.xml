@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <fileset name="front_back.png.bin">
+        <file name="temps0_0front_back.png" startpos="0" size="213163" />
+        <file name="temps0_1front_back.png" startpos="213163" size="267736" />
+        <file name="temps0_2front_back.png" startpos="480899" size="694" />
+        <file name="temps1_0front_back.png" startpos="481593" size="153237" />
+        <file name="temps1_1front_back.png" startpos="634830" size="288850" />
+        <file name="temps2_0front_back.png" startpos="923680" size="113002" />
+        <file name="temps2_1front_back.png" startpos="1036682" size="249656" />
+        <file name="temps3_0front_back.png" startpos="1286338" size="104968" />
+        <file name="temps3_1front_back.png" startpos="1391306" size="275848" />
+        <file name="temps4_0front_back.png" startpos="1667154" size="244717" />
+        <file name="temps4_1front_back.png" startpos="1911871" size="255274" />
+    </fileset>
+</Config>
