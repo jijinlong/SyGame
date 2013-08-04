@@ -136,6 +136,11 @@ public:
 	 * 展示所有文件
 	 */
 	int files_show(UIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 设置选择框
+	 */
+	int panel_p_choice(UIStub *stub,script::tixmlCodeNode * node);
 };
 
 #define theUILib UILib::getMe()
