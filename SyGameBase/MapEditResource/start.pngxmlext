@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <image width_pixel_width="512" offsetx="256" offsety="192" height_pixel_height="384" width_size="2" image_height="768" imgsize="4" pngname="start.png" />
+    <image width_pixel_width="512" offsetx="256" offsety="192" height_pixel_height="384" width_size="2" image_height="768" imgsize="5" pngname="start.png" />
 </Config>

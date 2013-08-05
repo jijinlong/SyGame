@@ -178,23 +178,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Layer3D.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MapManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Monster2DEdit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StartDialog.cpp"
 				>
 			</File>
 			<File
@@ -212,10 +200,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Layer3D.h"
-				>
-			</File>
-			<File
 				RelativePath=".\main.h"
 				>
 			</File>
@@ -224,15 +208,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Monster2DEdit.h"
-				>
-			</File>
-			<File
-				RelativePath=".\StartDialog.h"
-				>
-			</File>
-			<File
 				RelativePath=".\StartScene.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UICallbacks.h"
 				>
 			</File>
 		</Filter>

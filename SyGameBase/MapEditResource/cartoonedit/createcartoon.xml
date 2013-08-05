@@ -25,15 +25,15 @@
 		<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0" oncreate="" vertical="false"> <!--每个方向-->
 			<face viewx="-180" viewy="-220" vieww="600" viewh="300" scrolltype="verticle"/>
 		</list>
-		
-		<choice uniquename="timeframe" x="100" y="120" upname="show_choice_down.png" downname="show_choice_up.png" onclick="dochoicetimeframe"/> <!--设定时间帧-->
-		<choice uniquename="locationframe" x="100" y="60" upname="show_choice_down.png" downname="show_choice_up.png" onclick="dochoicelocationframe"/> <!--设定位置帧-->
+		<!--choice uniquename="timeframe" x="100" y="120" upname="show_choice_down.png" downname="show_choice_up.png" onclick="dochoicetimeframe"/--> <!--设定时间帧-->
+		<!--choice uniquename="locationframe" x="100" y="60" upname="show_choice_down.png" downname="show_choice_up.png" onclick="dochoicelocationframe"/--> <!--设定位置帧-->
 		<editfield uniquename="needtime" x="150" y="-40" content="输入时长" width="200" height="28"/>
-		<button uniquename="test" x="150" y="-80" w="64" h="32" name="测试" downimg="btn_common_down.png"
+		<editfield uniquename="cartoonname" x="150" y="-90" content="输入名字" width="200" height="28"/>
+		<button uniquename="test" x="150" y="-180" w="64" h="32" name="保存" downimg="btn_common_down.png"
 				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doTest"/>
-		<button uniquename="ok" x="-44" y="-300" w="64" h="32" name="增加" downimg="btn_common_down.png"
+		<button uniquename="ok" x="-44" y="-320" w="64" h="32" name="增加" downimg="btn_common_down.png"
 				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doShowAddDirFrame"/>
-		<button uniquename="cancel" x="44" y="-300" w="64" h="32" name="取消" downimg="btn_common_down.png"
+		<button uniquename="cancel" x="44" y="-320" w="64" h="32" name="取消" downimg="btn_common_down.png"
 				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doHideMe"/>
 	</panel>
 </Config>

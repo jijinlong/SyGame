@@ -1,0 +1,21 @@
+<code name="do_add_new_layer"> <!--增加新层-->
+	<showpanel name="maprop/addnewlayer" model="true"/>
+</code>
+
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<start x="0" y="300" w="450" h="450"  local="2" backimg="panel_back.png" moveable="true">
+		<editfield uniquename="x" x="-50" y="40" content="横坐标" width="400" height="32"/>
+		<editfield uniquename="y" x="-50" y="80" content="纵坐标" width="400" height="32"/>
+		<editfield uniquename="zorder" x="-50" y="160" content="层次" width="400" height="32"/>
+		<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0">
+			<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png"/>
+		</list>
+		<button uniquename="addlayer" x="150" y="-180" w="64" h="32" name="增加层" downimg="btn_common_down.png"
+			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="do_add_new_layer"/>
+		<button uniquename="ok" x="-44" y="-300" w="64" h="32" name="确定" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" bindevent="set_now_prop_layer"/>
+		<button uniquename="cancel" x="44" y="-300" w="64" h="32" name="取消" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="dohideparent"/>
+	</start>
+</Config>

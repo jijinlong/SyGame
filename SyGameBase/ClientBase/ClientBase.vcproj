@@ -344,6 +344,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\uibase\UIMain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uibase\UIMain.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uibase\UINumber.cpp"
 				>
 			</File>
@@ -517,6 +525,22 @@
 			</File>
 			<File
 				RelativePath=".\action\Cartoon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\action\FileSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\action\FileSet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\action\LocalSprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\action\LocalSprite.h"
 				>
 			</File>
 		</Filter>
@@ -744,11 +768,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File

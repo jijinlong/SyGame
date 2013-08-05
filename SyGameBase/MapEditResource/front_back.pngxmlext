@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <image width_pixel_width="480" offsetx="240" offsety="165" height_pixel_height="330" width_size="5" image_height="660" imgsize="11" pngname="front_back.png" fileset="true"/>
+    <image width_pixel_width="480" offsetx="240" fileset="true" offsety="165" height_pixel_height="330" width_size="5" image_height="660" imgsize="11" pngname="front_back.png" />
 </Config>

@@ -193,6 +193,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 
 		}
 	}
+	showGrids();
 }
 void MutiMap::addImage(MutiImage *image)
 {
@@ -374,9 +375,16 @@ struct stShowEachGrids:stExecEach{
 	void exec(const GridIndex& index)
 	{
 		int * value = grids->getObjectByIndex(index);
-		if (!value || *value !=0)
+		if (value && *value !=0)
 		{
+			std::stringstream ss;
+			ss << *value;
 			CCSprite * test = CCSprite::create("cell.png");
+			CCLabelTTF *label = CCLabelTTF::create(ss.str().c_str(),"Arial",32);
+			if (label)
+			{
+				test->addChild(label);
+			}
 			test->setPosition(grids->getPointByIndex(index));
 			map->addSprite(test);
 			map->tempDebugBlocks.push_back(test);
@@ -479,13 +487,16 @@ void MutiMap::clearBlock(const GridIndex &index,int bvalue)
 		}
 	}
 }
-void MutiMap::setBlockByTouchPoint(const CCPoint &touchPoint)
+void MutiMap::setBlockByTouchPoint(const CCPoint &touchPoint,int value)
 {
 	CCPoint point = this->convertToNodeSpace(touchPoint);
 	GridIndex index = _grids->getIndexByPoint(point);
-	setBlock(index,GridIndex::STATIC_BLOCK);
-	stShowEachGrids exec(_grids,this);
-	_grids->execOne(index,&exec);
+	if (value)
+		setBlock(index,value);
+	else
+		clearBlock(index,0xffffffff);
+	//stShowEachGrids exec(_grids,this);
+	//_grids->execOne(index,&exec);
 }
 GridIndex MutiMap::getIndexByLocation(const CCPoint &point)
 {

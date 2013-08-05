@@ -30,6 +30,7 @@ void MapManager::replaceMap(MutiMap *map)
 	if (this->mapRoot)
 	{
 		mapRoot->save();
+		mapRoot->removeAllChildrenWithCleanup(true);
 		scene->removeChild(this->mapRoot,true);
 	}
 	this->mapRoot = map;
@@ -68,7 +69,12 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 	{
 		case UIBase::TOUCH_DOWN:
 		{
-			if (isSetBlock) return;
+			if (isSetBlock)
+			{
+				map->setBlockByTouchPoint(touchPoint,blockValue);
+				map->showGrids();
+				return;
+			}
 			nowObject = map->pickObject(touchPoint);
 			nowTouchPoint = touchPoint;
 			if (nowObject && nowObject->objectType == MutiObject::MOSTER_TYPE)
@@ -76,6 +82,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 				nowMonster = (MutiMonster*) nowObject;
 				nowMonster->map->clearBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
 			}
+			
 		}break;
 		case UIBase::TOUCH_MOVE:
 		{
@@ -105,10 +112,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 			{
 				nowMonster->map->setBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
 			}
-			if (isSetBlock)
-			{
-				map->setBlockByTouchPoint(touchPoint);
-			}
+			
 			nowObject = NULL;
 		}break;
 	}

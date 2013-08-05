@@ -96,6 +96,8 @@ public:
 	 * 隐藏自己 
 	 **/
 	int hideme(UIStub* stub,script::tixmlCodeNode * node);
+
+	int hideparentpanel(UIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 改变自己位置
 	 **/

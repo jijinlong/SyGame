@@ -1,20 +1,81 @@
+<!--创建动画-->
+<code name="cartoon_edit_panel">
+	<showpanel name="cartoonedit/createcartoon"/>
+</code>
+<!--隐藏自己-->
+<code name="dohideparent">
+	<hideparentpanel/>
+</code>
+<!--创建图片-->
+<code name="do_create_image">
+	<files_show name="files" showxml="createimage/show_file_images_for_add_frame.xml" showfile="png" dirshow="createimage/diritem.xml" fileshow="createimage/fileitem.xml"/>
+</code>
+<!--创建大图-->
+<code name="do_create_big_image">
+	<files_show name="files" showxml="createbigimage/show_file_images_for_add_frame.xml" showfile="png" dirshow="createbigimage/diritem.xml" fileshow="createbigimage/fileitem.xml"/>
+</code>
+<!--创建地图-->
+<code name="do_open_map">
+	<showpanel name="openmap"/>
+</code>
+<!--保存地图-->
+<code name="do_save_map">
+	<showpanel name="savemap"/>
+</code>
+<!--阻挡点设置-->
+<code name="do_set_block">
+	<showpanel name="editblock"/>
+</code>
 <Config>
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
 	<start x="0" y="0" width="0" height="0"  local="40" backimg="" moveable="false" root="true" zorder="1">
 		<button uniquename="save" x="-84" y="128" name="保存" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_save_map"/>
 		<button uniquename="open" x="-84" y="64" name="打开" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="showOpenMap"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_open_map"/>
 		<button uniquename="cartoon" x="-84" y="0" name="动画" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="cartoon_edit_panel"/>
 		<button uniquename="bigimage" x="-84" y="-60" name="大图" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_create_big_image"/>
 		<button uniquename="image" x="-84" y="-180" name="图像" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_create_image"/>
 		<button uniquename="map" x="-84" y="-120" name="地图" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
-		<choice uniquename="editblock" x="-84" y="160" upname="show_choice_up.png" downname="show_choice_down.png"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" bindevent="do_show_map_prop"/>
+		<button uniquename="map" x="-84" y="260" name="阻挡点" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_set_block"/>
 		<button uniquename="controlmonster" x="-84" y="210" name="怪物" downimg="btn_common_down.png"
-		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34"/>
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" />
 	</start>
+	
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<panel name="openmap" x="0" y="0" width="0" height="0"  local="34" 
+		backimg="panel_back.png" moveable="true" root="true" visible="false">
+			<label x="-84" y="50" content="文件:" fontsize="32" r="" g="255" b="" />
+			<editfield uniquename="filename" x="20" y="50" content="输入名字" width="400" height="32"/>
+			<button uniquename="open" x="-44" y="-80" w="64" h="32" name="打开" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" bindevent="openmaplogic"/>
+			<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="dohideparent"/>
+	</panel>
+	<!--保存界面-->
+	<panel name="savemap" x="0" y="0" width="0" height="0"  local="34" 
+		backimg="panel_back.png" moveable="true" root="true" visible="false">
+			<label x="-84" y="50" content="文件:" fontsize="32" r="" g="255" b="" />
+			<editfield uniquename="filename" x="20" y="50" content="输入名字" width="400" height="32"/>
+			<button uniquename="open" x="-44" y="-80" w="64" h="32" name="保存" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" bindevent="savemaplogic"/>
+			<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="dohideparent" />
+	</panel>
+	
+	<!--设置阻挡点信息-->
+	<panel name="editblock" x="0" y="0" width="0" height="0"  local="34" 
+		backimg="panel_back.png" moveable="true" root="true" visible="false">
+			<label x="-84" y="50" content="阻挡信息:" fontsize="32" r="" g="255" b="" />
+			<editfield uniquename="blockvalue" x="20" y="50" content="值" width="400" height="32"/>
+			<button uniquename="ok" x="-44" y="-80" w="64" h="32" name="确定" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" bindevent="set_map_block"/>
+			<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" bindevent="cancel_set_map_block" />
+	</panel>
 </Config>

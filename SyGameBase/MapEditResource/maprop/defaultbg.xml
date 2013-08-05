@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <map zorder="-1" rationx="0.3" rationy="0.2" offsetx="0" offsety="0">
+        <image x="0" y="0" w="250" h="250" src="cell.png" />
+    </map>
+</Config>

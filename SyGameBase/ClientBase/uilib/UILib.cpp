@@ -31,6 +31,7 @@ void UILib::bindActions()
 	BIND_LIB_ACTION(parent_p_bind);
 	BIND_LIB_ACTION(files_show);
 	BIND_LIB_ACTION(panel_p_choice);
+	BIND_LIB_ACTION(hideparentpanel);
 }
 void UILib::initWithFile(const char *fileName)
 {
@@ -73,6 +74,21 @@ int UILib::hideme(UIStub* stub,script::tixmlCodeNode * node)
 	}
 	return 1;
 }
+int UILib::hideparentpanel(UIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->base)
+	{
+		UIPanel *panel = stub->base->getPanel();
+		if (panel)
+		{
+			if (panel)
+			{
+				panel->hide();
+			}
+		}
+	}
+	return 1;
+}
 /**
 * 改变自己位置
 **/
@@ -98,9 +114,10 @@ int UILib::showpanel(UIStub* stub,script::tixmlCodeNode * node)
 			std::string tag = node->getAttr("model");
 			if (tag == "true" && panel)
 			{
-				panel->setVisible(true);
 				window->pushModel(panel);
 			}
+			if (panel)
+			panel->setVisible(true);
 		}
 	}
 	return 1;
@@ -225,7 +242,10 @@ int UILib::files_show(UIStub* stub,script::tixmlCodeNode * node)
 			UIFileList *list = UIFileList::create(window,node->getAttr("showxml"));
 			if (list)
 			{
-				list->show(".");
+				std::string dirShowName = node->getAttr("dirshow");
+				std::string fileShowName = node->getAttr("fileshow");
+				list->showes.push_back(node->getAttr("showfile"));
+				list->show(".","list",dirShowName.c_str(),fileShowName.c_str());
 				window->pushModel(list);
 			}
 		}

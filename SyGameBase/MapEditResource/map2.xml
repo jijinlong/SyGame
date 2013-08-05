@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0" name="map2.xml">
+        <map zorder="-1" rationx="0.25" rationy="0" offsetx="0" offsety="0" name="test">
+            <bigimage x="-471" y="19" w="0" h="0" src="back_back.png" />
+            <blocks />
+        </map>
+        <blocks>
+            <index x="3" y="3" value="2" />
+            <index x="4" y="1" value="2" />
+            <index x="4" y="2" value="2" />
+            <index x="5" y="1" value="2" />
+            <index x="5" y="2" value="2" />
+            <index x="5" y="3" value="2" />
+            <index x="6" y="1" value="2" />
+            <index x="6" y="2" value="2" />
+            <index x="6" y="3" value="2" />
+        </blocks>
+    </map>
+</Config>

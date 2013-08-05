@@ -10,7 +10,7 @@ void LocalSprite::initWithName(const char *pngName,FileSet *fileSet)
 	texture = (CCTexture2D*)CCTextureCache::sharedTextureCache()->m_pTextures->objectForKey(pathKey.c_str());
 
 	std::string fullpath = pathKey; // (CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(path));
-	if( ! texture ) 
+//	if( ! texture ) 
 	{
 		std::string lowerCase(pngName);
 		for (unsigned int i = 0; i < lowerCase.length(); ++i)
@@ -75,7 +75,7 @@ void LocalSpriteFrame::initWithName(const char *pngName,FileSet *fileSet)
 	texture = (CCTexture2D*)CCTextureCache::sharedTextureCache()->m_pTextures->objectForKey(pathKey.c_str());
 
 	std::string fullpath = pathKey; // (CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(path));
-	if( ! texture ) 
+	//if( ! texture ) 
 	{
 		std::string lowerCase(pngName);
 		for (unsigned int i = 0; i < lowerCase.length(); ++i)

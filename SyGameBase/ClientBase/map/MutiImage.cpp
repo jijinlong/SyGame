@@ -193,6 +193,7 @@ void MutiBigImage::saveToXml(float width_pixel_width,const CCPoint &offset,float
 	imageNode->SetAttribute("image_height",image_height);
 	imageNode->SetAttribute("imgsize",imgSize);
 	imageNode->SetAttribute("pngname",pngName);
+	imageNode->SetAttribute("fileset","true");
 	std::stringstream fileName;
 	fileName << pngName <<"xmlext";
 	pDoc->SaveFile(fileName.str());

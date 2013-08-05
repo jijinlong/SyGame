@@ -77,7 +77,7 @@ public:
 	 */
 	void setBlock(const GridIndex &index,int value);
 	void clearBlock(const GridIndex &index,int value);
-	void setBlockByTouchPoint(const CCPoint &touchPoint);
+	void setBlockByTouchPoint(const CCPoint &touchPoint,int value);
 	CCPoint getLocationByIndex(const GridIndex &index);
 	GridIndex getIndexByLocation(const CCPoint &point);
 	bool getNextPosition(const GridIndex &src,const GridIndex &dest,GridIndex &out);

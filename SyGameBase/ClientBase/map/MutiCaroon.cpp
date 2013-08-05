@@ -1,5 +1,6 @@
 #include "MutiCartoon.h"
-
+#include "FileSet.h"
+#include "LocalSprite.h"
 NS_CC_BEGIN
 MutiCartoon * MutiCartoon::create()
 {
@@ -40,12 +41,25 @@ bool MutiCartoon::init()
 	 * ´´½¨¶¯»­
 	 */
 	CCAnimation* animation = CCAnimation::create();
-	for (int i = 0; i < pngNames.size(); i++)
+	if (!fromSet)
 	{
-		CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(pngNames[i].c_str());
-		CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,
-			CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
-		animation->addSpriteFrame(frame);
+		for (int i = 0; i < pngNames.size(); i++)
+		{
+			CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(pngNames[i].c_str());
+			CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,
+				CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
+			animation->addSpriteFrame(frame);
+		}
+	}
+	else
+	{
+		FileSet fileSet;
+		fileSet.createFromFile(cartoonName.c_str());
+		for (int i = 0; i < pngNames.size(); i++)
+		{
+			LocalSpriteFrame *frame = LocalSpriteFrame::create(pngNames[i].c_str(),&fileSet);
+			animation->addSpriteFrame(frame);
+		}
 	}
 	if (pngNames.empty()) return NULL;
 	animation->setDelayPerUnit(tapTime / pngNames.size());
@@ -65,6 +79,7 @@ void MutiCartoon::readNode(script::tixmlCodeNode *node)
 	repeateTimes = node->getInt("repeatetimes");
 	tapTime = node->getFloat("needtime");
 	script::tixmlCodeNode frameNode = node->getFirstChildNode("frame");
+	cartoonName = node->getAttr("name");
 	while (frameNode.isValid())
 	{
 		std::string pngName = frameNode.getAttr("name");
@@ -83,6 +98,8 @@ TiXmlElement * MutiCartoon::writeNode(TiXmlElement *parent,const std::string &na
 	{
 		cartoonNode->SetAttribute("repeatetimes",repeateTimes);
 		cartoonNode->SetAttribute("needtime",tapTime);
+		cartoonNode->SetAttribute("fromset","true");
+		cartoonNode->SetAttribute("name",cartoonName);
 		for (int i = 0; i < pngNames.size();i++)
 		{
 			TiXmlElement *frameNode=new TiXmlElement("frame");

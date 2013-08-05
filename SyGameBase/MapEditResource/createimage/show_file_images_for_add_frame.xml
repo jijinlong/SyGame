@@ -1,0 +1,12 @@
+<code name="onCreateImage">
+		<parent_p_bind btnname="ok" event="do_add_image"/> <!--将图片加入到 add_dir_frames.xml 中的数据里-->
+</code>
+<Config>
+	<start name="show" x="0" y="300" w="450" h="450"  local="2" backimg="" zorder="1" oncreate="onCreateImage">
+		<list uniquename="list" scrollable="true" eachwidth="400" back="file_back.png" eachheight="52" leftspan="10" upspan="2" x="0" y="0">
+				<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png"/>
+		</list>
+		<button uniquename="close" x="0" y="-250" w="64" h="32" name="取消" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24"/>
+	</start>
+</Config>

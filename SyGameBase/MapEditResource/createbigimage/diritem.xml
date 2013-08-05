@@ -1,0 +1,6 @@
+<Config>
+	<item backimg="panel_back.png" x="" y="">
+		<button uniquename="open" x="32" y="15" name="打开" w="48" h="48"
+		downimg="btn_common_up.png" upimg="btn_common_down.png" r="255" g="0" b="" desc="" fontsize="32"/>
+	</item>
+</Config>

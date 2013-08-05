@@ -129,12 +129,16 @@ void MainDialog::saveMap(UIBase *base)
  */
 struct stFrameItem:public UIItem{
 public:
+	stFrameItem()
+	{
+		sprite = NULL;
+	}
 	// listÖÐµÄÔªËØ
 	static stFrameItem *create(const std::string &pngName)
 	{
 		stFrameItem *node = new stFrameItem();
-		node->autorelease();
 		node->init(pngName);
+		node->autorelease();
 		return node;
 	}
 	void init(const std::string &pngName)

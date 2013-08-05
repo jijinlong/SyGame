@@ -1,8 +1,9 @@
 #pragma once
 #include "UIScrollView.h"
-#include "StartDialog.h"
+//#include "StartDialog.h"
 #include "UIWindow.h"
 #include "UIValue.h"
+#include "UIMain.h"
 /**
  * º”‘ÿ¥¶¿Ì
  */
@@ -42,12 +43,12 @@ public:
     void ccTouchesEnded(cocos2d::CCSet *pTouch, cocos2d::CCEvent *pEvent);
 
 	CREATE_FUNC(StartScene);
-	
-	UIWindow *window;
+
+	UIMain *mainUI;
 	void step(float dt);
 private:
 	StartScene()
 	{
-		window = NULL;
+		mainUI = NULL;
 	}
 };

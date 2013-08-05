@@ -239,7 +239,7 @@ public:
 	}
 	void initWithNode(script::tixmlCodeNode* node)
 	{	
-		takeNode(node);
+		initWithPanelNode(node);
 		doInitEvent();
 		UIStub stub(this,window);
 		theUILib.execCode(&stub,this->onCreateCodeName.c_str());
@@ -256,20 +256,25 @@ public:
 			// ´´½¨»¶Ó­¶¯»­
 			script::tixmlCodeNode mainNode = node->getFirstChildNode("start");
 			if (!mainNode.isValid()) mainNode = node->getFirstChildNode("panel");
-			std::string root = mainNode.getAttr("root");
-			if (mainNode.isValid())
-			{
-				this->initXFromNode(&mainNode);
-				if (root != "")
-				{
-					window->addUI(this);
-				}
-				else
-					window->addPanel(this);		
-				this->setZOrder(12);
-			}
+
+			initWithPanelNode(&mainNode);
 		}
 		vTakeNode(node);
+	}
+	void initWithPanelNode(script::tixmlCodeNode *node)
+	{
+		std::string root = node->getAttr("root");
+		if (node->isValid())
+		{
+			this->initXFromNode(node);
+			if (root != "")
+			{
+				window->addUI(this);
+			}
+			else
+				window->addPanel(this);		
+			this->setZOrder(12);
+		}
 	}
 	virtual void parseCode(script::tixmlCodeNode *code)
 	{

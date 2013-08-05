@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <fileset name="test.bin">
+        <file name="abarlith.png" startpos="0" size="67079" />
+        <file name="cell.png" startpos="67079" size="760" />
+    </fileset>
+</Config>

@@ -4,6 +4,10 @@
 NS_CC_BEGIN
 class MutiCartoon:public MutiObject{
 public:
+	MutiCartoon()
+	{
+		fromSet = true;
+	}
 	static MutiCartoon * create(); // 创建空信息
 	/**
 	 * 从节点上创建动画
@@ -26,5 +30,9 @@ public:
 	void rebuild();
 
 	bool checkIn(const CCPoint &point);
+
+	bool fromSet; // 尝试从set文件中加载动画
+
+	std::string cartoonName;
 };
 NS_CC_END

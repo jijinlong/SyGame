@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0">
-        <image x="130" y="524" w="250" h="250" src="panel_back.png" />
-        <map zorder="-1" rationx="2" rationy="2" offsetx="0" offsety="0">
-            <image x="197" y="246" w="250" h="250" src="panel_back.png" />
-            <image x="199" y="503" w="250" h="250" src="panel_back.png" />
-            <bigimage x="0" y="0" w="0" h="0" src="start.png" />
+    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0" name="map2.xml">
+        <map zorder="-1" rationx="0.25" rationy="0" offsetx="0" offsety="0" name="test">
+            <bigimage x="-471" y="19" w="0" h="0" src="back_back.png"/>
+            <blocks />
         </map>
+        <map zorder="-1" rationx="0.3" rationy="0.2" offsetx="0" offsety="0" name="hello">
+            <image x="0" y="0" w="64" h="64" src="cell.png" />
+            <bigimage x="-105" y="-123" w="0" h="0" src="front_back.png"/>
+            <blocks />
+        </map>
+        <blocks />
     </map>
 </Config>

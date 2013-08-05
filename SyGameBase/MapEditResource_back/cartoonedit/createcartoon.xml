@@ -1,0 +1,35 @@
+
+<code name="doTouchDistFrame">
+	<parent_p_choice name="timeframes" value="false"/>
+	<parent_p_choice name="distframes" value="true"/>
+</code>
+
+<code name="doTouchTimeFrame">
+	<parent_p_choice name="timeframes" value="true"/>
+	<parent_p_choice name="distframes" value="false"/>
+</code>
+
+<code name="doAddFrame">
+	<!--展示出文件搜索框 ok 后放入list 文件-->
+	<panelshow name="show_file_images"/>
+</code>
+<Config>
+	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
+	<start name="cartoonedit/createcartoon" x="0" y="0" width="0" height="0"  local="34" backimg="panel_back.png" moveable="true">	
+		<list uniquename="list" scrollable="true" eachwidth="200" eachheight="178" leftspan="10" upspan="2" x="0" y="0"> <!---->
+			<face viewx="-180" viewy="-220" vieww="250" viewh="300" back="viewback.png"/>
+		</list><!--序列帧控制,横向编排-->
+		<editfield uniquename="needtime" x="150" y="-40" content="输入时长" width="200" height="28"/>
+		<choice uniquename="distframes" onclick="doTouchDistFrame"/><!--距离帧-->
+		<choice uniquename="timeframes" onclick="doTouchTimeFrame"/><!--时间帧-->
+		<offset uniquename="offsetx" x="150" y="-40" content="偏移轴x" width="200" height="28"/>
+		<offset uniquename="offsety" x="150" y="-40" content="偏移轴y" width="200" height="28"/>
+		<button uniquename="addframe" x="150" y="-180" w="64" h="32" name="增加" downimg="btn_common_down.png"
+				upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="24" onclick="doAddFrame"/>
+		<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="取消" downimg="btn_common_down.png"
+			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_hide_add_monster_frames"/>
+			
+		<button uniquename="cancel" x="44" y="-80" w="64" h="32" name="测试" downimg="btn_common_down.png"
+			upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_hide_add_monster_frames"/>
+	</start>
+</Config>

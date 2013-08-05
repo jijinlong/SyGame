@@ -329,6 +329,7 @@ CCSprite::CCSprite(void)
 : m_pobTexture(NULL)
 , m_bShouldBeHidden(false)
 {
+	m_pobBatchNode = NULL;
 }
 
 CCSprite::~CCSprite(void)

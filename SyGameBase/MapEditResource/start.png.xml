@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <fileset name="start.png.bin">
+        <file name="temps0_0start.png" startpos="0" size="280092" />
+        <file name="temps0_1start.png" startpos="280092" size="265915" />
+        <file name="temps0_2start.png" startpos="546007" size="842" />
+        <file name="temps1_0start.png" startpos="546849" size="211088" />
+        <file name="temps1_1start.png" startpos="757937" size="237649" />
+    </fileset>
+</Config>

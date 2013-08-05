@@ -34,6 +34,7 @@ public:
 		nowMap = NULL;
 		nowObject = NULL;
 		isSetBlock = false;
+		blockValue = 0;
 	}
 	void doTouch(int,const CCPoint &point);
 
@@ -46,6 +47,7 @@ public:
 	typedef std::list<MutiMap*>::iterator MAPLIST_ITER;
 
 	bool isSetBlock;
+	int blockValue;
 };
 
 NS_CC_END

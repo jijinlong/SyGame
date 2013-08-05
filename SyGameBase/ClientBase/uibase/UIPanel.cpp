@@ -469,6 +469,9 @@ UIButton * UIPanel::createBtn(script::tixmlCodeNode &btnNode)
 
 				theUILib.execCode(&stub,btn->onCreateCodeName.c_str()); // ´´½¨´úÂë
 			}
+			std::string eventName = btnNode.getAttr("bindevent");
+			if (eventName != "")
+				btn->bind(UIBase::EVENT_CLICK_DOWN,UICALLBACK(eventName.c_str()));
 		}
 	}
 	return btn;
