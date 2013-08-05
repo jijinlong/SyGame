@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+	<rect x="256" y="200" w="512" h="512"/>
+   <conbineactions>
+		<actions name="1">
+		  <action nexttype="0" needtime="0.3" frametype="move" cartoontype="self">
+			<!--先播放一号动作 紧接着播放2号动作-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="skill01.png"/>
+			  <frame name="skill02.png"/>
+			  <frame name="skill03.png"/>
+			  <frame name="skill04.png"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="2">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--先播放一号动作 紧接着播放2号动作-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="skill01.png"/>
+			  <frame name="skill02.png"/>
+			  <frame name="skill03.png"/>
+			  <frame name="skill04.png"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="16">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--播放自身动画-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="cell.png" offsetx="256" offsety="256"/>
+			   <frame name="close_common_up.png" offsetx="256" offsety="256"/>
+			</dir>
+		  </action>
+		   <action nexttype="0" needtime="1.2" frametype="followanimations" cartoontype="other">
+			<!--播放飞行动画-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="btn_common_up.png" offsetx="256" offsety="256"/>
+			  <frame name="cell.png" offsetx="256" offsety="256"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="17">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--播放自身动画-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="cell.png"/>
+			</dir>
+		  </action>
+		   <action nexttype="0" needtime="0.6" frametype="followanimations" cartoontype="other">
+			<!--播放飞行动画-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="close_common_up.png"/>
+			  <frame name="cell.png"/>
+			</dir>
+		  </action>
+		</actions>
+   </conbineactions>
+   <actionpools>
+		<pool id="0" type="conbine"/>
+		<pool id="1" type="always"/> <!--2号动作池定义默认行为-->
+   </actionpools>
+   <actionpriority>
+		<priority name="move" value="0"/>
+		<priority name="attack" value="0"/>
+		<priority name="idle" value="1"/>
+   </actionpriority>
+   <actionnames>
+		<action name="move" id="1"/>
+		<action name="idle" id="2"/>
+		<action name="attack" id="16"/>
+	</actionnames>
+	<myindexs> <!--我的整个区域-->
+		<index x="0" y="0"/>
+		<index x="0" y="1"/>
+		<index x="0" y="-1"/>
+		<index x="1" y="0"/>
+		<index x="-1" y="0"/>
+		<index x="1" y="-1"/>
+		<index x="-1" y="-1"/>
+		<index x="1" y="1"/>
+		<index x="-1" y="1"/>
+	</myindexs>
+	<leftindexs> <!--左部-->
+		<index x="0" y="0"/>
+	</leftindexs>
+	<rightindexs><!--右部-->
+		<index x="0" y="0"/>
+	</rightindexs>
+	<idleaction>
+		<movelogic name="move" collide="false" x="0" y="-1">
+			<offset x="0" y="0"/>
+		</movelogic>
+	</idleaction>
+	<prepaths name="down">
+		<path dir="0">
+			<logic>
+				<!--检查是否是下降的 [当前点未碰撞则下降]-->
+				<movelogic name="move" collide="false" x="0" y="-1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+		</path>
+	</prepaths>
+	<prepaths name="left">
+		<path dir="0">
+			<logic>
+				<!--检查是否是下降的 [当前点未碰撞则下降] 优先级高-->
+				<movelogic name="move" collide="false" x="0" y="-1" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="1" y="0" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+		</path>
+	</prepaths>
+	<prepaths name="right">
+		<path dir="0">
+			<logic>
+				<!--检查是否是下降的 [当前点未碰撞则下降] 优先级高-->
+				<movelogic name="move" collide="false" x="0" y="-1" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="-1" y="0" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+		</path>
+	</prepaths>
+	<prepaths name="jump">
+		<path dir="0">
+			<logic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="1" y="1" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+			<logic>
+				<!--检查是是否可以移动-->
+				<movelogic name="move" collide="true" x="1" y="0" blocktype="1">
+					<offset x="0" y="0"/>
+				</movelogic>
+			</logic>
+		</path>
+	</prepaths>
+ </Config>
