@@ -72,7 +72,7 @@ CCScene* StartScene::scene()
 
 bool StartScene::init()
 {
-	//theAILib.initWithFile("monsterai.xml");
+	theAILib.initWithFile("monsterai.xml");
 	theUILib.initWithFile("uilib.xml");
 
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();

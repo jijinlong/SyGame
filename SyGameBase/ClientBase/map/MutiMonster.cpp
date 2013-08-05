@@ -720,14 +720,17 @@ void MutiMonster::doCheckTargets()
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::TARGET_LEAVE); // 锁定的目标离开了
 	}
 	// 检查是否在攻击范围内
-	if (target >= 0 && target < data.attackdistance && !ref->checkNotify(MutiAI::MEET_TARGET))
+	if (ref)
 	{
-		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::MEET_TARGET); // 可以攻击的对象了
-		ref->setNotify(MutiAI::MEET_TARGET);
-	}
-	else
-	{
-		ref->resetNotify(MutiAI::MEET_TARGET); // 对象离开攻击范围了
+		if (target >= 0 && target < data.attackdistance && !ref->checkNotify(MutiAI::MEET_TARGET))
+		{
+			theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::MEET_TARGET); // 可以攻击的对象了
+			ref->setNotify(MutiAI::MEET_TARGET);
+		}
+		else
+		{
+			ref->resetNotify(MutiAI::MEET_TARGET); // 对象离开攻击范围了
+		}
 	}
 }
 struct stExecEachGrid:public stExecEach

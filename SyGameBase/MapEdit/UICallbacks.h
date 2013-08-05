@@ -459,6 +459,37 @@ public:
 	UIWindow *window;
 };
 	
+
+// 增加怪物//////////////////////
+struct stAddMonster:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		UIPanel *targetPanel = window->getPanel("createmonster/createmonster");
+		if (targetPanel)
+		{
+			std::string monstername= targetPanel->getEditFieldValue("monstername");
+			if (monstername == "")
+			{
+				return;
+			}
+			MutiMonster *monster = MutiMonster::create();
+			if (monster)
+			{
+				targetPanel->getEditFieldValue("bossai",monster->monsterAIID);
+				monster->start(monstername.c_str());
+				MapManager::getMe().mapRoot->addMonster(monster);
+				monster->setPosition(GridIndex(0,2));
+			}
+		}
+	}
+	stAddMonster(UIWindow *window):window(window)
+	{
+	
+	}
+	UIWindow *window;
+};
+
 // 初始化事件池
 
 class LogicCallback:public UIEventCallback{
@@ -483,6 +514,7 @@ public:
 
 		UICallbackManager::getMe().addCallback("add_new_layer",new stAddLayer(window)); // 增加新的层
 		
+		UICallbackManager::getMe().addCallback("do_add_monster",new stAddMonster(window)); // 增加新的层
 	}
 };
 NS_CC_END

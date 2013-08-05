@@ -6,15 +6,6 @@
             <blocks />
         </map>
         <blocks>
-            <index x="3" y="3" value="2" />
-            <index x="4" y="1" value="2" />
-            <index x="4" y="2" value="2" />
-            <index x="5" y="1" value="2" />
-            <index x="5" y="2" value="2" />
-            <index x="5" y="3" value="2" />
-            <index x="6" y="1" value="2" />
-            <index x="6" y="2" value="2" />
-            <index x="6" y="3" value="2" />
         </blocks>
     </map>
 </Config>
