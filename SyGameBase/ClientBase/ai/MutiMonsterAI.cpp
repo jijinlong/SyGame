@@ -23,6 +23,7 @@ bool MutiAI::action(MutiAIStub *stub,int event)
 	if (event >= events.size()) return false;
 	script::tixmlCodeNode *code = events.at(event);
 	if (!code) return false;
+	stub->ai = this;
 	return theAILib.execCode(stub,code);
 }
 bool MutiEvent::checkTimeOut(cc_timeval & nowTime)
@@ -78,12 +79,19 @@ bool MutiAI::timer(MutiAIStub * stub,int event)
 		}\
 		timeEvts[event].push_back(timeEvt);\
 	}
+#define BIND_EVENT_ID(event)\
+	if (name == std::string(#event))\
+    {\
+		return event;\
+    }
+
 bool MutiAI::addCode(script::tixmlCodeNode *code,script::tixmlCodeNode *info)
 {
 	std::string name = info->getAttr("name");
 	int tapTime = info->getInt("taptime");
 	if (tapTime == 0)
 	{
+		/*
 		BIND_AI_EVENT(DEATH); // 死亡
 		BIND_AI_EVENT(BIRTH); // 出生
 		BIND_AI_EVENT(TARGET_ENTER); // 对象进入视野	
@@ -93,10 +101,18 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,script::tixmlCodeNode *info)
 		BIND_AI_EVENT(MEET_TARGET); // 目标在攻击范围内
 		BIND_AI_EVENT(HAD_TARGET_LEAVE); // 有对象离开
 		BIND_AI_EVENT(HAD_TARGET); //有对象
-		BIND_AI_EVENT(ATTACK_TRIED); // 攻击累了
+		BIND_AI_EVENT(ATTACK_TRIED); // 攻击累了*/
+		unsigned int eventId = getEventIdByName(name);
+		if (eventId == (unsigned int) -1) return false;
+		if (eventId >= events.size())
+		{
+			events.resize(eventId + 1);
+		}
+		events[eventId] = code;
 	}
 	else
 	{
+		/*
 		BIND_TIME_AI_EVT(DEATH); // 死亡
 		BIND_TIME_AI_EVT(BIRTH); // 出生
 		BIND_TIME_AI_EVT(TARGET_ENTER); // 对象进入视野	
@@ -107,10 +123,60 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,script::tixmlCodeNode *info)
 		BIND_TIME_AI_EVT(HAD_TARGET_LEAVE); // 有对象离开
 		BIND_TIME_AI_EVT(HAD_TARGET); //有对象
 		BIND_TIME_AI_EVT(ATTACK_TRIED); // 攻击累了
+		*/
+		MutiEvent timeEvt;
+		timeEvt.code = code;
+		timeEvt.tapTime = tapTime;
+		timeEvt.execMaxCount = info->getInt("execcount");
+		if (timeEvt.execMaxCount) timeEvt.execMaxCount = 1; 
+		unsigned int eventId = getEventIdByName(name);
+		if (eventId == (unsigned int) -1) return false;
+		if (eventId >= timeEvts.size())
+		{
+			timeEvts.resize(eventId + 1);
+		}
+		timeEvts[eventId].push_back(timeEvt);
 	}
 	return true;
 }
+void MutiAI::bindEvent(const std::string &name,script::tixmlCodeNode *code)
+{
+	unsigned int eventId = getEventIdByName(name);
+	if (eventId == (unsigned int) -1)return ;
+	if (eventId >= events.size())
+	{
+		events.resize(eventId + 1);
+	}
+	events[eventId] = code;
+}
 
+void MutiAI::clearEvent(const std::string &name)
+{
+	unsigned int eventId = getEventIdByName(name);
+	if (eventId == (unsigned int) -1) return ;
+	if (eventId >= events.size())
+	{
+		events.resize(eventId + 1);
+	}
+	events[eventId] = NULL;
+}
+
+unsigned int MutiAI::getEventIdByName(const std::string &name)
+{
+	BIND_EVENT_ID(DEATH); // 死亡
+	BIND_EVENT_ID(BIRTH); // 出生
+	BIND_EVENT_ID(TARGET_ENTER); // 对象进入视野	
+	BIND_EVENT_ID(TARGET_LEAVE); // 对象离开视野
+	BIND_EVENT_ID(IDLE_ACTION); // 空闲行为
+	BIND_EVENT_ID(ATTACK_ME); // 攻击我了
+	BIND_EVENT_ID(MEET_TARGET); // 目标在攻击范围内
+	BIND_EVENT_ID(HAD_TARGET_LEAVE); // 有对象离开
+	BIND_EVENT_ID(HAD_TARGET); //有对象
+	BIND_EVENT_ID(TOUCH_TIME_OUT); // 当前对象时间在池中过长
+	BIND_EVENT_ID(MOVE_TO_DESTIONATION); // 移动到指定点
+	BIND_EVENT_ID(ACTION_END); // 攻击技能结束
+	return (unsigned int )-1;
+}
 int MutiAIStub::getTargetCount() // 当前对象的数量
 {
 	int count = 0;
@@ -175,14 +241,14 @@ void MutiAIStub::addTarget(MutiMonster *monster) // 增加对象
 	MutiMonsterRefrence ref;
 	ref.monster = monster;
 	ref.uniqueId = monster->uniqueSerachId;
-	CCTime::gettimeofdayCocos2d(&ref.attackStartTime,NULL);
+	CCTime::gettimeofdayCocos2d(&ref.touchStartTime,NULL);
 	for (TARGETPOOL_ITER iter = targetPool.begin();iter != targetPool.end();++iter)
 	{
 		if (!iter->monster)
 		{
 			iter->monster = monster;
 			iter->uniqueId = monster->uniqueSerachId;
-			CCTime::gettimeofdayCocos2d(&iter->attackStartTime,NULL);
+			CCTime::gettimeofdayCocos2d(&iter->touchStartTime,NULL);
 			return;
 		}
 	}
@@ -193,7 +259,7 @@ bool MutiMonsterRefrence::checkTimeOut(int timeout)
 {
 	cc_timeval nowTime;
 	CCTime::gettimeofdayCocos2d(&nowTime,NULL);
-	float dis = CCTime::timersubCocos2d(&attackStartTime,&nowTime) / 1000;
+	float dis = CCTime::timersubCocos2d(&touchStartTime,&nowTime) / 1000;
 	if (dis >= timeout) return true;
 	return false;
 }
@@ -215,12 +281,20 @@ void MonsterAILib::bindActions()
 	BIND_AI_ACTION(putskill);
 	BIND_AI_ACTION(move);
 	BIND_AI_ACTION(movetotarget);
-	BIND_AI_ACTION(checkattacklasttime);
-	BIND_AI_ACTION(resetattacktime);
+	BIND_AI_ACTION(check_touch_lasttime);
+	BIND_AI_ACTION(reset_touch_lasttime);
 	BIND_AI_ACTION(clearmovepath);
 	BIND_AI_ACTION(checknowtarget);
 	BIND_AI_ACTION(checknowposition);
 	BIND_AI_ACTION(moverandarround);
+	BIND_AI_ACTION(bind_event);
+	BIND_AI_ACTION(clear_event);
+	BIND_AI_ACTION(reset_notify);
+	BIND_AI_ACTION(add_timer);
+	BIND_AI_ACTION(check_timer);
+	BIND_AI_ACTION(reset_timer);
+	BIND_AI_ACTION(del_timer);
+	BIND_AI_ACTION(check_now_monster_action);
 }
 void MonsterAILib::initWithFile(const char *fileName)
 {
@@ -374,14 +448,14 @@ int MonsterAILib::clearmovepath(MutiAIStub* stub,script::tixmlCodeNode * node)
 /**
  * 设置当前攻击时间
  */
-int MonsterAILib::resetattacktime(MutiAIStub* stub,script::tixmlCodeNode * node)
+int MonsterAILib::reset_touch_lasttime(MutiAIStub* stub,script::tixmlCodeNode * node)
 {
 	if (stub && stub->npc)
 	{
 		MutiMonsterRefrence * ref = stub->getTargetRef();
 		if (ref)
 		{
-			 CCTime::gettimeofdayCocos2d(&ref->attackStartTime,NULL);
+			 CCTime::gettimeofdayCocos2d(&ref->touchStartTime,NULL);
 		}
 	}
 	return 1;
@@ -389,7 +463,7 @@ int MonsterAILib::resetattacktime(MutiAIStub* stub,script::tixmlCodeNode * node)
 /**
  * 检查攻击的持续时间
  */
-int MonsterAILib::checkattacklasttime(MutiAIStub* stub,script::tixmlCodeNode * node)
+int MonsterAILib::check_touch_lasttime(MutiAIStub* stub,script::tixmlCodeNode * node)
 {
 	if (stub && stub->npc)
 	{
@@ -399,7 +473,7 @@ int MonsterAILib::checkattacklasttime(MutiAIStub* stub,script::tixmlCodeNode * n
 		{
 			cc_timeval nowTime;
 			CCTime::gettimeofdayCocos2d(&nowTime,NULL);
-			float disTime = CCTime::timersubCocos2d(&ref->attackStartTime,&nowTime) / 1000;
+			float disTime = CCTime::timersubCocos2d(&ref->touchStartTime,&nowTime) / 1000;
 			if (disTime >= lastTime)
 			{
 				return 1;
@@ -437,6 +511,121 @@ int MonsterAILib::checknowtarget(MutiAIStub* stub,script::tixmlCodeNode * node)
 		{
 			return monster->data.id = node->getInt("id");
 		}
+	}
+	return 0;
+}
+/**
+ * 更改事件响应函数
+ **/
+int MonsterAILib::bind_event(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->ai)
+	{
+		stub->ai->bindEvent(node->getAttr("event"),findCode(node->getAttr("code")));
+	}
+	return 0;
+}
+/**
+ * 清除事件
+ **/
+int MonsterAILib::clear_event(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && stub->ai)
+	{
+		stub->ai->clearEvent(node->getAttr("event"));
+	}
+	return 0;
+}
+/**
+ * 重置事件触发 由于事件触发后不再进行 触发了 需要有此机制
+ * <reset_notify stub="self" event="MOVE_TO_DESTIONATION" />
+ **/
+int MonsterAILib::reset_notify(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (!stub || !stub->ai)  return 0;
+	// target or self
+	std::string stubName = node->getAttr("stub");
+	unsigned int eventId = stub->ai->getEventIdByName(node->getAttr("event"));
+	if (eventId == (unsigned int)-1) return 0;
+	if (stubName == "self")
+	{
+		stub->resetNotify(eventId);
+	}
+	if (stubName == "target")
+	{
+		if (stub->getTargetRef())
+			stub->getTargetRef()->resetNotify(eventId);
+	}
+	return 0;
+}
+/**
+ * 增加时间
+ */
+int MonsterAILib::add_timer(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && node)
+	{
+		int timerId = node->getInt("id");
+		stub->addTimer(timerId);
+		return 1;
+	}
+	return 0;
+}
+
+/**
+ * 检查时间
+ **/
+int MonsterAILib::check_timer(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && node)
+	{
+		int timerId = node->getInt("id");
+		int timeout = node->getInt("timeout");
+		stTimeInfo *timerInfo = stub->getTimer(timerId);
+		if (timerInfo && timerInfo->checkTimeOut(timeout))
+			return 1;
+	}
+	return 0;
+}
+
+/**
+ * 重置时间
+ */
+int MonsterAILib::reset_timer(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	int timerId = node->getInt("id");
+	stTimeInfo *timeInfo = stub->getTimer(timerId);
+	if (timeInfo)
+	{
+		timeInfo->reset();
+		return 1;
+	}
+	return 0;
+}
+
+/**
+ * 删除时间
+ */
+int MonsterAILib::del_timer(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && node)
+	{
+		int timerId = node->getInt("id");
+		stub->delTimer(timerId);
+		return 1;
+	}
+	return 0;
+}
+
+/**
+ * 检查怪物当前行为
+ */
+int MonsterAILib::check_now_monster_action(MutiAIStub* stub,script::tixmlCodeNode * node)
+{
+	if (stub && node)
+	{
+		int actionId = node->getInt("id");
+		if (actionId == stub->npc->nowActionName) return 1;
 	}
 	return 0;
 }

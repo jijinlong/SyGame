@@ -1,0 +1,14 @@
+<!--出生后设置位置-->
+<code name="dobirth_set_pos_10_3">
+	<move x="2" y="3"/><!--移动到某点-->
+	
+	<bind_event event="MOVE_TO_DESTIONATION" code="move_end"/> <!--绑定移动结束时间-->
+	<setattacklasttime value=""/> <!--设置攻击的最大时间-->
+	<seteyeshort value=""/> <!--设置视野-->
+	<setshortdistance value=""/> <!--设置攻击距离-->
+</code>
+<code name="move_end">
+	<move x="5" y="4"/> <!--移动到其他点-->
+	<putskill name="attack"/> <!--攻击-->
+	<reset_notify stub="self" event="MOVE_TO_DESTIONATION" />
+</code>

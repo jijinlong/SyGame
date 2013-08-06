@@ -189,6 +189,8 @@ public:
 	void nextStep();
 	void doAIControl();
 	void doMoveControl();
+
+	void doActionEndTrrigeEvent();
 	/**
 	 * 检查是否需要停止
 	 */

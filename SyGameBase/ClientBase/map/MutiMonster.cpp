@@ -161,6 +161,7 @@ void MutiMonster::nextStep()
 	//nowLocationIndex = this->maybeLocationIndex;
 	//doMoveControl();
 	doAIControl();
+	doActionEndTrrigeEvent();
 	doAction();
 	doCheckTargets();
 	
@@ -172,7 +173,13 @@ void MutiMonster::doAIControl()
 	if (nowAstarDestination.isValid() && !nowAstarDestination.equal(getNowIndex()) && !isMoving()) // 使用Astar 继续寻路
 		moveToUseAstar(nowAstarDestination);
 	if (nowAstarDestination.isValid() && nowAstarDestination.equal(getNowIndex()))
-		theAILib.execEvent(this->monsterAIID,this->getStub(),MutiAI::MOVE_TO_DESTIONATION); // 移动到目的地
+	{
+		if (!stub.checkNotify(MutiAI::MOVE_TO_DESTIONATION))
+		{
+			stub.setNotify(MutiAI::MOVE_TO_DESTIONATION);
+			theAILib.execEvent(this->monsterAIID,this->getStub(),MutiAI::MOVE_TO_DESTIONATION); // 移动到目的地
+		}
+	}
 }
 /**
  * 执行当前行为
@@ -323,8 +330,13 @@ void MutiMonster::initNode(script::tixmlCodeNode *node)
 		while (priorityNode.isValid())
 		{
 			std::string name = priorityNode.getAttr("name");
-			int value = priorityNode.getInt("value");
+			int value = priorityNode.getInt("poolid");
 			priorityMap[name] = value;
+
+			std::string actionName = priorityNode.getAttr("name");
+			unsigned int id = priorityNode.getInt("actionid");
+			ActionPool::actionsMap[actionName] = id;
+
 			priorityNode = priorityNode.getNextNode("priority");
 		}
 	}
@@ -688,16 +700,17 @@ void MutiMonster::doCheckTargets()
 		// 检查是否远离了
 		if (iter->monster && iter->monster->calcDistance(this) > data.eyeshort)
 		{
+			stub.tempRef = *iter;
 			theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET_LEAVE);
 		}
 	}
-	if (stub.getTargetCount() >= data.maxTargets)
+	if (stub.getTargetCount() < data.maxTargets)
 	{
-		return;
+		stSeachTargets exec(this);
+		// 新设置对象
+		map->execAllMonster(&exec);
 	}
-	stSeachTargets exec(this);
-	// 新设置对象
-	map->execAllMonster(&exec);
+	
 	if (stub.getTargetCount() && !stub.checkNotify(MutiAI::HAD_TARGET))
 	{
 		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::HAD_TARGET); // 有物体状态
@@ -708,10 +721,10 @@ void MutiMonster::doCheckTargets()
 		stub.resetNotify(MutiAI::HAD_TARGET); // 无物体状态触发
 	}
 	MutiMonsterRefrence *ref = stub.getTargetRef();
-	if (ref && ref->checkTimeOut(data.maxLastAttackTime) && !ref->checkNotify(MutiAI::ATTACK_TRIED))
+	if (ref && ref->checkTimeOut(data.maxLastAttackTime) && !ref->checkNotify(MutiAI::TOUCH_TIME_OUT))
 	{
-		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::ATTACK_TRIED); // 对当前对象感到厌倦,直至外部设置 或者 当前对象重置
-		ref->setNotify(MutiAI::ATTACK_TRIED);
+		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::TOUCH_TIME_OUT); // 对当前对象感到厌倦,直至外部设置 或者 当前对象重置
+		ref->setNotify(MutiAI::TOUCH_TIME_OUT);
 	}
 	int target = this->calcDistance(stub.getTarget());
 	if (target > data.eyeshort)
@@ -770,5 +783,14 @@ GridIndex MutiMonster::getRandomPointInRect()//获取区域内随机点
 	stExecEachGrid exec(this->map->getGrids());
 	this->map->getGrids()->exec(this->getNowIndex(),SEARCH_TYPE("rect"),&exec);
 	return exec.getIndex();
+}
+
+void MutiMonster::doActionEndTrrigeEvent()
+{
+	if (stub.getTargetCount() && !stub.checkNotify(MutiAI::ACTION_END))
+	{
+		theAILib.execEvent(this->monsterAIID,getStub(),MutiAI::ACTION_END); // 攻击结束
+		stub.setNotify(MutiAI::ACTION_END);
+	}
 }
 NS_CC_END

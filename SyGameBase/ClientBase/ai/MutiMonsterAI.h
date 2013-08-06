@@ -54,7 +54,8 @@ public:
 		HAD_TARGET = 7, // 有目标的状态
 		HAD_TARGET_LEAVE = 8, // 有对象离开
 		MOVE_TO_DESTIONATION = 9,// 移动到目的地
-		ATTACK_TRIED = 10, // 连续攻击时间过长
+		TOUCH_TIME_OUT = 10, // 连续攻击时间过长
+		ACTION_END = 11, // 攻击技能结束
 	};
 	/**
  	 * 增加一个code
@@ -63,6 +64,12 @@ public:
  	 * \return ture 成功 false 失败
  	 * */
 	bool addCode(script::tixmlCodeNode* code,script::tixmlCodeNode *info);
+
+	void bindEvent(const std::string &name,script::tixmlCodeNode *code);
+
+	void clearEvent(const std::string &name);
+
+	unsigned int getEventIdByName(const std::string &name);
 private:
 	std::vector<script::tixmlCodeNode*> events;	
 	std::vector<std::vector<MutiEvent> > timeEvts; // 带时间的事件 触发后会多次执行 事件在有效期内不可重入
@@ -79,14 +86,14 @@ class MutiMonsterRefrence
 {
 public:
 	MutiMonster * monster;
-	int uniqueId;
-	cc_timeval attackStartTime; // 攻击持续时间
-	int weight;
+	int uniqueId; // monster 唯一编号
+	cc_timeval touchStartTime; // 刚进入持续targets时间
+	int weight; // 权值
 	bool isValid(){return true;} // 当前引用是否有效
 	bool hadMeet; // 是否遇到
 	MutiMonsterRefrence()
 	{
-		CCTime::gettimeofdayCocos2d(&attackStartTime,NULL);
+		CCTime::gettimeofdayCocos2d(&touchStartTime,NULL);
 		monster = NULL;
 		uniqueId  = -1;
 		weight = 0;
@@ -98,7 +105,7 @@ public:
 	{
 		monster = ref.monster;
 		uniqueId = ref.uniqueId;
-		attackStartTime = ref.attackStartTime;
+		touchStartTime = ref.touchStartTime;
 		weight = ref.weight;
 		return *this;
 	}
@@ -115,22 +122,50 @@ public:
 	{
 		notifyStates.reset(aiEvent);
 	}
+	
+};
+struct stTimeInfo{
+public:
+	cc_timeval startTime; // 开始时间
+	stTimeInfo()
+	{
+		reset();
+	}
+	void reset()
+	{
+		 CCTime::gettimeofdayCocos2d(&startTime,NULL);
+	}
+
+	bool checkTimeOut(int timeout)
+	{
+		cc_timeval nowTime;
+		CCTime::gettimeofdayCocos2d(&nowTime,NULL);
+		float disTime = CCTime::timersubCocos2d(&startTime,&nowTime) / 1000;
+		if (disTime >= timeout)
+		{
+			return true;
+		}
+		return false;
+	}
 };
 /**
  * ai 的执行者
  * */
 class MutiAIStub{
 public:
+	MutiMonsterRefrence tempRef; // 目前临时引用
 	MutiMonster *npc;
 	std::vector<MutiMonsterRefrence> targetPool; // 对象池 0 号对象为默认处理池
 	typedef std::vector<MutiMonsterRefrence>::iterator TARGETPOOL_ITER;
 	MutiAIStub()
 	{
 		npc = NULL;
+		ai = NULL;
 	}
 	MutiAIStub(MutiMonster *npc)
 	{
 		this->npc = npc;
+		ai = NULL;
 	}
 	void removeTarget();
 	int getTargetCount(); // 当前对象的数量
@@ -151,6 +186,37 @@ public:
 	{
 		notifyStates.reset(aiEvent);
 	}
+	stTimeInfo * getTimer(int id)
+	{
+		std::map<int,stTimeInfo>::iterator iter = times.find(id);
+		if (iter != times.end())
+		{
+			return &iter->second;
+		}
+		return NULL;
+	}
+	void addTimer(int id)
+	{
+		stTimeInfo *timeInfo = getTimer(id);
+		if (timeInfo)
+		{
+			timeInfo->reset();
+		}
+		else
+		{
+			times[id] = stTimeInfo();
+		}
+	}
+	void delTimer(int id)
+	{
+		std::map<int,stTimeInfo>::iterator iter = times.find(id);
+		if (iter != times.end())
+		{
+			 times.erase(iter);
+		}
+	}
+	MutiAI *ai;
+	std::map<int,stTimeInfo> times;
 };
 /**
  * 执行库
@@ -251,11 +317,11 @@ public:
 	/**
 	 * 设置当前攻击时间
 	 */
-	int resetattacktime(MutiAIStub* stub,script::tixmlCodeNode * node);
+	int reset_touch_lasttime(MutiAIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 检查攻击的持续时间
 	 */
-	int checkattacklasttime(MutiAIStub* stub,script::tixmlCodeNode * node);
+	int check_touch_lasttime(MutiAIStub* stub,script::tixmlCodeNode * node);
 
 	/**
 	 * 检查当前的位置
@@ -265,11 +331,46 @@ public:
 	/**
 	 * 更改事件响应函数
 	 **/
-	
+	int bind_event(MutiAIStub* stub,script::tixmlCodeNode * node);
+	/**
+	 * 清除事件
+	 **/
+	int clear_event(MutiAIStub* stub,script::tixmlCodeNode * node);
 	/**
 	 * 检查当前的目标
 	 */
 	int checknowtarget(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+
+	/**
+	 * 重置事件触发 由于事件触发后不再进行 触发了 需要有此机制
+	 **/
+	int reset_notify(MutiAIStub* stub,script::tixmlCodeNode * node);
+	
+	/**
+	 * 增加时间
+	 */
+	int add_timer(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 检查时间
+	 **/
+	int check_timer(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 重置时间
+	 */
+	int reset_timer(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 删除时间
+	 */
+	int del_timer(MutiAIStub* stub,script::tixmlCodeNode * node);
+
+	/**
+	 * 检查怪物当前行为
+	 */
+	int check_now_monster_action(MutiAIStub* stub,script::tixmlCodeNode * node);
 };
 
 #define theAILib MonsterAILib::getMe()

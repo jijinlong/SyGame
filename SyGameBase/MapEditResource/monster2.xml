@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+   <rect x="256" y="200" w="512" h="512"/>
+   <conbineactions>
+		<!--静止行为-->
+		<actions name="1">
+		  <action nexttype="0" needtime="0.3" frametype="move" cartoontype="self">
+			<!--先播放一号动作 紧接着播放2号动作-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="p_walk_000.png"/>
+			  <frame name="p_walk_001.png"/>
+			  <frame name="p_walk_002.png"/>
+			  <frame name="p_walk_003.png"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="2">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--先播放一号动作 紧接着播放2号动作-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="p_stop_000.png"/>
+			  <frame name="p_stop_001.png"/>
+			  <frame name="p_stop_002.png"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="16">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--播放自身动画-->
+			<dir id="0" framesname="" framestype="frames" >
+			  <frame name="p_n_atk_000.png"/>
+			  <frame name="p_n_atk_001.png"/>
+			  <frame name="p_n_atk_002.png"/>
+			  <frame name="p_n_atk_003.png"/>
+			</dir>
+		  </action>
+		</actions>
+		<actions name="17">
+		  <action nexttype="0" needtime="0.6" frametype="times" cartoontype="self">
+			<!--播放自身动画-->
+			<dir id="0" framesname="" framestype="frames" >
+			   <frame name="p_walk_000.png"/>
+			   <frame name="p_walk_001.png"/>
+			   <frame name="p_walk_002.png"/>
+			   <frame name="p_walk_003.png"/>
+			</dir>
+		  </action>
+		</actions>
+   </conbineactions>
+   <actionpools>
+		<pool id="0" type="conbine"/>
+		<pool id="1" type="always"/> <!--2号动作池定义默认行为-->
+   </actionpools>
+   <actionpriority>
+		<priority name="move" poolid="0" actionid="1"/>
+		<priority name="attack" poolid="0" actionid="16"/>
+		<priority name="idle" poolid="1" actionid="2"/>
+   </actionpriority>
+ </Config>

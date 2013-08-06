@@ -1,0 +1,47 @@
+<read file="extai.xml"/>
+<!--首份bossAI 文件-->
+<code name="dobirth">
+	<move x="5" y="3"/><!--移动到某点-->
+	<setattacklasttime value=""/> <!--设置攻击的最大时间-->
+	<seteyeshort value=""/> <!--设置视野-->
+	<setshortdistance value=""/> <!--设置攻击距离-->
+</code>
+<code name="doobjectenter"> 
+	<locksuittarget type="replace"/> <!--寻找最优的目标-->
+</code>
+<code name="doattackobject">
+	<if action="checkattacklasttime" value="4">
+		<move x="5" y="6"/><!--移动到某点-->
+		<resetattacktime/>
+	</if>
+	<else>
+		<putskill name="attack"/> <!--攻击-->
+	</else>
+	<checknowtarget id="2">
+		<clearmovepath/>
+	</checknowtarget>
+</code>
+<code name="dotried">
+	<moverandarround/> <!--绕圈-->
+	<resetattacktime/>
+</code>
+
+<code name="doattackme">
+	<locksuittarget type="replace"/> <!--寻找最优的目标-->
+</code>
+
+<Config>
+	<ai id="0">
+		<event name="BIRTH" code="dobirth"/> <!--出生-->
+		<event name="TARGET_ENTER" code="doobjectenter" taptime="3"/> <!--对象进入视野-->
+		<event name="MEET_TARGET" code="doattackobject"/> <!--正面碰到对象-->
+		<event name="ATTACK_TRIED" code="dotried"/> <!--攻击累了-->
+	</ai>
+	<ai id="1">
+		<event name="TARGET_ENTER" code="doobjectenter"/> <!--对象进入视野-->
+		<event name="ATTACK_ME" code="doattackme"/> <!--攻击我了-->
+	</ai>
+	<ai id="2">
+		<event name="BIRTH" code="dobirth_set_pos_10_3"/>
+	</ai>
+</Config>
