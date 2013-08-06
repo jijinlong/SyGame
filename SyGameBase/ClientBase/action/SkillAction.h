@@ -7,37 +7,6 @@ NS_CC_BEGIN
 /**
  * 技能行为 离身行为 或者本身行为
  **/
-class SkillActionInfo;
- /**
- * 动画移动动作 将会作用在自己身上 
- * 动画帧与移动相关联
- */
-class SkillMoveAction:public CCMoveTo{
-public:
-	
-	virtual void update(float time);
-	bool isTempTarget;
-	SkillMoveAction()
-	{
-		isTempTarget = false;
-	}
-
-	/**
-	 * 创建动画
-	 */
-	static SkillMoveAction* create(const SkillActionInfo &cartoonInfo, const CCPoint& position);
-	/**
-	 * 初始化cartoon 移动行为
-	 */
-	bool init(const SkillActionInfo &SkillActionInfo, const CCPoint& position);
-	/**
-	 * 释放自己所占有的帧
-	 */
-	void stop(void);
-	
-protected:
-	SkillActionInfo cartoonInfo;
-};
 class SkillActionInfo{
 public:
 	SkillActionInfo *nextInfo; // 下一个动画信息
@@ -69,74 +38,43 @@ public:
 		self = false;
 		follow = false;
 		stop = false;
+		move = false;
 		delayTime = 0;
 		nextInfo = NULL;
 	}
-	CCAnimation *createAnimation(float costtime = 0)
+	void release(){}
+	CCAnimation *createAnimation(float costtime = 0);
+	CCFiniteTimeAction * createAction(CCNode *self,CCNode *parent,CCNode *target,const CCPoint &point = ccp(-1,-1),float needTime = 0,stCollideTargetCallback *callback = NULL);
+};
+ /**
+ * 动画移动动作 将会作用在自己身上 
+ * 动画帧与移动相关联
+ */
+class SkillMoveAction:public CCMoveTo{
+public:
+	
+	virtual void update(float time);
+	bool isTempTarget;
+	SkillMoveAction()
 	{
-		CCAnimation* animation = CCAnimation::create();
-		for (int i = 0; i < frames.size(); i++)
-		{
-			animation->addSpriteFrame(frames[i]);
-		}
-		if (frames.empty()) return NULL;
-		if (!costtime)
-			animation->setDelayPerUnit(needTime / frames.size());
-		else
-			animation->setDelayPerUnit(costtime / frames.size());
-		animation->setRestoreOriginalFrame(true);
-		return animation;
+		isTempTarget = false;
 	}
-	CCFiniteTimeAction * createAction(CCNode *self,CCNode *parent,CCNode *target,const CCPoint &point = ccp(-1,-1),float needTime = 0,stCollideTargetCallback *callback = NULL)
-	{
-		CCFiniteTimeAction *action = NULL;
-		CCAnimation * animation = NULL;
-		if (frameType == FRAME_TYPE_TIME_ANIMATION)
-		{
-			if (follow)
-			{
-				FollowAnimationAction * followAction = FollowAnimationAction::create(target,needTime);;
-				followAction->isTempTarget = true;
-				self = false;
-				followAction->callback = callback;
-				animation = createAnimation(needTime);
-    
-				action = followAction;
-			}
-			if (stop)
-			{
-				// 静止动画
-				CartoonAction * cartoonAction = CartoonAction::create(createAnimation(needTime));
-				action = cartoonAction;
-				if (!self)
-				{
-					cartoonAction->isTempTarget = true;
-				}
-			}
-			if (move)
-			{
-				SkillMoveAction *moveAction = SkillMoveAction::create(*this,offset);
-				action = moveAction;
-			}
-		}
-		if (!action) return NULL;
 
-		if (!self)
-		{
-				CCSprite * temp = CCSprite::create();
-				if (temp)
-				{
-					parent->addChild(temp);
-					if (animation)
-					{
-						temp->runAction(CCRepeatForever::create(CCAnimate::create(animation)));
-					}
-					temp->setPosition(self->getPosition());
-					action->setTarget(temp);
-				}
-		}
-		return action;
-	}
+	/**
+	 * 创建动画
+	 */
+	static SkillMoveAction* create(const SkillActionInfo &cartoonInfo, const CCPoint& position);
+	/**
+	 * 初始化cartoon 移动行为
+	 */
+	bool init(const SkillActionInfo &SkillActionInfo, const CCPoint& position);
+	/**
+	 * 释放自己所占有的帧
+	 */
+	void stop(void);
+	
+protected:
+	SkillActionInfo cartoonInfo;
 };
  /**
   * <Config>
@@ -146,24 +84,27 @@ public:
 		</frames>
   * </Config>
   **/
-class CartoonFromPack:public CCObject{
+class CartoonFromPack:public CCObject,public script::tixmlCode{
 public:
-	bool full(SkillActionInfo *info)
-	{
-		this->info = info;
-		return true;
-	}
-	static CartoonFromPack* create(const std::string &name)
+	static CartoonFromPack* create(SkillActionInfo *info,const std::string &name)
 	{
 		CartoonFromPack *pack = new CartoonFromPack();
+		pack->info = info;
 		pack->init(name);
 		pack->autorelease();
 		return pack;
 	}
-
+	static CartoonFromPack* create(SkillActionInfo *info,script::tixmlCodeNode *node)
+	{
+		CartoonFromPack *pack = new CartoonFromPack();
+		pack->info = info;
+		pack->initNode(node);
+		pack->autorelease();
+		return pack;
+	}
 	bool init(const std::string &name)
 	{
-		return false;
+		return script::tixmlCode::initWithXmlFile(name.c_str());
 	}
 	void takeNode(script::tixmlCodeNode *node)
 	{
@@ -201,7 +142,7 @@ public:
 	static ChildSkillEndAction* create(CCNode *self,SkillActionInfo *info)
 	{
 		ChildSkillEndAction *pRet = new ChildSkillEndAction();
-        pRet->autorelease();
+      //  pRet->autorelease();
         return pRet;
     }
 	virtual void execute()
@@ -227,7 +168,7 @@ public:
 /**
  * 技能行为
  **/
-class SkillAction:public CCObject{
+class SkillAction:public CCObject,public script::tixmlCode{
 public:
 	SkillActionInfo*info; // 创建好动画信息
 	std::string skillName;
@@ -239,12 +180,20 @@ public:
 	{
 		SkillAction *skillAction = new SkillAction();
 		skillAction->init(skillName);
-		skillAction->autorelease();
+	//	skillAction->autorelease();
 		return skillAction;
 	}
 	bool init(const std::string &skillName)
 	{
-		return true;
+		return initWithXmlFile(skillName.c_str());
+	}
+	void takeNode(script::tixmlCodeNode *node)
+	{
+		if (node->equal("Config"))
+		{
+			script::tixmlCodeNode skillNode = node->getFirstChildNode("skill");
+			initNode(&skillNode);
+		}
 	}
 	void initNode(script::tixmlCodeNode *node)
 	{
@@ -257,13 +206,17 @@ public:
 			{
 				SkillActionInfo*info = new SkillActionInfo();
 				std::string binName  = actionNode.getAttr("cartoonbin");
-				CartoonFromPack::create(binName)->full(info);
+				script::tixmlCodeNode framesNode = actionNode.getFirstChildNode("frames");
+				CartoonFromPack::create(info,&framesNode);
 				info->delayTime = actionNode.getInt("delaytime");
 				info->self = actionNode.getBool("self");
 				info->stop = actionNode.getBool("stop");
+				info->move = actionNode.getBool("move");
 				info->follow = actionNode.getBool("follow");
 				info->needTime = actionNode.getInt("needtime");
 				std::string nextTypeStr = actionNode.getAttr("nexttype");
+				info->offset.x = actionNode.getInt("offsetx");
+				info->offset.y = actionNode.getInt("offsety");
 				if (nextTypeStr == "sequence")
 				{
 					info->nextType = SkillActionInfo::NEXT_TYPE_SEQUENCE;
@@ -287,7 +240,7 @@ public:
 			}
 		}
 	}
-	void runAction(CCNode *self,const cocos2d::CCPoint &point,CCNode *target,int needTime,stCollideTargetCallback * callback)
+	void runAction(CCNode *self,const cocos2d::CCPoint &point = ccp(-1,-1),CCNode *target = NULL,int needTime=1.0f,stCollideTargetCallback * callback = NULL)
 	{
 		if (!info) return;
 		SkillActionInfo * root =(SkillActionInfo*) info;
@@ -305,11 +258,11 @@ public:
 			{
 				switch(nextConbine)
 				{
-					case CartoonInfo::SEQUENCE:
+					case SkillActionInfo::NEXT_TYPE_SEQUENCE:
 					{
 						preAction = CCSequence::create(preAction,nowAction,NULL); 
 					}break;
-					case CartoonInfo::TOGETHER:
+					case SkillActionInfo::NEXT_TYPE_TOGATHER:
 					{
 						preAction = CCSpawn::create(preAction,nowAction,NULL);
 					}break;
@@ -327,8 +280,10 @@ public:
 		}
 		if (preAction)
 		{
-			CCFiniteTimeAction *seqaction = CCSequence::create(preAction,/*CCDelayTime::create(0.5),*/
-						CCCallFunc::create(this, callfunc_selector(Cartoon::doCartoonEnd)),NULL);
+			CCFiniteTimeAction *seqaction = CCSequence::create(preAction,
+					/*CCDelayTime::create(0.5),*/
+						/*CCCallFunc::create(this, callfunc_selector(Cartoon::doCartoonEnd)),*/
+						NULL);
 		
 			if (seqaction)
 			{
@@ -338,57 +293,4 @@ public:
 	}
 };
 
-
-void SkillMoveAction::update(float time)
-{
-	if (m_pTarget)
-	{
-		m_pTarget->setPosition(ccp(m_startPosition.x + m_delta.x * time,
-			m_startPosition.y + m_delta.y * time));
-		CCPoint nowPoint = m_pTarget->getPosition();
-		float dw = ccpDistance(nowPoint,m_startPosition);
-		float da = ccpDistance(m_endPosition,m_startPosition);
-		int frameSize = this->cartoonInfo.frames.size();
-		int nowFrameId = frameSize - 1;
-		if (da) nowFrameId = frameSize * (dw / da);
-		if (nowFrameId >= 0 && nowFrameId < frameSize)
-		{
-			CCSpriteFrame *frame = this->cartoonInfo.frames[nowFrameId];
-			if (frame)
-			{
-				CCSprite *sprite = static_cast<CCSprite*>(m_pTarget);
-				if (sprite)
-					sprite->setDisplayFrame(frame);
-			}
-		}
-	}
-}
-	
-SkillMoveAction* SkillMoveAction::create(const SkillActionInfo &cartoonInfo, const CCPoint& position)
-{
-	SkillMoveAction *pMove = new SkillMoveAction();
-	pMove->init(cartoonInfo,position);
-    pMove->autorelease();
-    return pMove;
-}
-/**
-* 初始化cartoon 移动行为
-*/
-bool SkillMoveAction::init(const SkillActionInfo &cartoonInfo, const CCPoint& position)
-{
-	this->cartoonInfo = cartoonInfo;
-	initWithDuration(cartoonInfo.needTime, position);
-	return true;
-}
-
-void SkillMoveAction::stop(void)
-{
-	CCNode *tempTarget = m_pTarget; 
-	CCMoveTo::stop();
-	cartoonInfo.release();
-	if (isTempTarget)
-	{
-		tempTarget->removeFromParentAndCleanup(true);
-	}
-}
 NS_CC_END

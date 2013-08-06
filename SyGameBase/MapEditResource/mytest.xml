@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <fileset name="mytest.bin">
+        <file name="fly_attack_001.png" startpos="0" size="70959" />
+        <file name="fly_attack_002.png" startpos="70959" size="43552" />
+        <file name="fly_attack_003.png" startpos="114511" size="23892" />
+        <file name="fly_attack_004.png" startpos="138403" size="7743" />
+        <file name="upjiantou.png" startpos="146146" size="556" />
+    </fileset>
+</Config>

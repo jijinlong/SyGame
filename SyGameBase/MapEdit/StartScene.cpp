@@ -98,12 +98,6 @@ bool StartScene::init()
 		MapManager::getMe().replaceMap(map);
 	}
 
-	CCSprite *sprite = CCSprite::create("cell.png");
-	if (sprite)
-	{
-		map->addSprite(sprite);
-	}
-	
 	
 	return true;
 }

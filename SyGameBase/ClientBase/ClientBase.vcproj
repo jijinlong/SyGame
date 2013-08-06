@@ -544,6 +544,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SkillAction.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\action\SkillAction.h"
 				>
 			</File>
@@ -780,11 +784,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File

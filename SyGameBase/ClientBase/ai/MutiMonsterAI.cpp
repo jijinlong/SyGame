@@ -1,5 +1,6 @@
 #include "MutiMonsterAI.h"
 #include "MutiMonster.h"
+#include "SkillAction.h"
 NS_CC_BEGIN
 bool MutiAI::action(MutiAIStub *stub,int event)
 {
@@ -375,6 +376,7 @@ int MonsterAILib::putskill(MutiAIStub* stub,script::tixmlCodeNode * node)
 	if (stub->npc)
 	{
 		stub->npc->tryAction(node->getAttr("name"));
+		SkillAction::create("skilltest.xml")->runAction(stub->npc,ccp(10,10));
 	}
 	return 1;
 }

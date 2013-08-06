@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <skill name="test">
+		<action nexttype="sequence" needtime="1" self="false" move="true" delaytime="0.5" offsetx="100" offsety="10">
+			<frames fileset="mytest">
+				<frame name="upjiantou.png"/>
+			</frames>
+		</action>
+		<action needtime="1" self="false" stop="true" move="false">
+			<frames fileset="mytest">
+				<frame name="fly_attack_001.png"/>
+				<frame name="fly_attack_002.png"/>
+				<frame name="fly_attack_003.png"/>
+				<frame name="fly_attack_004.png"/>
+			</frames>
+		</action>
+	</skill>
+</Config>

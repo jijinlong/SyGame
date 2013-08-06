@@ -175,6 +175,7 @@ namespace script{
 		 * 从字符串中初始化
 		 */
 		bool initFromString(const char *content);
+		bool initWithXmlFile(const char *fileName);
 		/**
  		 * 获取<XXXX> 节点 并解析
  		 * \param node 节点

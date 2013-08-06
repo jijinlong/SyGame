@@ -8,6 +8,7 @@
 #include "iostream"
 #include "string"
 #include "string.h"
+#include "cocos2d.h"
 namespace script{
 	void xmlNodeAttr::setExtData(void * ext)
 	{
@@ -72,11 +73,11 @@ namespace script{
 		ATTR_ITER iter = attrs.find(name);
 		if (iter!=attrs.end())
 		{
-			if (iter->second.c_str() == "true")
+			if (iter->second == "true")
 			{
 				return true;
 			}
-			if (iter->second.c_str() == "false")
+			if (iter->second == "false")
 			{
 				return false;
 			}
@@ -202,6 +203,14 @@ namespace script{
 			}
 		}
 		return  true;
+	}
+	bool tixmlCode::initWithXmlFile(const char *fileName)
+	{
+		std::string startui = cocos2d::CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(fileName);
+		unsigned long nSize = 0;
+		unsigned char * buffer = cocos2d::CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
+		if (!nSize)return false;
+		return initFromString((char*)buffer);
 	}
 	/**
 	 * 从字符串中初始化
