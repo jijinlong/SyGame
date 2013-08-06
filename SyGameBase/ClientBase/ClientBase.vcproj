@@ -543,6 +543,10 @@
 				RelativePath=".\action\LocalSprite.h"
 				>
 			</File>
+			<File
+				RelativePath=".\action\SkillAction.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="map"
@@ -768,11 +772,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File

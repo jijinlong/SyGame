@@ -13,6 +13,11 @@ struct stFilePos{
 };
 class FileSet:public script::tixmlCode{
 public:
+	FileSet()
+	{
+		contents= NULL;
+		contentSize = 0;
+	}
 	void createFromFile(const char *fileName);
 
 	void takeNode(script::tixmlCodeNode *node);

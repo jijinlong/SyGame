@@ -85,7 +85,7 @@ public:
 		{
 			UIPanel *target = base->getPanel();
 			std::string fileName = target->getUILablevalue("filename");
-			UIPanel *dirFrameDialog = window->getPanel("cartoonedit/createcartoon");
+			UIPanel *dirFrameDialog = window->getPanel(name.c_str());
 			if (dirFrameDialog)
 			{
 				// 添加条目进list
@@ -107,8 +107,10 @@ public:
 			}
 		}
 	}
-	stAddImageForCartoon(UIWindow *window):window(window){}
+	stAddImageForCartoon(UIWindow *window,const std::string &name):window(window),name(name){
+	}
 	UIWindow *window;
+	std::string name;
 }; // 增加一个图片
 
 struct stTakeEachImage:stBagExecEach{
@@ -122,13 +124,19 @@ struct stTakeEachImage:stBagExecEach{
 		if (frameItem)
 		{
 			CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(frameItem->name.c_str());
-			CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
-			frame->retain();
-			cartoonInfo->frames.push_back(frame);
+			if (texture)
+			{
+				CCSpriteFrame *frame = CCSpriteFrame::frameWithTexture(texture,CCRectMake(0,0,texture->getContentSize().width,texture->getContentSize().height));
+				frame->retain();
+				cartoonInfo->frames.push_back(frame);
+			}
 			frames.push_back(frameItem->name.c_str());
 		}
 	}
 };
+/**
+ * 测试动画
+ */
 class stTestCartoon:public UICallback{
 public:
 	void callback(UIBase *base)
@@ -180,6 +188,39 @@ public:
 	CCNode *edit;
 }; // 测试
 
+/**
+ * 文件打包器
+ **/
+class FilePack:public UICallback{
+public:
+	void callback(UIBase *base)
+	{
+		// 获取list中的每个元素 构建动画 并 放置于Panel 测试
+		UIPanel *dirFrameDialog = window->getPanel("cartoonedit/pngpack");
+		if (dirFrameDialog)
+		{
+			// 添加条目进list
+			CartoonInfo cartoonInfo;
+			UISuperBag *list = LIST(dirFrameDialog,"list");
+			std::string cartoonName = dirFrameDialog->getEditFieldValue("filename");
+			if (cartoonName == "") return;
+			if (list)
+			{
+				stTakeEachImage take(&cartoonInfo);
+				list->execEachItem(&take);
+				FileSet fileSet;
+				for (int index = 0; index < take.frames.size();index++)
+				{
+					fileSet.addFile(take.frames[index]);
+				}	
+				fileSet.save(cartoonName.c_str(),".\\"); // 保存一个动画的二进制数据
+				fileSet.destroy();
+			}
+		}
+	}
+	FilePack(UIWindow *window):window(window){}
+	UIWindow *window;
+};
 ///////END//动画///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -499,7 +540,9 @@ public:
 		UICallbackManager::getMe().addCallback("do_add_big_image",new CreateBigImageLogic(window));
 		UICallbackManager::getMe().addCallback("do_add_image",new CreateImageLogic());
 
-		UICallbackManager::getMe().addCallback("do_add_image_for_cartoon",new stAddImageForCartoon(window));
+		UICallbackManager::getMe().addCallback("do_add_image_for_cartoon",new stAddImageForCartoon(window,"cartoonedit/createcartoon"));
+
+		UICallbackManager::getMe().addCallback("do_add_image_for_pngpack",new stAddImageForCartoon(window,"cartoonedit/pngpack"));
 		UICallbackManager::getMe().addCallback("testcatoon",new stTestCartoon(window,window)); // 绑定按钮的响应事件
 
 		UICallbackManager::getMe().addCallback("openmaplogic",new OpenMapLogic()); // 绑定按钮的响应事件
@@ -515,6 +558,8 @@ public:
 		UICallbackManager::getMe().addCallback("add_new_layer",new stAddLayer(window)); // 增加新的层
 		
 		UICallbackManager::getMe().addCallback("do_add_monster",new stAddMonster(window)); // 增加新的层
+
+		UICallbackManager::getMe().addCallback("file_pack",new FilePack(window)); // 增加新的层
 	}
 };
 NS_CC_END

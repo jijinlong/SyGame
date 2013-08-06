@@ -30,6 +30,10 @@
 <code name="do_show_monster">
 	<showpanel name="createmonster/createmonster" />
 </code>
+
+<code name="do_show_file_pack">
+	<showpanel name="cartoonedit/pngpack"/>
+</code>
 <Config>
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
 	<start x="0" y="0" width="0" height="0"  local="40" backimg="" moveable="false" root="true" zorder="1">
@@ -49,6 +53,8 @@
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_set_block"/>
 		<button uniquename="controlmonster" x="-84" y="210" name="怪物" downimg="btn_common_down.png"
 		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_show_monster"/>
+		<button uniquename="filepack" x="-84" y="-260" name="打包" downimg="btn_common_down.png"
+		upimg="btn_common_up.png" r="255" g="0" b="" desc="" fontsize="34" onclick="do_show_file_pack"/>
 	</start>
 	
 	<!--场景主界面 local= 1 时置顶 2 时x轴中间对齐 4 置底 8 右对齐 16 左对齐 32 Y轴对齐-->
