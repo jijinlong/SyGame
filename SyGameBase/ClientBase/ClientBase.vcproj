@@ -556,6 +556,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\map\MapCoordLine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\map\MapCoordLine.h"
+				>
+			</File>
+			<File
 				RelativePath=".\map\MutiCaroon.cpp"
 				>
 			</File>
@@ -772,11 +780,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File

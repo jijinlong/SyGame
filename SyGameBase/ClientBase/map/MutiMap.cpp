@@ -1,5 +1,6 @@
 #include "MutiMap.h"
 #include "MutiMonster.h"
+#include "MapCoordLine.h"
 NS_CC_BEGIN
 MutiMap * MutiMap::create(script::tixmlCodeNode *node)
 {
@@ -35,6 +36,7 @@ void  MutiMap::takeNode(script::tixmlCodeNode *node)
 	if (node && node->equal("Config"))
 	{
 		script::tixmlCodeNode mapNode = node->getFirstChildNode("map");
+		showGridsTag = true;
 		readNode(&mapNode);
 	}
 }
@@ -113,7 +115,27 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 		offset.x = mapNode.getInt("offsetx");
 		offset.y = mapNode.getInt("offsety");
 		fileName = mapNode.getAttr("name");
-		if (!_grids) _grids = new AStarSeachInGrids<int>(10,10,126);
+		
+		CCSize size;
+		size.width = mapNode.getInt("width");
+		size.height = mapNode.getInt("height");
+		CCSize gridSize;
+		gridSize.width = mapNode.getInt("gridsize");
+		gridSize.height = mapNode.getInt("gridsize");
+		if (!size.width) size.width = 10;
+		if (!size.height) size.height =10;
+		if (!gridSize.width) gridSize.width = 64;
+		if (!gridSize.height) gridSize.height = 64;
+		if (!_grids) _grids = new AStarSeachInGrids<int>(size.width,size.height,gridSize.width);
+		if (showGridsTag)
+		{
+			MapCoordLine *mapCoordLine = MapCoordLine::create("HelloWorld.png",size.width * gridSize.width,size.height * gridSize.height,gridSize.width,gridSize.height);
+			
+			if (mapCoordLine)
+			{
+				CCNode::addChild(mapCoordLine);
+			}
+		}
 		if (mapNode.isValid())
 		{
 			script::tixmlCodeNode imageNode = mapNode.getFirstChildNode("image");
@@ -387,6 +409,7 @@ struct stShowEachGrids:stExecEach{
 			}
 			test->setPosition(grids->getPointByIndex(index));
 			map->addSprite(test);
+			test->setAnchorPoint(ccp(0,0));
 			map->tempDebugBlocks.push_back(test);
 		}
 	}

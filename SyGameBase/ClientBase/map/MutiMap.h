@@ -30,6 +30,7 @@ struct stExecEachMonster{
 };
 class MutiMap:public CCParallaxNode,public script::tixmlCode{
 public:
+	bool showGridsTag ;
 	static MutiMap * create(script::tixmlCodeNode *node);
 	/**
 	 * —°‘Ò∂‘œÛ
@@ -69,6 +70,7 @@ public:
 	{
 		isHide = false;
 		_grids = NULL;
+		showGridsTag = false;
 	}
 	void execAllMonster(stExecEachMonster *exec);
 	void showGrids();
