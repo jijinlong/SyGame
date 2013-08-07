@@ -299,6 +299,7 @@ public:
 	MutiMonster * getNowTarget();
 	GridIndex nowLocationIndex; // 现在的点
 	GridIndex maybeLocationIndex; // 将来的点
+	std::vector<GridIndex> needClearBlocks; // 需要备份的设置的阻挡点
 	/**
 	 * 当前在目的点时 放置位置 且设定空闲动作 使用Astar 算法 若Astar算法失败 使用向最近有效点移动的策略 若需要掉头 
 	 * 则先掉头 等待下一步策略

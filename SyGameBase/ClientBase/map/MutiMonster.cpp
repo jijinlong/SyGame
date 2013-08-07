@@ -156,7 +156,8 @@ void MutiMonster::nextStep()
 {
 //	 TODO
 #ifdef _SMALL_RECT
-	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
+	//map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
+	this->freshBlock();
 #endif
 	//nowLocationIndex = this->maybeLocationIndex;
 	//doMoveControl();
@@ -505,6 +506,8 @@ void MutiMonster::moveToUseAstar(const GridIndex &point)
 		maybeLocationIndex = nextIndex;
 		map->setBlock(maybeLocationIndex,GridIndex::MONSTER_BLOCK);
 		map->setBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
+		this->needClearBlocks.push_back(nowLocationIndex);
+		this->needClearBlocks.push_back(maybeLocationIndex);
 #else
 		clearMyBlocks(nowLocationIndex);
 		setMyBlocks(nextIndex);
@@ -619,9 +622,14 @@ void MutiMonster::setPosition(const CCPoint &point)
 
 void MutiMonster::freshBlock()
 {
-//	map->clearBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
-//	map->setBlock(getNowIndex(),GridIndex::MONSTER_BLOCK);
-//	nowLocationIndex = getNowIndex();
+	for (unsigned int index = 0; index < this->needClearBlocks.size();index++)
+	{
+		map->clearBlock(this->needClearBlocks[index],GridIndex::MONSTER_BLOCK);
+	}
+	this->needClearBlocks.clear();
+	nowLocationIndex = getNowIndex();
+	map->setBlock(nowLocationIndex,GridIndex::MONSTER_BLOCK);
+	this->needClearBlocks.push_back(nowLocationIndex);
 }
 
 bool MutiMonster::checkNotDirCollide(const GridIndex &nextIndex,std::vector<GridIndex> &dirindexs,int index)

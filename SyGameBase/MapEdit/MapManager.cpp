@@ -93,8 +93,8 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 				nowObject->setPosition(ccp(nowPoint.x + touchPoint.x - nowTouchPoint.x,
                                   nowPoint.y + touchPoint.y - nowTouchPoint.y));
 				nowTouchPoint = touchPoint;
+			
 				nowObject->freshBlock();
-				
 				return;
 			}
 			else
@@ -110,7 +110,8 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 		{
 			if (nowMonster)
 			{
-				nowMonster->map->setBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
+				//nowMonster->map->setBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
+				nowMonster->freshBlock();
 			}
 			
 			nowObject = NULL;
