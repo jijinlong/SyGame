@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<code name="do_pick">
+	<show_panel name="cartoonedit/pngpack"/>
+	<move_allmonsters_to_touch_point/>
+</code>
 <Config>
-    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0" name="map2.xml">
+    <map zorder="0" rationx="0" rationy="0" offsetx="0" offsety="0" name="map2.xml" pickcode="do_pick">
         <map zorder="-1" rationx="0.25" rationy="0" offsetx="0" offsety="0" name="test">
             <bigimage x="-471" y="19" w="0" h="0" src="back_back.png" />
             <blocks />

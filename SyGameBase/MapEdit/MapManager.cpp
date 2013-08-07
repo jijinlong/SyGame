@@ -69,6 +69,10 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 	{
 		case UIBase::TOUCH_DOWN:
 		{
+			if (map->touchDown(touchPoint.x,touchPoint.y))
+			{
+				return;
+			}
 			if (isSetBlock)
 			{
 				map->setBlockByTouchPoint(touchPoint,blockValue);
@@ -86,6 +90,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 		}break;
 		case UIBase::TOUCH_MOVE:
 		{
+			if (map->touchMove(touchPoint.x,touchPoint.y)) return;
 			if (isSetBlock) return;
 			if (nowObject)
 			{
@@ -105,6 +110,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 				nowTouchPoint = touchPoint;
 				return;
 			}
+			
 		}break;
 		case UIBase::TOUCH_END:
 		{
@@ -113,7 +119,7 @@ void MapManager::doTouch(int touchType,const CCPoint &touchPoint)
 				//nowMonster->map->setBlock(nowMonster->getNowIndex(),GridIndex::MONSTER_BLOCK);
 				nowMonster->freshBlock();
 			}
-			
+			map->touchEnd(touchPoint.x,touchPoint.y);
 			nowObject = NULL;
 		}break;
 	}

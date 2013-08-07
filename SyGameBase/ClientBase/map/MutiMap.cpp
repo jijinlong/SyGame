@@ -1,6 +1,7 @@
 #include "MutiMap.h"
 #include "MutiMonster.h"
 #include "MapCoordLine.h"
+#include "UIMapLib.h"
 NS_CC_BEGIN
 MutiMap * MutiMap::create(script::tixmlCodeNode *node)
 {
@@ -38,6 +39,8 @@ void  MutiMap::takeNode(script::tixmlCodeNode *node)
 		script::tixmlCodeNode mapNode = node->getFirstChildNode("map");
 		showGridsTag = true;
 		readNode(&mapNode);
+		window = UIWindow::create();
+		CCNode::addChild(window,1000);
 	}
 }
 /**
@@ -46,42 +49,75 @@ void  MutiMap::takeNode(script::tixmlCodeNode *node)
 MutiObject *MutiMap::pickObject(const CCPoint &pixelPoint)
 {
 	if (!this->isVisible() || isHide) return NULL;
+	MutiObject *object = NULL;
 	for (IMAGES_ITER iter = _images.begin(); iter != _images.end();++iter)
 	{
 		if (*iter && (*iter)->checkIn(pixelPoint))
 		{
-			return *iter;
+			object = *iter;
 		}
 	}
 	for (CARTOONS_ITER iter = _cartoons.begin(); iter != _cartoons.end();++iter)
 	{
 		if (*iter && (*iter)->checkIn(pixelPoint))
 		{
-			return *iter;
+			object = *iter;
 		}
 	}
 	for (BIG_IMAGES_ITER iter = _bigImages.begin();iter != _bigImages.end();++iter)
 	{
 		if (*iter && (*iter)->checkIn(pixelPoint))
 		{
-			return *iter;
+			object = *iter;
 		}
 	}
 	for (BIG_TERRAINS_ITER iter = _bigTerrains.begin();iter != _bigTerrains.end();++iter)
 	{
 		if (*iter && (*iter)->checkIn(pixelPoint))
 		{
-			return *iter;
+			object = *iter;
 		}
 	}
 	for (MONSTERS_ITER iter = _monsters.begin();iter != _monsters.end();++iter)
 	{
 		if (*iter && (*iter)->checkIn(pixelPoint))
 		{
-			return *iter;
+			object = *iter;
 		}
 	}
-	return NULL;
+	// 触发地图上的事件
+	CCPoint pos = this->convertToNodeSpace(pixelPoint);
+	UIMapStub stub;
+	stub.nowTouchPoint = pos;
+	stub.nowTouchObject = object;
+	stub.map = this;
+	stub.window = window;
+	theMapUILib.execCode(&stub,this->pickCode.c_str());
+	return object;
+}
+/** 
+ * 检查是否在区域里
+ */
+bool MutiMap::touchDown(float x,float y)
+{
+	if (window) return window->touchDown(x,y);
+	return false;
+}
+/**
+ * 更新位置
+ */
+bool MutiMap::touchMove(float x,float y)
+{
+	if (window) return window->touchMove(x,y);
+	return false;
+}
+/**
+ * 停止拖动
+ */
+bool MutiMap::touchEnd(float x,float y)
+{
+	if (window) return window->touchEnd(x,y);
+	return false;
 }
 void MutiMap::execEachBg(stExecEachBackgroud *bg)
 {
@@ -126,6 +162,7 @@ void MutiMap::readNode(script::tixmlCodeNode *node)
 		if (!size.height) size.height =10;
 		if (!gridSize.width) gridSize.width = 64;
 		if (!gridSize.height) gridSize.height = 64;
+		pickCode = mapNode.getAttr("pickcode");
 		if (!_grids) _grids = new AStarSeachInGrids<int>(size.width,size.height,gridSize.width);
 		if (showGridsTag)
 		{

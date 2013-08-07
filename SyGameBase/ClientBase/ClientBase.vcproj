@@ -784,11 +784,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
@@ -873,6 +873,14 @@
 			</File>
 			<File
 				RelativePath=".\uilib\UILib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uilib\UIMapLib.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uilib\UIMapLib.h"
 				>
 			</File>
 		</Filter>
