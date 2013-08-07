@@ -9,6 +9,6 @@
 </code>
 <code name="move_end">
 	<move x="5" y="4"/> <!--移动到其他点-->
-	<putskill name="attack"/> <!--攻击-->
+	<putskill atkname="attack" skillname="skilltest.xml"/> <!--攻击-->
 	<reset_notify stub="self" event="MOVE_TO_DESTIONATION" />
 </code>

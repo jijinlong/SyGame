@@ -17,11 +17,17 @@ public:
 	std::string endCodeName; // 结束时回调代码
 	std::vector<CCSpriteFrame*> frames; // 帧集合
 	CCPoint offset; // 相对移动的方向
-	float rotate; // 将精灵反转的角度
+	float rotation; // 将精灵反转的角度
+	float jumpHeight;// 跳动高度
 	int frameType; // 帧类型 
-	bool follow; // 跟随
-	bool move; // 移动
-	bool stop; // 静止
+	enum{
+		ACTION_FOLLOW, // 跟随
+		ACTION_MOVE, // 移动
+		ACTION_STOP, // 静止
+		ACTION_JUMP, // 跳跃
+	};
+	int actionType; // 动作类型
+	
 	float needTime;// 消耗的时间
 	enum{
 		FRAME_TYPE_TIME_ANIMATION, // 时间帧
@@ -33,13 +39,12 @@ public:
 	};
 	SkillActionInfo()
 	{
+		jumpHeight = 10;
 		frameType = FRAME_TYPE_TIME_ANIMATION;
 		needTime = 1;
 		self = false;
-		follow = false;
-		stop = false;
-		move = false;
 		delayTime = 0;
+		rotation  = 0;
 		nextInfo = NULL;
 	}
 	void release(){}
@@ -50,7 +55,7 @@ public:
  * 动画移动动作 将会作用在自己身上 
  * 动画帧与移动相关联
  */
-class SkillMoveAction:public CCMoveTo{
+class SkillMoveAction:public CCMoveBy{
 public:
 	
 	virtual void update(float time);
@@ -75,6 +80,29 @@ public:
 	
 protected:
 	SkillActionInfo cartoonInfo;
+};
+/**
+ * 移动时间帧
+ **/
+class TimeFramesMoveBy:public CCMoveBy{
+
+};
+/**
+ * 使时间帧跳跃
+ */
+class TimeFramesJump:public CCJumpBy{
+public:
+	TimeFramesJump()
+	{
+		isTempTarget = false;
+		callback = NULL;
+	}
+    static TimeFramesJump* create(float duration, const CCPoint& position, float height, unsigned int jumps);
+   
+	void stop(void);
+ 
+    bool isTempTarget;
+	stCollideTargetCallback *callback;
 };
  /**
   * <Config>
@@ -142,7 +170,7 @@ public:
 	static ChildSkillEndAction* create(CCNode *self,SkillActionInfo *info)
 	{
 		ChildSkillEndAction *pRet = new ChildSkillEndAction();
-      //  pRet->autorelease();
+        pRet->autorelease();
         return pRet;
     }
 	virtual void execute()
@@ -180,7 +208,7 @@ public:
 	{
 		SkillAction *skillAction = new SkillAction();
 		skillAction->init(skillName);
-	//	skillAction->autorelease();
+		skillAction->autorelease();
 		return skillAction;
 	}
 	bool init(const std::string &skillName)
@@ -210,13 +238,29 @@ public:
 				CartoonFromPack::create(info,&framesNode);
 				info->delayTime = actionNode.getInt("delaytime");
 				info->self = actionNode.getBool("self");
-				info->stop = actionNode.getBool("stop");
-				info->move = actionNode.getBool("move");
-				info->follow = actionNode.getBool("follow");
-				info->needTime = actionNode.getInt("needtime");
+				std::string actiontypeName = actionNode.getAttr("actiontype");
+				if (actiontypeName == "stop")
+				{
+					info->actionType = SkillActionInfo::ACTION_STOP;
+				}
+				if (actiontypeName == "move")
+				{
+					info->actionType = SkillActionInfo::ACTION_MOVE;
+				}
+				if (actiontypeName == "follow")
+				{
+					info->actionType = SkillActionInfo::ACTION_FOLLOW;
+				}
+				if (actiontypeName == "jump")
+				{
+					info->actionType = SkillActionInfo::ACTION_JUMP;
+				}
+				info->needTime = actionNode.getFloat("needtime");
 				std::string nextTypeStr = actionNode.getAttr("nexttype");
 				info->offset.x = actionNode.getInt("offsetx");
 				info->offset.y = actionNode.getInt("offsety");
+				info->rotation = actionNode.getFloat("rotation");
+				info->jumpHeight = actionNode.getInt("jumpheight");
 				if (nextTypeStr == "sequence")
 				{
 					info->nextType = SkillActionInfo::NEXT_TYPE_SEQUENCE;
@@ -240,7 +284,7 @@ public:
 			}
 		}
 	}
-	void runAction(CCNode *self,const cocos2d::CCPoint &point = ccp(-1,-1),CCNode *target = NULL,int needTime=1.0f,stCollideTargetCallback * callback = NULL)
+	void runAction(CCNode *self,const cocos2d::CCPoint &point = ccp(-1,-1),CCNode *target = NULL,int needTime=0,stCollideTargetCallback * callback = NULL)
 	{
 		if (!info) return;
 		SkillActionInfo * root =(SkillActionInfo*) info;
@@ -293,4 +337,28 @@ public:
 	}
 };
 
+class SkillManager{
+public:
+	static SkillManager& getMe()
+	{
+		static SkillManager sm;
+		return sm;
+	}
+	SkillAction * find(const std::string &name)
+	{
+		SKILLS_ITER iter = skills.find(name);
+		if (iter != skills.end())
+		{
+			return iter->second;
+		}
+		SkillAction *skill = SkillAction::create(name);
+		skills[name] = skill;
+		skill->retain();
+		return skill;
+	}
+	
+	std::map<std::string,SkillAction*> skills;
+	typedef std::map<std::string,SkillAction*>::iterator SKILLS_ITER;
+};
+#define theSkill(name) SkillManager::getMe().find(name)
 NS_CC_END

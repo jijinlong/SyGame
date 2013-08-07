@@ -92,17 +92,6 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,script::tixmlCodeNode *info)
 	int tapTime = info->getInt("taptime");
 	if (tapTime == 0)
 	{
-		/*
-		BIND_AI_EVENT(DEATH); // 死亡
-		BIND_AI_EVENT(BIRTH); // 出生
-		BIND_AI_EVENT(TARGET_ENTER); // 对象进入视野	
-		BIND_AI_EVENT(TARGET_LEAVE); // 对象离开视野
-		BIND_AI_EVENT(IDLE_ACTION); // 空闲行为
-		BIND_AI_EVENT(ATTACK_ME); // 攻击我了
-		BIND_AI_EVENT(MEET_TARGET); // 目标在攻击范围内
-		BIND_AI_EVENT(HAD_TARGET_LEAVE); // 有对象离开
-		BIND_AI_EVENT(HAD_TARGET); //有对象
-		BIND_AI_EVENT(ATTACK_TRIED); // 攻击累了*/
 		unsigned int eventId = getEventIdByName(name);
 		if (eventId == (unsigned int) -1) return false;
 		if (eventId >= events.size())
@@ -113,18 +102,6 @@ bool MutiAI::addCode(script::tixmlCodeNode *code,script::tixmlCodeNode *info)
 	}
 	else
 	{
-		/*
-		BIND_TIME_AI_EVT(DEATH); // 死亡
-		BIND_TIME_AI_EVT(BIRTH); // 出生
-		BIND_TIME_AI_EVT(TARGET_ENTER); // 对象进入视野	
-		BIND_TIME_AI_EVT(TARGET_LEAVE); // 对象离开视野
-		BIND_TIME_AI_EVT(IDLE_ACTION); // 空闲行为
-		BIND_TIME_AI_EVT(ATTACK_ME); // 攻击我了
-		BIND_TIME_AI_EVT(MEET_TARGET); // 目标在攻击范围内
-		BIND_TIME_AI_EVT(HAD_TARGET_LEAVE); // 有对象离开
-		BIND_TIME_AI_EVT(HAD_TARGET); //有对象
-		BIND_TIME_AI_EVT(ATTACK_TRIED); // 攻击累了
-		*/
 		MutiEvent timeEvt;
 		timeEvt.code = code;
 		timeEvt.tapTime = tapTime;
@@ -375,8 +352,9 @@ int MonsterAILib::putskill(MutiAIStub* stub,script::tixmlCodeNode * node)
 {
 	if (stub->npc)
 	{
-		stub->npc->tryAction(node->getAttr("name"));
-		SkillAction::create("skilltest.xml")->runAction(stub->npc,ccp(10,10));
+		stub->npc->tryAction(node->getAttr("atkname"));
+		if (theSkill(node->getAttr("skillname")))
+			theSkill(node->getAttr("skillname"))->runAction(stub->npc,ccp(10,10));
 	}
 	return 1;
 }
