@@ -4,6 +4,9 @@
 #include "Record.h"
 #include "string.h"
 #include <list>
+struct stGetPackage{
+	virtual void callback(void *cmd,unsigned int len) = 0;
+};
 class Decoder{
 public:
 	Decoder(){
@@ -139,7 +142,7 @@ public:
 		return 0;
 	}
 	template<typename Record>
-	void decode(Record *target) // 解码器
+	void decode(Record *target,stGetPackage *callback) // 解码器
 	{
 		while(run(target))
 		{
@@ -150,12 +153,15 @@ public:
 				{
 					unsigned char buffer[MAX_DATASIZE]={'\0'};
 					unsigned int retSize = unzip(buffer,MAX_DATASIZE,0);
+					if (callback)
+					callback->callback(buffer,retSize);
 				}
 				else if (contents.size())
 				{
-					printf("ok %s\n",&contents[0]);
+					//printf("ok %s\n",&contents[0]);
+					if (callback)
+					callback->callback(&contents[0],contentSize);
 				}
-				//target.done(buffer,retSize);
 			}
 		}
 	}

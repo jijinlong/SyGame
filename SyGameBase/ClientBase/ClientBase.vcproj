@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\uilib;.\ai;.\3d;.\map;.\pngplus;.\libpng;.\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
+				AdditionalIncludeDirectories=".\editbox;.\uilib;.\ai;.\3d;.\map;.\pngplus;.\libpng;.\zlib;.\model;.\;.\misc;.\action;.\uibase;.\tinyxml;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -881,6 +881,110 @@
 			</File>
 			<File
 				RelativePath=".\uilib\UIMapLib.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="editbox"
+			>
+			<File
+				RelativePath=".\editbox\CCControl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCControl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCControlButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCControlButton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCControlUtils.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCControlUtils.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBoxImpl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBoxImplNone.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBoxImplTizen.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBoxImplTizen.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBoxImplWin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCEditBoxImplWin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCInvocation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCInvocation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCScale9Sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\CCScale9Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\ExtensionMacros.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\Win32InputBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editbox\Win32InputBox.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="net"
+			>
+			<File
+				RelativePath=".\net\handle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\net\Net.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NetCommand.h"
 				>
 			</File>
 		</Filter>

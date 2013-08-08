@@ -3,6 +3,7 @@
 #include <MSWSock.h>
 #pragma comment(lib,"ws2_32.lib")
 #include "../network.h"
+#include "MyList.h"
 #include <list>
 namespace pool{
 	enum EVENT_TYPE{
@@ -303,7 +304,8 @@ namespace pool{
 		 {
 			Decoder  decoder;
 			decoder.encode(cmd,len);
-			sends.push_back(decoder.getRecord());
+		//	sends.push_back(decoder.getRecord());
+			sends.write(decoder.getRecord());
 			if (outEvt)
 				doSend(outEvt);
 		 }
@@ -326,19 +328,25 @@ namespace pool{
 		 unsigned int recv(void *cmd,unsigned int size)
 		 {
 			unsigned int realcopy = 0;
-			while (recvs.size())
+		//	while (recvs.size())
+			while (!recvs.empty())
 			{
-				Record *record = recvs.front();
-				realcopy = record->recv(cmd,size);
-				if (record->empty())
+				//Record *record = recvs.front();
+				Record *record = NULL;
+				if (recvs->readOnly(record))
 				{
-					delete record;
-					recvs.pop_front();
-				}
-				if (realcopy == size)
-				{
-					return size;
-				}
+					realcopy = record->recv(cmd,size);
+					if (record->empty())
+					{
+						delete record;
+						//recvs.pop_front();
+						recvs.pop();
+					}
+					if (realcopy == size)
+					{
+						return size;
+					}
+				}else break;
 			}
 			return realcopy;
 		}
@@ -346,18 +354,19 @@ namespace pool{
 		/**
 		 * 在pool 中处理接受
 		 **/
-		 void doRead(pool::EventBase *evt)
+		 void doRead(pool::EventBase *evt,stGetPackage *callback = NULL)
 		{
 			pool::Event<Connection>* event = static_cast<pool::Event<Connection>*>( evt );
 			if (directDealCmd) // 直接处理消息
 			{
 				Record record(event->m_wsaBuf.buf,evt->dataLen);
-				decoder.decode(&record);
+				decoder.decode(&record,callback);
 			}
 			else
 			{
 				Record *record = new Record(event->m_wsaBuf.buf,evt->dataLen);
-				recvs.push_back(record);
+				//recvs.push_back(record);
+				recvs.write(record);
 			}
 			evt->redo();
 		}
@@ -371,39 +380,47 @@ namespace pool{
 			pool::Event<Connection>* event = static_cast<pool::Event<Connection>*>( evt );
 			event->dataLen = 0;
 			event->reset();
-			while (sends.size())
+			while (!sends.empty())
 			{
 				tag = true;
-				Record *record = sends.front();
-				int leftLen = pool::EventBase::MAX_BUFFER_LEN;
-				unsigned int realCopySize = record->recv(event->buffer,leftLen);
-				evt->dataLen += realCopySize;
-				if (leftLen == realCopySize)
+				Record *record = NULL;
+				// record = send.front();
+				if (sends.readOnly(record))
 				{
-					if (record->empty())
+					int leftLen = pool::EventBase::MAX_BUFFER_LEN;
+					unsigned int realCopySize = record->recv(event->buffer,leftLen);
+					evt->dataLen += realCopySize;
+					if (leftLen == realCopySize)
 					{
-						delete record;
-						sends.pop_front();
+						if (record->empty())
+						{
+							delete record;
+						//	sends.pop_front();
+							sends.pop();
+						}
+						break;
 					}
-					break;
-				}
-				else
-				{
-					leftLen -= realCopySize;
-					if(!record->empty())
+					else
 					{
-						// TODO ERROR
+						leftLen -= realCopySize;
+						if(!record->empty())
+						{
+							// TODO ERROR
+						}
+						//sends.pop_front();
+						sends.pop();
 					}
-					sends.pop_front();
-				}
+				}else break;
 			}
 			if (tag)
 				evt->redo();
 		}
 		 // 当前事件 具有瞬时性
 		 SOCKET socket;
-		 std::list<Record*> recvs;
-		 std::list<Record*> sends;
+		// std::list<Record*> recvs;
+		MyList<Record*> recvs;
+		// std::list<Record*> sends;
+		MyList<Record*> sends;
 	 };
 	 class Client:public Connection{
 	 public:
