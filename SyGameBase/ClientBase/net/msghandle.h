@@ -18,15 +18,13 @@ public:
 	}
 	/**
 	 * 处理消息
-	 * \param object 对象
 	 * \param cmd 消息
 	 * \param len 消息长度
 	 **/
-	template<class CALSS>
-	bool handle(CALSS *object,void* cmd,unsigned int cmdLen)
+	bool handle(void* cmd,unsigned int cmdLen)
 	{
-		stNullCmd *nullCmd = (stNullCmd*) cmd;
-		Handles::handle(object,nullCmd->type,nullCmd->param,cmd,cmdLen);
+		//stNullCmd *nullCmd = (stNullCmd*) cmd;
+		//Handles::handle(object,nullCmd->type,nullCmd->param,cmd,cmdLen);
 		return false;
 	}
 };
