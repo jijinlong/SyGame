@@ -86,6 +86,8 @@ TiXmlElement * UIButton::makeNode(TiXmlElement *parent,const std::string &name)
 	{
 		btnNode->SetAttribute("downimg",downPngName);
 		btnNode->SetAttribute("upimg",upPngName);
+		if (_textLabel)
+			btnNode->SetAttribute("name",_textLabel->getString());
 	}
 	return btnNode;
 }
@@ -123,7 +125,7 @@ bool UIButton::touchDown(float x,float y)
 bool UIButton::touchMove(float x,float y)
 {
 	CCPoint pos = ccp(x,y);
-	pos = this->convertToNodeSpace(pos);
+	
 	if (_editable && _touchIn)
 	{
 		CCPoint nowPoint = getPosition();
@@ -132,6 +134,7 @@ bool UIButton::touchMove(float x,float y)
 		nowTouchPoint = pos;
 		return true;
 	}
+	pos = this->convertToNodeSpace(pos);
 	if (_up && _down)
 	{
 		if (checkIn(pos))

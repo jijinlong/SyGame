@@ -35,9 +35,9 @@ void UIPanel::makeXmlFile(const std::string &name)
 	TiXmlElement *configNode= new TiXmlElement("Config");
 	pDoc->LinkEndChild(configNode);
 
-	TiXmlElement *panelNode= new TiXmlElement(name);
+	TiXmlElement *panelNode= new TiXmlElement("panel");
 	configNode->LinkEndChild(panelNode);
-	panelNode->SetAttribute("back",this->backimg.c_str());
+	panelNode->SetAttribute("backimg",this->backimg.c_str());
 	panelNode->SetAttribute("width",this->_width);
 	panelNode->SetAttribute("height",this->_height);
 	panelNode->SetAttribute("x",(int) this->getPositionX());

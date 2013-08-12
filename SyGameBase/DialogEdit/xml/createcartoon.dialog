@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <panel backimg="panel_back.png" width="250" height="250" x="458" y="372">
+        <button x="89" w="64" y="97" h="32" uniqueid="0" name="测试" uniquename="test" oncreate="" onclick="" downimg="btn_common_down.png" upimg="btn_common_up.png" />
+        <button x="-87" w="64" y="-105" h="32" uniqueid="0" name="保存" uniquename="ok" oncreate="" onclick="" downimg="btn_common_down.png" upimg="btn_common_up.png" />
+        <button x="84" w="64" y="-104" h="32" uniqueid="0" name="取消" uniquename="cancel" oncreate="" onclick="" downimg="btn_common_down.png" upimg="btn_common_up.png" />
+        <editfield x="-63" w="200" y="10" h="28" uniqueid="0" name="editfield" uniquename="needtime" oncreate="" onclick="" content="输入时长" width="200" height="28" />
+        <editfield x="-64" w="200" y="93" h="28" uniqueid="0" name="editfield" uniquename="cartoonname" oncreate="" onclick="" content="输入名字" width="200" height="28" />
+    </panel>
+</Config>

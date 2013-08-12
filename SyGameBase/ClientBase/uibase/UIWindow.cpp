@@ -304,7 +304,12 @@ UIPanel *UIWindow::showPanel(const std::string &name)
 	if (!bp)
 	{
 		std::stringstream namestr;
-		namestr << name << ".xml";
+		if (name.find("xml") != std::string::npos)
+			namestr << name;
+		if (name.find("dialog") != std::string::npos)
+			namestr << name;
+		else
+			namestr << name << ".xml";
 		CommonPanel *panel = CommonPanel::create(this,namestr.str().c_str());
 		panel->name = name;
 		return panel;
