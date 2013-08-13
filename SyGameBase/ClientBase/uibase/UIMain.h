@@ -25,6 +25,7 @@ public:
 	{
 		window = NULL;
 	}
+	static UIMain *create(CCNode *scene);
 	static UIMain *create(CCNode *scene,UIEventCallback *callback);
 	void init(UIEventCallback*callback);
 	void takeNode(script::tixmlCodeNode *node);

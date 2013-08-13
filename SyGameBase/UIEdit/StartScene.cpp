@@ -5,48 +5,6 @@
 #include "PngPack.h"
 USING_NS_CC;
 
-
-LoadProcess* LoadProcess::create(const char *backName,const char *backValue)
-{
-	LoadProcess *pRet = new LoadProcess();
-    if (pRet && pRet->init(backName, backValue))
-    {
-        pRet->autorelease();
-        return pRet;
-    }
-    CC_SAFE_DELETE(pRet);
-    return NULL;
-}
-
-bool LoadProcess::init(const char *backName,const char *backValue)
-{
-	this->maxValue = 100;
-	this->value = 0;
-	this->backSprite = CCSprite::create("load_back.png");
-	this->backSprite->setAnchorPoint(ccp(0,0.5));
-	this->addChild(this->backSprite);
-	this->valueSprite = CCSprite::create("load_show.png");
-	this->valueSprite->setAnchorPoint(ccp(0,0.5));
-	this->addChild(this->valueSprite);
-	setValue(value);
-
-	this->setScaleX(700 / this->backSprite->getContentSize().width);
-	return true;
-}
-void LoadProcess::setValue(float valuep)
-{
-	this->value = valuep * maxValue;
-	float width = 433;
-	width *= ((float)value) / maxValue;
-	valueSprite->setTextureRect(CCRectMake(0,0,
-	width,valueSprite->getContentSize().height));
-}
-void LoadProcess::setColor(const ccColor3B& color)
-{
-	this->backSprite->setColor(color);
-	this->valueSprite->setColor(color);
-}
-
 CCScene* StartScene::scene()
 {
     CCScene *scene = CCScene::create();

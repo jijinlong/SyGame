@@ -32,6 +32,7 @@
 #include "cocoa/CCAffineTransform.h"
 #include "cocoa/CCArray.h"
 #include "CCGL.h"
+#include "CCProtocols.h"
 #include "shaders/ccGLStateCache.h"
 #include "shaders/CCGLProgram.h"
 #include "kazmath/kazmath.h"
@@ -124,7 +125,6 @@ class CC_DLL CCNode : public CCObject
 {
 
     // variable property
-
     /** The z order of the node relative to it's "brothers": children of the same parent */
     CC_PROPERTY_READONLY(int, m_nZOrder, ZOrder)
 
@@ -619,7 +619,53 @@ public:
 
 // end of base_node group
 /// @}
+//#pragma mark - CCNodeRGBA
 
+/** CCNodeRGBA is a subclass of CCNode that implements the CCRGBAProtocol protocol.
+ 
+ All features from CCNode are valid, plus the following new features:
+ - opacity
+ - RGB colors
+ 
+ Opacity/Color propagates into children that conform to the CCRGBAProtocol if cascadeOpacity/cascadeColor is enabled.
+ @since v2.1
+ */
+class CC_DLL CCNodeRGBA : public CCNode, public CCRGBAProtocol
+{
+public:
+    CCNodeRGBA();
+    virtual ~CCNodeRGBA();
+    
+    virtual bool init();
+    
+    virtual GLubyte getOpacity();
+    virtual GLubyte getDisplayedOpacity();
+    virtual void setOpacity(GLubyte opacity);
+    virtual void updateDisplayedOpacity(GLubyte parentOpacity);
+    virtual bool isCascadeOpacityEnabled();
+    virtual void setCascadeOpacityEnabled(bool cascadeOpacityEnabled);
+    
+    virtual const ccColor3B& getColor(void);
+    virtual const ccColor3B& getDisplayedColor();
+    virtual void setColor(const ccColor3B& color);
+    virtual void updateDisplayedColor(const ccColor3B& parentColor);
+    virtual bool isCascadeColorEnabled();
+    virtual void setCascadeColorEnabled(bool cascadeColorEnabled);
+    
+    virtual void setOpacityModifyRGB(bool bValue) {};
+    virtual bool isOpacityModifyRGB() { return false; };
+
+protected:
+	GLubyte		_displayedOpacity;
+    GLubyte     _realOpacity;
+	ccColor3B	_displayedColor;
+    ccColor3B   _realColor;
+	bool		_cascadeColorEnabled;
+    bool        _cascadeOpacityEnabled;
+};
+
+// end of base_node group
+/// @}
 NS_CC_END
 
 #endif // __PLATFORM_CCNODE_H__

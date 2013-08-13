@@ -4,12 +4,20 @@ void UIMain::init(UIEventCallback *callback)
 {
 	window = UIWindow::create();
 	std::string startui = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath("mainui.xml");
-	callback->init(window);
+	if(callback)
+		callback->init(window);
 	unsigned long nSize = 0;
 	unsigned char * buffer = CCFileUtils::sharedFileUtils()->getFileData(startui.c_str(),"rb",&nSize);
 	if (!nSize)return;
 	if (script::tixmlCode::initFromString((char*)buffer))
 	{}
+}
+UIMain *UIMain::create(CCNode *scene)
+{
+	UIMain *ui = new UIMain();
+	ui->init(NULL);
+	scene->addChild(ui->window);
+	return ui;
 }
 UIMain *UIMain::create(CCNode *scene,UIEventCallback *callback)
 {

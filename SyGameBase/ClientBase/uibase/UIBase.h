@@ -102,6 +102,7 @@ public:
 	 */
 	virtual bool bind(int uiEvent,const FunctionInfo& function);
 	virtual bool bind(int uiEvnet,UICallback *callback);
+	bool bind(int uiEvent,const char *luaFunctionName);
 	virtual void doEvent(int uiEvent,UIBase *base);
 	UIWindow *getDepthWindow();
 	UIBase()

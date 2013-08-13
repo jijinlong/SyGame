@@ -8,8 +8,27 @@ NS_CC_BEGIN
 /**
  * 超级包裹 可以灵活的使用id-pos 的关系 默认是个横向发展的BAG
  */
+class UISuperBag;
+class UIBagIterator{
+public:
+	UIItem * getNext();
+	UISuperBag *bag;
+	int index = 0;
+	UIBagIterator()
+	{
+		bag = NULL;
+	}
+};
 class UISuperBag :public UIBase{
 public:
+	friend class UIBagIterator;
+	UIBagIterator bagIterator;
+	UIBagIterator * getIterator()
+	{
+		bagIterator.bag = this;
+		bagIterator.index = 0;
+		return bagIterator;
+	}
 	/**
 	 * 展示
 	 */

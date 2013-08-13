@@ -849,4 +849,146 @@ void CCLayerMultiplex::switchToAndReleaseMe(unsigned int n)
     this->addChild((CCNode*)m_pLayers->objectAtIndex(n));
 }
 
+
+// LayerRGBA
+CCLayerRGBA::CCLayerRGBA()
+: _displayedOpacity(255)
+, _realOpacity (255)
+, _displayedColor(ccWHITE)
+, _realColor(ccWHITE)
+, _cascadeOpacityEnabled(false)
+, _cascadeColorEnabled(false)
+{}
+
+CCLayerRGBA::~CCLayerRGBA() {}
+
+bool CCLayerRGBA::init()
+{
+	if (CCLayer::init())
+    {
+        _displayedOpacity = _realOpacity = 255;
+        _displayedColor = _realColor = ccWHITE;
+        setCascadeOpacityEnabled(false);
+        setCascadeColorEnabled(false);
+        
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+GLubyte CCLayerRGBA::getOpacity()
+{
+	return _realOpacity;
+}
+
+GLubyte CCLayerRGBA::getDisplayedOpacity()
+{
+	return _displayedOpacity;
+}
+
+/** Override synthesized setOpacity to recurse items */
+void CCLayerRGBA::setOpacity(GLubyte opacity)
+{
+	_displayedOpacity = _realOpacity = opacity;
+    
+	if( _cascadeOpacityEnabled )
+    {
+		GLubyte parentOpacity = 255;
+        CCRGBAProtocol *parent = dynamic_cast<CCRGBAProtocol*>(m_pParent);
+		if (parent && parent->isOpacityModifyRGB())
+        {
+			parentOpacity = parent->getOpacity();
+        }
+        updateDisplayedOpacity(parentOpacity);
+	}
+}
+
+const ccColor3B& CCLayerRGBA::getColor()
+{
+	return _realColor;
+}
+
+const ccColor3B& CCLayerRGBA::getDisplayedColor()
+{
+	return _displayedColor;
+}
+
+void CCLayerRGBA::setColor(const ccColor3B& color)
+{
+	_displayedColor = _realColor = color;
+	
+	if (_cascadeColorEnabled)
+    {
+		ccColor3B parentColor = ccWHITE;
+        CCRGBAProtocol* parent = dynamic_cast<CCRGBAProtocol*>(m_pParent);
+		if (parent)
+        {
+			parentColor = parent->getColor();
+        }
+
+        updateDisplayedColor(parentColor);
+	}
+}
+
+void CCLayerRGBA::updateDisplayedOpacity(GLubyte parentOpacity)
+{
+	_displayedOpacity = _realOpacity * parentOpacity/255.0;
+    
+    if (_cascadeOpacityEnabled)
+    {
+        CCObject *obj = NULL;
+        CCARRAY_FOREACH(m_pChildren, obj)
+        {
+            CCRGBAProtocol *item = dynamic_cast<CCRGBAProtocol*>(obj);
+            if (item)
+            {
+				item->setOpacity(_displayedOpacity);
+            }
+        }
+    }
+}
+
+void CCLayerRGBA::updateDisplayedColor(const ccColor3B& parentColor)
+{
+	_displayedColor.r = _realColor.r * parentColor.r/255.0;
+	_displayedColor.g = _realColor.g * parentColor.g/255.0;
+	_displayedColor.b = _realColor.b * parentColor.b/255.0;
+    
+    if (_cascadeColorEnabled)
+    {
+        CCObject *obj = NULL;
+        CCARRAY_FOREACH(m_pChildren, obj)
+        {
+            CCRGBAProtocol *item = dynamic_cast<CCRGBAProtocol*>(obj);
+            if (item)
+            {
+				item->setColor(_displayedColor);
+            }
+        }
+    }
+}
+
+bool CCLayerRGBA::isCascadeOpacityEnabled()
+{
+    return _cascadeOpacityEnabled;
+}
+
+void CCLayerRGBA::setCascadeOpacityEnabled(bool cascadeOpacityEnabled)
+{
+    _cascadeOpacityEnabled = cascadeOpacityEnabled;
+}
+
+bool CCLayerRGBA::isCascadeColorEnabled()
+{
+    return _cascadeColorEnabled;
+}
+
+void CCLayerRGBA::setCascadeColorEnabled(bool cascadeColorEnabled)
+{
+    _cascadeColorEnabled = cascadeColorEnabled;
+}
+
 NS_CC_END

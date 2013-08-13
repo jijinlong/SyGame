@@ -297,7 +297,7 @@ public:
 		{
 			MapManager::getMe().isSetBlock = false;
 			MapManager::getMe().blockValue = 0;
-			panel->hide();
+		//	panel->hide();
 		}
 	}
 };

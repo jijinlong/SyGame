@@ -17,9 +17,9 @@ public:
 		 HORIZONTAL_BLOCK = 1 << 2, // 横向移动阻挡
 		 VERTICAL_BLOCK = 1 << 3, // 纵向移动阻挡
 	};
-	int x;
-	int y;
-	GridIndex(int x,int y):x(x),y(y)
+	short x;
+	short y;
+	GridIndex(short x,short y):x(x),y(y)
 	{}
 	GridIndex()
 	{
@@ -255,7 +255,21 @@ public:
 	typedef std::list<PathQueue> PathQueueHead;
 	typedef typename PathQueueHead::iterator iterator;
 	typedef typename PathQueueHead::reference reference;
-
+	/**
+	 * 记录close 表
+	 */
+	std::set<int> mapCloses;
+	int getGridIndexValue(const GridIndex &index)
+	{
+		return index.y << 16 + index.x;
+	}
+	const GridIndex getGridIndexByValue(const int & index)
+	{
+		GridIndex index;
+		index.x = index & 0xffff;
+		index.y = (index >> 16) & 0xffff;
+		return index;
+	}
 	/**
 	 * 获取下一个可以移动的格子
 	 */
@@ -315,23 +329,31 @@ public:
 						}
 						p = p->father;
 					}
-
+					/*
+					std::set<int>::iterator iter = mapCloses.find(getGridIndexValue(tempPos));
+					if (iter != mapCloses.end())
+					{
+						bCanWalk = false;
+					}
+					*/
 					//如果路径回溯成功，表示这个点是可行走的
 					if (bCanWalk)
 					{
-						int cost = root->cc + 1;
+						int distance = 10 * (abs(adjust[i].x) + abs(adjust[i].y));
+						int cost = root->cc + distance;
+						int f = cost + judge(tempPos,dest);
 						int index = (tempPos.y - dest.y + minRadius) * width + (tempPos.x - dest.x + minRadius);
 						if (index >= 0
 							&& index < MaxNum
-							&& cost < pDisMap[index])
+							&& f < pDisMap[index])
 						{
 							//这条路径比上次计算的路径还要短，需要加入到最短路径队列中
-							pDisMap[index] = cost;
+							pDisMap[index] = f;
 							PathPoint *pNewEntry = &stack[Count * 8 + i];
 							pNewEntry->pos = tempPos;
 							pNewEntry->cc = cost;
 							pNewEntry->father = root;
-							enter_queue(queueHead,pNewEntry,pNewEntry->cc + judge(pNewEntry->pos,dest));
+							enter_queue(queueHead,pNewEntry,f);
 						}
 					}
 				}
@@ -369,7 +391,7 @@ public:
 	*/
 	int judge(const GridIndex &midPos,const GridIndex &endPos)
 	{
-		int distance = abs((long)(midPos.x - endPos.x)) + abs((long)(midPos.y - endPos.y));
+		int distance = 10 * abs((long)(midPos.x - endPos.x)) + abs((long)(midPos.y - endPos.y));
 		return distance;
 	}
 
@@ -410,6 +432,7 @@ public:
 			reference ref = queueHead.front();
 			ret = ref.node;
 			queueHead.pop_front();
+			mapCloses.insert(getGridIndexValue(ret->pos));
 		}
 		return ret;
 	}

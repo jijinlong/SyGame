@@ -1,7 +1,15 @@
 #include "UISuperBag.h"
 #include "UIBag.h"
 NS_CC_BEGIN
-
+UIItem * UIBagIterator::getNext()
+{
+	if (index< bag->_items.size())
+	{
+		index ++;
+		return bag->_items.at(index);
+	}
+	return NULL;
+}
 /**
  * չʾ
  */

@@ -784,11 +784,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
@@ -985,6 +985,18 @@
 			</File>
 			<File
 				RelativePath=".\NetCommand.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="lua"
+			>
+			<File
+				RelativePath=".\BaseLuaExt.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BaseLuaExt.h"
 				>
 			</File>
 		</Filter>

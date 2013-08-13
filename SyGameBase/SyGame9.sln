@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UIEdit", "UIEdit\UIEdit.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapEdit", "MapEdit\MapEdit.vcproj", "{A98EC759-16A0-408F-A8D9-5FDFC5675312}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DialogEdit", "DialogEdit\DialogEdit.vcproj", "{DCC5D689-3F59-4A90-9FE7-711361BBBFE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -79,6 +81,10 @@ Global
 		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Debug|Win32.Build.0 = Debug|Win32
 		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Release|Win32.ActiveCfg = Release|Win32
 		{A98EC759-16A0-408F-A8D9-5FDFC5675312}.Release|Win32.Build.0 = Release|Win32
+		{DCC5D689-3F59-4A90-9FE7-711361BBBFE6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DCC5D689-3F59-4A90-9FE7-711361BBBFE6}.Debug|Win32.Build.0 = Debug|Win32
+		{DCC5D689-3F59-4A90-9FE7-711361BBBFE6}.Release|Win32.ActiveCfg = Release|Win32
+		{DCC5D689-3F59-4A90-9FE7-711361BBBFE6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

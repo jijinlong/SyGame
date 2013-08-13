@@ -68,6 +68,15 @@ bool UIBase::bind(int uiEvnet,UICallback *callback)
 	event_callbacks[uiEvnet] = callback;
 	return true;
 }
+
+bool UIBase::bind(int uiEvent,const char *luaFunctionName)
+{
+	if (uiEvnet >= event_lua_functions.size())
+		event_lua_functions.resize(uiEvnet + 1);
+	if (event_lua_functions[uiEvnet]) return false;
+	event_lua_functions[uiEvnet] = luaFunctionName;
+	return true;
+}
 void UIBase::doEvent(int uiEvent,UIBase *base)
 {
 	if (uiEvent < event_functions.size())
@@ -87,6 +96,11 @@ void UIBase::doEvent(int uiEvent,UIBase *base)
 		{
 			callback->callback(base);
 		}
+	}
+	else if (uiEvent < luaFunctionName.size())
+	{
+		// 执行lua 脚本的回调
+		//theLua.execString(luaFunctionName,this);
 	}
 }
 UIWindow *UIBase::getDepthWindow()

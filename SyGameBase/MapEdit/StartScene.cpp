@@ -12,6 +12,9 @@
 #include "UILib.h"
 //#include "Cartoon2DEdit.h"
 #include "UICallbacks.h"
+#include "CCSprite3D.h"
+#include "CCEditBox.h"
+#include "CCScale9Sprite.h"
 USING_NS_CC;
 
 
@@ -84,6 +87,12 @@ bool StartScene::init()
         return false;  
     }
 	
+	CCSprite3D *d3sprite = CCSprite3D::create("terran.md2", "terran.png");
+	if (d3sprite)
+	{
+		this->addChild(d3sprite);
+	}
+
     this->setTouchEnabled(true);
 	
 	MapManager::getMe().window = mainUI->window;
@@ -97,8 +106,32 @@ bool StartScene::init()
 		map->showGrids();
 		MapManager::getMe().replaceMap(map);
 	}
-
 	
+/*
+	CCSize size = CCDirector::sharedDirector()->getWinSize();
+	extension::CCScale9Sprite * sacel9SprY=extension::CCScale9Sprite::create("cell.png");
+	extension::CCEditBox * box = extension::CCEditBox::create(CCSizeMake(300,60), sacel9SprY);
+
+	//    设置编辑框内的文字
+	box->setText(" ");
+	//    获取编辑框内的文字
+	CCLOG("Text:%s",box->getText());
+	box->setFontColor(ccc3(255, 0, 0));
+	//    当编辑框中没有任何字符的提示
+	box->setPlaceHolder("pleac input word");
+	CCLOG("PlaceHolder:%s",box->getPlaceHolder());
+	box->setMargins(2,1);
+	//    最大输入文本长度
+	box->setMaxLength(5);
+	CCLOG("Length:%i", box->getMaxLength());
+	//设置输入模式
+	box->setInputFlag(extension::kEditBoxInputFlagPassword);
+	//    设置return类型
+	box->setReturnType(extension::kKeyboardReturnTypeDone);
+	box->setPosition(ccp(size.width*0.5, 220));
+	addChild(box);
+*/
+
 	return true;
 }
 

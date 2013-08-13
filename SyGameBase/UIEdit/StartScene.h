@@ -4,28 +4,6 @@
 #include "UIWindow.h"
 #include "UIValue.h"
 /**
- * 加载处理
- */
-class LoadProcess:public CCNode{
-public:
-	static LoadProcess* create(const char *backName,const char *backValue);
-
-	bool init(const char *backName,const char *backValue);
-	LoadProcess()
-	{
-		backSprite = NULL;
-		valueSprite = NULL;
-	}
-	void setValue(float value);
-
-	void setColor(const ccColor3B& color);
-private:
-	CCSprite * backSprite;
-	CCSprite * valueSprite;
-	int value;
-	int maxValue;
-};
-/**
  * 开始场景
  **/
 class StartScene: public cocos2d::CCLayer{
