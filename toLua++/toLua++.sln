@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "toLua++", "toLua++\toLua++.vcproj", "{C4712F3E-2959-4676-8CC0-CFACE0DFEAA4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testlua", "testlua\testlua.vcproj", "{C6273557-E13A-4B63-BED1-00BE42EE3820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4712F3E-2959-4676-8CC0-CFACE0DFEAA4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4712F3E-2959-4676-8CC0-CFACE0DFEAA4}.Debug|Win32.Build.0 = Debug|Win32
+		{C4712F3E-2959-4676-8CC0-CFACE0DFEAA4}.Release|Win32.ActiveCfg = Release|Win32
+		{C4712F3E-2959-4676-8CC0-CFACE0DFEAA4}.Release|Win32.Build.0 = Release|Win32
+		{C6273557-E13A-4B63-BED1-00BE42EE3820}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C6273557-E13A-4B63-BED1-00BE42EE3820}.Debug|Win32.Build.0 = Debug|Win32
+		{C6273557-E13A-4B63-BED1-00BE42EE3820}.Release|Win32.ActiveCfg = Release|Win32
+		{C6273557-E13A-4B63-BED1-00BE42EE3820}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

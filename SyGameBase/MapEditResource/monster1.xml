@@ -61,9 +61,9 @@
 		<pool id="1" type="always"/> <!--2号动作池定义默认行为-->
    </actionpools>
    <actionpriority>
-		<priority name="move" value="0"/>
-		<priority name="attack" value="0"/>
-		<priority name="idle" value="1"/>
+		<priority name="move" poolid="0" actionid="1"/>
+		<priority name="attack" poolid="0" actionid="2"/>
+		<priority name="idle" poolid="1" actionid="16"/>
    </actionpriority>
    <actionnames>
 		<action name="move" id="1"/>

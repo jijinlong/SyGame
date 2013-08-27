@@ -52,7 +52,7 @@ void BaseLuaExt::init()
  * function doLoginIn()
  *		theNet:send(1,"ssss:xxx");
  * end
- * mainUI = UIMain:create("xxx.xml"); // xml文件可以使用编辑器生成
+ * mainUI = createUIMain("xxx.xml"); // xml文件可以使用编辑器生成
  */
 void BaseLuaExt::initLuaExt()
 {
