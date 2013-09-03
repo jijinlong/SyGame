@@ -65,7 +65,7 @@ private:
 	bool clearTag;
 	cJSON *root;
 };
-int main111()
+int main()
 {
 cJSON *root,*fmt,*img,*thm,*fld;char *out;int i;	/* declare a few. */
 

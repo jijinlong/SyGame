@@ -13,7 +13,7 @@ class UIBagIterator{
 public:
 	UIItem * getNext();
 	UISuperBag *bag;
-	int index = 0;
+	int index ;
 	UIBagIterator()
 	{
 		bag = NULL;

@@ -55,7 +55,7 @@ public:
 
 test g_test(11);
 
-int main()
+int main00000()
 {
 	
 	lua_State* L = lua_open();
