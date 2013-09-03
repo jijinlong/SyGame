@@ -52,12 +52,20 @@ class stLineInfo{
 			// 创建3中类型的节点
 			
 			DebugShow *show = new DebugShow();
-			if (show->init("cell.png"))
+			if (node->nodeType == Node::AND_NODE)
 			{
-				show->autorelease();
-				return show;
+				show->init("and.png");
 			}
-			return NULL;
+			else if (node->nodeType == Node::OR_NODE)
+			{
+				show->init("or.png");
+			}
+			else
+			{
+				show->init("action.png");
+			}
+			show->autorelease();
+			return show;
 		}
 		virtual void actionWithDebug(Node *node) // 每次执行时回调
 		{

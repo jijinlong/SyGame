@@ -242,7 +242,7 @@ public:
 	void attachNode(Node *root,PANEL *panel)
 	{
 		Node *child = root->child;
-		LOGIC *logic = LOGIC::create(child);
+		LOGIC *logic = LOGIC::create(root);
 		panel->addChild(logic);
 		if (!logic) return;
 		root->debugAttach(logic);
