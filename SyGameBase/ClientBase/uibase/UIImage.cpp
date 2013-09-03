@@ -57,7 +57,7 @@ bool UIImage::touchDown(float x,float y)
 bool UIImage::touchMove(float x,float y)
 {
 	CCPoint pos = ccp(x,y);
-	if (_editable && _touchIn)
+	if (/*_editable &&*/ _touchIn)
 	{
 		CCPoint nowPoint = getPosition();
         setPosition(nowPoint.x + pos.x - nowTouchPoint.x,

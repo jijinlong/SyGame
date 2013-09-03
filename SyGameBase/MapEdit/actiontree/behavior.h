@@ -233,21 +233,22 @@ public:
 		showNode(root,x,y);
 	}
 #ifdef _NODE_DEBUG
-	template<typename LOGIC>
-	void attachDebugInfo()
+	template<typename LOGIC,typename PANEL>
+	void attachDebugInfo(PANEL *panel)
 	{
-		attachNode<LOGIC>(root);
+		attachNode<LOGIC,PANEL>(root,panel);
 	}
-	template<typename LOGIC>
-	void attachNode(Node *root)
+	template<typename LOGIC,typename PANEL>
+	void attachNode(Node *root,PANEL *panel)
 	{
 		Node *child = root->child;
 		LOGIC *logic = LOGIC::create(child);
+		panel->addChild(logic);
 		if (!logic) return;
 		root->debugAttach(logic);
 		while (child )
 		{
-			attachNode<LOGIC>(child);
+			attachNode<LOGIC,PANEL>(child,panel);
 			child = child->next;
 		}
 	}

@@ -73,7 +73,6 @@ CCScene* StartScene::scene()
  * 一个简单的游戏
  * 进入直接玩 有定时功能 主场景是个BAG
  */
-LineLayer *DebugShow::panel = NULL;
 bool StartScene::init()
 {
 /**
@@ -86,13 +85,14 @@ bool StartScene::init()
 						  {\"name\":\"or\",\"childs\":[{\"name\":\"say\",\"x\":10}\
 						  ]}\
 	]}";
-	DebugShow::panel = LineLayer::create();
-	this->addChild(DebugShow::panel);
+	panel = LineLayer::create();
+	this->addChild(panel);
+
 	ExampleLib lib;
 	lib.initLogics(); // 初始化环境
 	lib.parseString(content); // 解析字符串
 	
-	lib.attachDebugInfo<DebugShow>();
+	lib.attachDebugInfo<DebugShow>(panel);
 	lib.show(100,100); // 展示图形化系统
 
 	lib.execute(NULL); // 执行
@@ -167,7 +167,7 @@ void StartScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	 */
 	if (mainUI->touchDown(pos.x,pos.y)) return;
 	MapManager::getMe().doTouch(UIBase::TOUCH_DOWN,pos);
-	
+	panel->doTouch(UIBase::TOUCH_DOWN,pos);
 }
 void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -178,6 +178,7 @@ void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	 */
 	if (mainUI->touchMove(pos.x,pos.y)) return;
 	MapManager::getMe().doTouch(UIBase::TOUCH_MOVE,pos);
+	panel->doTouch(UIBase::TOUCH_MOVE,pos);
 }
 void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -188,6 +189,7 @@ void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	 */
 	mainUI->touchEnd(pos.x,pos.y);
 	MapManager::getMe().doTouch(UIBase::TOUCH_END,pos);
+	panel->doTouch(UIBase::TOUCH_END,pos);
 }
 void StartScene::step(float dt)
 {

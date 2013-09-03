@@ -4,6 +4,7 @@
 #include "UIWindow.h"
 #include "UIValue.h"
 #include "UIMain.h"
+#include "DebugActionShow.h"
 /**
  * º”‘ÿ¥¶¿Ì
  */
@@ -43,12 +44,13 @@ public:
     void ccTouchesEnded(cocos2d::CCSet *pTouch, cocos2d::CCEvent *pEvent);
 
 	CREATE_FUNC(StartScene);
-
+	LineLayer *panel;
 	UIMain *mainUI;
 	void step(float dt);
 private:
 	StartScene()
 	{
+		panel = NULL;
 		mainUI = NULL;
 	}
 };

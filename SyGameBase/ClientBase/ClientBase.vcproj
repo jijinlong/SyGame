@@ -784,11 +784,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\libpng\ReadMe.txt"
+				RelativePath=".\pngplus\ReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\pngplus\ReadMe.txt"
+				RelativePath=".\libpng\ReadMe.txt"
 				>
 			</File>
 			<File
@@ -991,14 +991,6 @@
 		<Filter
 			Name="lua"
 			>
-			<File
-				RelativePath=".\BaseLuaExt.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\BaseLuaExt.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

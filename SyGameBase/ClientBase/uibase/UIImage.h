@@ -36,7 +36,7 @@ public:
 	 * 创建父节点下的子节点
 	 */
 	virtual TiXmlElement * makeNode(TiXmlElement *parent = NULL,const std::string &name="base");
-private:
+
 	bool _editable;
 	CCSprite *image;
 	std::string imgName;

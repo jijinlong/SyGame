@@ -71,10 +71,10 @@ bool UIBase::bind(int uiEvnet,UICallback *callback)
 
 bool UIBase::bind(int uiEvent,const char *luaFunctionName)
 {
-	if (uiEvnet >= event_lua_functions.size())
-		event_lua_functions.resize(uiEvnet + 1);
-	if (event_lua_functions[uiEvnet]) return false;
-	event_lua_functions[uiEvnet] = luaFunctionName;
+	/*if (uiEvent >= event_lua_functions.size())
+		event_lua_functions.resize(uiEvent + 1);
+	if (event_lua_functions[uiEvent]) return false;
+	event_lua_functions[uiEvent] = luaFunctionName;*/
 	return true;
 }
 void UIBase::doEvent(int uiEvent,UIBase *base)
@@ -97,7 +97,7 @@ void UIBase::doEvent(int uiEvent,UIBase *base)
 			callback->callback(base);
 		}
 	}
-	else if (uiEvent < luaFunctionName.size())
+	//else if (uiEvent < luaFunctionName.size())
 	{
 		// 执行lua 脚本的回调
 		//theLua.execString(luaFunctionName,this);

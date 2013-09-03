@@ -1,11 +1,14 @@
+#pragma once
 #include "cocos2d.h"
 #include "behavior.h"
+#include "UIImage.h"
 NS_CC_BEGIN
 class stLineInfo{
 	public:
 		DebugActionShow* start;
 		DebugActionShow* end;
 	};
+	class DebugShow;
     class LineLayer:public CCLayer{
 	public:
 		CREATE_FUNC(LineLayer);
@@ -37,46 +40,56 @@ class stLineInfo{
 		{
 			lines.clear();
 		}
+		void addChild(DebugShow *show);
+		std::vector<DebugShow*> showes;
+
+		bool doTouch(int touchType,const CCPoint &point);
 	};
-    class DebugShow:public DebugActionShow,public CCSprite{
+    class DebugShow:public DebugActionShow,public UIImage{
 	public:
 		static DebugShow*create(Node *node)
 		{
 			// 创建3中类型的节点
 			
 			DebugShow *show = new DebugShow();
-			if (show->initWithFile("cell.png"))
+			if (show->init("cell.png"))
 			{
 				show->autorelease();
-				panel->addChild(show);
 				return show;
 			}
 			return NULL;
 		}
-		static LineLayer *panel; // 承载的容器
 		virtual void actionWithDebug(Node *node) // 每次执行时回调
 		{
 			// 改变颜色
-			setColor(ccc3(10,255,0));
+			//setColor(ccc3(10,255,0));
 		}
 		virtual void setPosition(int x,int y) // 设置位置
 		{
-			CCSprite::setPosition(ccp(x,y));
+			setPosition(ccp(x,y));
+		}
+		void setPosition(float x,float y)
+		{
+			setPosition(ccp(x,y));
 		}
 		void setPosition(const CCPoint &point)
 		{
-			CCSprite::setPosition(point);
+			UIImage::setPosition(point.x,point.y);
 			if(DebugActionShow::__node__)
 			{
 				DebugActionShow::__node__->__debug__x__ = point.x;
 				DebugActionShow::__node__->__debug__y__ = point.y;
 			}
 		}
+		LineLayer *getPaint()
+		{
+			return (LineLayer * ) this->getParent();
+		}
 		virtual void showRelation(DebugActionShow *show) // 展示关联
 		{
 			// 画线
-			panel->setLine(this,show);
+			getPaint()->setLine(this,show);
 		}
 	};
-
+	
 NS_CC_END

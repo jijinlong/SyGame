@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DebugActionShow.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DebugActionShow.h"
 				>
 			</File>
