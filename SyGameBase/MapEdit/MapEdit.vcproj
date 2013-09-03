@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\;&quot;$(SolutionDir)ClientBase\editbox&quot;;&quot;$(SolutionDir)ClientBase\uilib&quot;;&quot;$(SolutionDir)ClientBase\ai&quot;;.\pintu;&quot;$(SolutionDir)ClientBase\3d&quot;;&quot;$(SolutionDir)ClientBase\map&quot;;&quot;$(SolutionDir)ClientBase\zlib&quot;;&quot;$(SolutionDir)ClientBase\uibase&quot;;&quot;$(SolutionDir)ClientBase&quot;;&quot;$(SolutionDir)ClientBase\misc&quot;;&quot;$(SolutionDir)ClientBase\action&quot;;&quot;$(SolutionDir)ClientBase\tinyxml&quot;;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
+				AdditionalIncludeDirectories=".\actiontree;.\;&quot;$(SolutionDir)ClientBase\editbox&quot;;&quot;$(SolutionDir)ClientBase\uilib&quot;;&quot;$(SolutionDir)ClientBase\ai&quot;;.\pintu;&quot;$(SolutionDir)ClientBase\3d&quot;;&quot;$(SolutionDir)ClientBase\map&quot;;&quot;$(SolutionDir)ClientBase\zlib&quot;;&quot;$(SolutionDir)ClientBase\uibase&quot;;&quot;$(SolutionDir)ClientBase&quot;;&quot;$(SolutionDir)ClientBase\misc&quot;;&quot;$(SolutionDir)ClientBase\action&quot;;&quot;$(SolutionDir)ClientBase\tinyxml&quot;;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DebugActionShow.h"
+				>
+			</File>
+			<File
 				RelativePath=".\main.h"
 				>
 			</File>
@@ -221,6 +225,30 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="actiontree"
+			>
+			<File
+				RelativePath=".\actiontree\behavior.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\actiontree\behavior.h"
+				>
+			</File>
+			<File
+				RelativePath=".\actiontree\cJSON.c"
+				>
+			</File>
+			<File
+				RelativePath=".\actiontree\cJSON.h"
+				>
+			</File>
+			<File
+				RelativePath=".\actiontree\jsonObject.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

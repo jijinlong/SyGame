@@ -15,6 +15,7 @@
 #include "CCSprite3D.h"
 #include "CCEditBox.h"
 #include "CCScale9Sprite.h"
+#include "DebugActionShow.h"
 USING_NS_CC;
 
 
@@ -72,9 +73,30 @@ CCScene* StartScene::scene()
  * 一个简单的游戏
  * 进入直接玩 有定时功能 主场景是个BAG
  */
-
+LineLayer *DebugShow::panel = NULL;
 bool StartScene::init()
 {
+/**
+ * 展示行为树
+ */
+	const char *content = "{\"name\":\"and\",\"childs\":\
+						  [{\"name\":\"sayHello\",\"x\":10},\
+						  {\"name\":\"sayHello\",\"x\":100},\
+						  {\"name\":\"sayHello\",\"x\":100000},\
+						  {\"name\":\"or\",\"childs\":[{\"name\":\"say\",\"x\":10}\
+						  ]}\
+	]}";
+	DebugShow::panel = LineLayer::create();
+	this->addChild(DebugShow::panel);
+	ExampleLib lib;
+	lib.initLogics(); // 初始化环境
+	lib.parseString(content); // 解析字符串
+	
+	lib.attachDebugInfo<DebugShow>();
+	lib.show(100,100); // 展示图形化系统
+
+	lib.execute(NULL); // 执行
+
 	theAILib.initWithFile("monsterai.xml");
 	theUILib.initWithFile("uilib.xml");
 
