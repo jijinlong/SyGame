@@ -27,7 +27,7 @@ public:
 	{
 		bagIterator.bag = this;
 		bagIterator.index = 0;
-		return bagIterator;
+		return &bagIterator;
 	}
 	/**
 	 * չʾ
