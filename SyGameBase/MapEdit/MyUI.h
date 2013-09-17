@@ -16,6 +16,12 @@ namespace myui{
 		ALIGN_BOTTOM = 1 << 3,
 		ALIGN_CENTER = 1 << 4,
 	}; // 对齐方式
+	enum FitType{
+		FIT_SELF = 0, // 自身适应 , 用户可以设定其大小
+		FIT_GRID = 1, // 填满格子
+	};
+	class Panel;
+
 	class Base{
 	public:
 		Base()
@@ -58,7 +64,7 @@ namespace myui{
 		CCTouch *touch;
 		CCPoint nowTouchPoint;
 		bool isActive;
-		CCNode *parent;
+		Panel *parent;
 		virtual void render(){}
 	};
 
@@ -107,16 +113,22 @@ namespace myui{
 		void replacePng(const char *name);
 		bool checkIn(const CCPoint point,CCSprite *sprite,const char *fileName);
 		bool checkInRect(const CCPoint point,CCSprite *sprite);
-		bool createImage(const char *fileName,CCImage &image);
+		bool createImage(const char *fileName,CCImage* &image);
 
 		Image()
 		{
 			sprite = NULL;
+			image = NULL;
 		}
 		virtual void render()
 		{
 			if (sprite) sprite->visit();
 		}
+		CCImage* image;
+		/**
+		 * 设置位置
+		 */
+		void setLocation(AlignType alignType,const CCSize &splitSize,const CCPoint &gridLocation);
 	};
 	class Button:public Image{
 	public:
@@ -154,7 +166,7 @@ namespace myui{
 	 *		算法说明: 每个单元可以定制自己的细分格子 和 在细分网格上的位置
 	 * 4.该Panel 是有界的 默认一幅有色的图片
 	 **/
-	class Panel:public CCNode,public Base{
+	class Panel:public CCNode,public Image{
 	public:
 		std::list<Base*> uis;  // 界面元素列表 当Base 被激活时 优先展示
 		std::list<Base*> actives; // 激活的ui列表

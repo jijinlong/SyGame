@@ -6,10 +6,9 @@ namespace myui{
 		Image *image = new Image;
 		if (image)
 		{
-			image->outlinePngName = pngName;
+			image->setOutLine(pngName);
 			image->pngName = pngName;
-			image->sprite = CCSprite::create(pngName);
-			image->sprite->retain();
+			image->replacePng(pngName);
 		}
 		return image;
 	}
@@ -19,6 +18,8 @@ namespace myui{
 	void Image::setOutLine(const char *pngName)
 	{
 		this->outlinePngName = pngName;
+		if (image) delete image;image = NULL;
+		createImage(pngName,image);
 	}
 	/**
 	 * 检查是否命中Touch
@@ -38,6 +39,7 @@ namespace myui{
 		else
 		{
 			sprite = CCSprite::create(name);
+			sprite->retain();
 			setOutLine(name);
 		}
 	}
@@ -52,7 +54,7 @@ namespace myui{
 	}
 	bool Image::checkIn(const CCPoint point,CCSprite *sprite,const char *fileName)
 	{
-		if (!sprite) return false;
+		if (!sprite || !image) return false;
 		if (checkInRect(point,sprite))
 		{
 			ccColor4B c = {0, 0, 0, 0};
@@ -62,11 +64,11 @@ namespace myui{
 			CCPoint localPoint = ccp(touchPoint.x - pos.x,cSize.height - (touchPoint.y -pos.y));
 			if (localPoint.x < 0 || localPoint.y < 0) return false;
 			unsigned int x = localPoint.x, y = localPoint.y; 
-			CCImage image;
-			createImage(fileName,image);
-			unsigned char *data_ = image.getData();
+			unsigned char *data_ = image->getData();
+			if (image->getHeight() > cSize.height || image->getWidth() > cSize.width) return false;
 			unsigned int *pixel = (unsigned int *)data_;
 			pixel = pixel + (y * (int)cSize.width) + x ;
+			if ((y * (int)cSize.width) + x >= image->getDataLen()) return false;
 			c.r = *pixel & 0xff;
 			c.g = (*pixel >> 8) & 0xff;
 			c.b = (*pixel >> 16) & 0xff;
@@ -77,15 +79,15 @@ namespace myui{
 			{
 				return true;
 			}
-	 
+			
 		}
 		else return false;
 	}
-	bool Image::createImage(const char *fileName,CCImage &image)
+	bool Image::createImage(const char *fileName,CCImage* & image)
 	{
 		if (!fileName) return false;
 		std::string pathKey = fileName;
-
+		image = new CCImage;
 		pathKey = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(pathKey.c_str());
 
 		std::string fullpath = pathKey;
@@ -109,7 +111,7 @@ namespace myui{
 						 
 				unsigned long nSize = 0;
 				unsigned char* pBuffer = CCFileUtils::sharedFileUtils()->getFileData(fullpath.c_str(), "rb", &nSize);
-				if (! image.initWithImageData((void*)pBuffer, nSize, eImageFormat))
+				if (! image->initWithImageData((void*)pBuffer, nSize, eImageFormat))
 				{
 					CC_SAFE_DELETE_ARRAY(pBuffer);
 					break;
@@ -162,6 +164,20 @@ namespace myui{
 			}break;
 		}
 		return false;
+	}
+	/**
+	 * 设置位置
+	 */
+	void Image::setLocation(AlignType alignType,const CCSize &splitSize,const CCPoint &gridLocation)
+	{
+		if (parent)
+		{
+			CCPoint point = parent->getPoint(alignType,splitSize,gridLocation);
+			if (sprite)
+			{
+				sprite->setPosition(point);
+			}
+		}
 	}
 	/**
 	* 响应touch事件
@@ -248,6 +264,11 @@ namespace myui{
 		{
 			actives.clear();
 		}
+		if (!tag)
+		{
+			// 处理Panel 的移动
+			Image::doTouch(event,touch);
+		}
 		return tag;
 	}
 	void Panel::addUI(Base *base)
@@ -259,12 +280,6 @@ namespace myui{
 	{
 		kmGLPushMatrix();
 		this->transform();
-		// 渲染firsts
-		for (BASES_ITER iter = firsts.begin(); iter != firsts.end();++iter)
-		{
-			Base *base = *iter;
-			if (base) base->render();
-		}
 		// 渲染actives
 		for (BASES_ITER iter = actives.begin(); iter != actives.end();++iter)
 		{
@@ -272,7 +287,7 @@ namespace myui{
 			if (base)
 			{
 				base->isActive = true;
-				base->render();
+				//base->render();
 			}
 		}
 		// 当base 是active 的话不渲染
@@ -287,6 +302,19 @@ namespace myui{
 			{
 				base->isActive = false;
 			}
+		}
+		for (BASES_ITER iter = actives.begin(); iter != actives.end();++iter)
+		{
+			Base *base = *iter;
+			if (base)
+			{
+				base->render();
+			}
+		}
+		for (BASES_ITER iter = firsts.begin(); iter != firsts.end();++iter)
+		{
+			Base *base = *iter;
+			if (base) base->render();
 		}
 		kmGLPopMatrix();
 	}
@@ -444,7 +472,7 @@ namespace myui{
 			if (base)
 			{
 				base->isActive = true;
-				base->render();
+				//base->render();
 			}
 		}
 		// 当base 是active 的话不渲染
@@ -458,6 +486,14 @@ namespace myui{
 			else
 			{
 				base->isActive = false;
+			}
+		}
+		for (UIS_ITER iter = actives.begin(); iter != actives.end();++iter)
+		{
+			Base *base = *iter;
+			if (base)
+			{
+				base->render();
 			}
 		}
 	}
@@ -476,6 +512,11 @@ namespace myui{
 		CCSize size = getWindowSize();
 		float x = (size.width / splitSize.width) * gridLocation.x;
 		float y = (size.height / splitSize.height) * gridLocation.y;
+		if (alignType & myui::ALIGN_CENTER)
+		{
+			x = x+splitSize.width/2;
+			y = y + splitSize.height/2;
+		}
 		if (alignType & myui::ALIGN_RIGHT)
 		{
 			x = x+splitSize.width;
@@ -483,11 +524,6 @@ namespace myui{
 		if (alignType & myui::ALIGN_UP)
 		{
 			y = y + splitSize.height;
-		}
-		if (alignType & myui::ALIGN_CENTER)
-		{
-			x = x+splitSize.width/2;
-			y = y + splitSize.height/2;
 		}
 		return ccp(x,y);
 	}
