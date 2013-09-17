@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="MapEdit"
-	ProjectGUID="{A98EC759-16A0-408F-A8D9-5FDFC5675312}"
-	RootNamespace="MapEdit"
+	Name="Testhread"
+	ProjectGUID="{DDE6C852-B675-4524-8F8E-27C922974007}"
+	RootNamespace="Testhread"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName).win32"
-			IntermediateDirectory="$(ConfigurationName).win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -41,8 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\actiontree;.\;&quot;$(SolutionDir)ClientBase\editbox&quot;;&quot;$(SolutionDir)ClientBase\uilib&quot;;&quot;$(SolutionDir)ClientBase\ai&quot;;.\pintu;&quot;$(SolutionDir)ClientBase\3d&quot;;&quot;$(SolutionDir)ClientBase\map&quot;;&quot;$(SolutionDir)ClientBase\zlib&quot;;&quot;$(SolutionDir)ClientBase\uibase&quot;;&quot;$(SolutionDir)ClientBase&quot;;&quot;$(SolutionDir)ClientBase\misc&quot;;&quot;$(SolutionDir)ClientBase\action&quot;;&quot;$(SolutionDir)ClientBase\tinyxml&quot;;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,11 +60,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glew32.lib libcocos2d.lib pthreadVCE2.lib ClientBase.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)Debug.win32&quot;;&quot;$(SolutionDir)Debug&quot;;&quot;$(SolutionDir)ClientBase&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -117,7 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -137,7 +134,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -174,19 +171,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\AppDelegate.cpp"
+				RelativePath=".\mythread.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MapManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StartScene.cpp"
+				RelativePath=".\samples.cpp"
 				>
 			</File>
 		</Filter>
@@ -196,27 +185,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\AppDelegate.h"
+				RelativePath=".\mythread.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DebugActionShow.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DebugActionShow.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MapManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\StartScene.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UICallbacks.h"
+				RelativePath=".\platfrom.h"
 				>
 			</File>
 		</Filter>
@@ -226,46 +199,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<Filter
-			Name="actiontree"
-			>
-			<File
-				RelativePath=".\actiontree\behavior.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\actiontree\behavior.h"
-				>
-			</File>
-			<File
-				RelativePath=".\actiontree\cJSON.c"
-				>
-			</File>
-			<File
-				RelativePath=".\actiontree\cJSON.h"
-				>
-			</File>
-			<File
-				RelativePath=".\actiontree\jsonObject.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="myui"
-			>
-			<File
-				RelativePath=".\MyUI.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MyUI.h"
-				>
-			</File>
-		</Filter>
-		<File
-			RelativePath=".\main.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -97,6 +97,26 @@ bool StartScene::init()
 
 	lib.execute(NULL); // Ö´ÐÐ
 
+	image = myui::Button::create("newimage_test.png","or.png");
+	if (image)
+	{
+	//	image->show(this);
+	}
+	container = new myui::Panel();
+	//this->addChild(container);
+	myui::Button *button = myui::Button::create("newimage_test.png","or.png");
+	
+	myui::Window *window = myui::Window::create();
+	if (window)
+	{
+		window->addUI(container);
+		container->setLocation(myui::ALIGN_CENTER,CCSizeMake(5,5),ccp(2,2));
+	}
+	if (container)
+	{
+		container->addUI(button);
+	}
+	this->addChild(window);
 	theAILib.initWithFile("monsterai.xml");
 	theUILib.initWithFile("uilib.xml");
 
@@ -168,6 +188,8 @@ void StartScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	if (mainUI->touchDown(pos.x,pos.y)) return;
 	MapManager::getMe().doTouch(UIBase::TOUCH_DOWN,pos);
 	panel->doTouch(UIBase::TOUCH_DOWN,pos);
+	//if (image)image->attachTouch(myui::TOUCH_DOWN,touch);
+	if (container) container->attachTouch(myui::TOUCH_DOWN,touch);
 }
 void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -179,6 +201,8 @@ void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	if (mainUI->touchMove(pos.x,pos.y)) return;
 	MapManager::getMe().doTouch(UIBase::TOUCH_MOVE,pos);
 	panel->doTouch(UIBase::TOUCH_MOVE,pos);
+	//if (image)image->attachTouch(myui::TOUCH_MOVE,touch);
+	if (container) container->attachTouch(myui::TOUCH_MOVE,touch);
 }
 void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -190,6 +214,8 @@ void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	mainUI->touchEnd(pos.x,pos.y);
 	MapManager::getMe().doTouch(UIBase::TOUCH_END,pos);
 	panel->doTouch(UIBase::TOUCH_END,pos);
+	//if (image)image->attachTouch(myui::TOUCH_END,touch);
+	if (container) container->attachTouch(myui::TOUCH_END,touch);
 }
 void StartScene::step(float dt)
 {

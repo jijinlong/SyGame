@@ -18,7 +18,11 @@ class stLineInfo{
 			CHECK_GL_ERROR_DEBUG();
 			for (std::list<stLineInfo>::iterator iter = lines.begin();iter != lines.end();++iter)
 			{
+				//ccDrawLine(ccp(iter->start->__node__->__debug__x__,iter->start->__node__->__debug__y__),
+				//	ccp(iter->end->__node__->__debug__x__,iter->end->__node__->__debug__y__));
 				ccDrawLine(ccp(iter->start->__node__->__debug__x__,iter->start->__node__->__debug__y__),
+					ccp(iter->end->__node__->__debug__x__,iter->start->__node__->__debug__y__));
+				ccDrawLine(ccp(iter->end->__node__->__debug__x__,iter->start->__node__->__debug__y__),
 					ccp(iter->end->__node__->__debug__x__,iter->end->__node__->__debug__y__));
 			}
 		    
