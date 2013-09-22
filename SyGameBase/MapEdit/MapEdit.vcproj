@@ -254,6 +254,10 @@
 			Name="myui"
 			>
 			<File
+				RelativePath=".\MyCartoon.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MyUI.cpp"
 				>
 			</File>
