@@ -13,13 +13,12 @@ public:
 	void callFunc(const char *funcStr)
 	{
 		name = funcStr;
+		printf("ehuw\n");
 	}
 	const char *doFunc()
 	{
-		std::stringstream ss;
-		ss << "local func = base64.stringfun(\""<<name<<"\") func(12)";
-		luaL_dostring(L,ss.str().c_str());
-		return name.c_str();
+		callFunc("TestObject:xxxx");
+		return NULL;
 	}
 	std::string name;
 };

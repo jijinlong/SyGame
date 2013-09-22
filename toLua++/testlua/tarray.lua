@@ -41,18 +41,30 @@ local funcStr = base64.funstring(testFunctionBack)
 
 --bind(funcStr,funcStrLen)
 
+function doMyCallback(obj)
+	obj.doclick()
+end
 
 local func = base64.stringfun(funcStr)(111)
-print("=================================")
-obj = TestObject:new_local()
-print(obj)
-obj:callFunc(base64.funstring(function(i) -- 函数式编程 极大的化简了编程的模式 使用于现有的UI 和文件回调 以及网络回调
-	print("hello,world"..i)
-	print(obj)
-end))
+print("Test Object =================================")
+local obj = TestObject:new_local()
+obj.doclick = function()
+	print(" i do click")
+	print(obj.name)
+end
+obj.name = "jijinlong".."fuck111"
+obj:doFunc(function(s) 
+	print("hello,world"..s.name)
+end)
 
-obj:doFunc()
-
+local obj1 = TestObject:new_local()
+obj1.doclick = function()
+	print("111 i do click")
+	print(obj1.name)
+end
+obj1:doFunc(function(s) 
+	print("hello,world"..s.name)
+end)
 
 print("==================================处理table")
 

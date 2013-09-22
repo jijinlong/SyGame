@@ -130,7 +130,7 @@ static int tolua_TestObject_TestObject_doFunc00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"TestObject",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
+   0//  !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
@@ -141,8 +141,14 @@ static int tolua_TestObject_TestObject_doFunc00(lua_State* tolua_S)
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'doFunc'",NULL);
 #endif
   {
-   const char* tolua_ret = (const char*)  self->doFunc();
-   tolua_pushstring(tolua_S,(const char*)tolua_ret);
+	  self->name="hekkkeoooeooe";
+	  tolua_pushusertype(tolua_S,self,"TestObject");
+	  lua_call(tolua_S, 1, 0);
+	   lua_getglobal(tolua_S,"doMyCallback");
+	 tolua_pushusertype(tolua_S,self,"TestObject");
+	  lua_call(tolua_S,1,0);
+  // const char* tolua_ret = (const char*)  self->doFunc();
+   tolua_pushstring(tolua_S,(const char*)"");
   }
  }
  return 1;
@@ -153,7 +159,35 @@ static int tolua_TestObject_TestObject_doFunc00(lua_State* tolua_S)
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
+/* get function: name of class  TestObject */
+#ifndef TOLUA_DISABLE_tolua_get_TestObject_name
+static int tolua_get_TestObject_name(lua_State* tolua_S)
+{
+  TestObject* self = (TestObject*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'name'",NULL);
+#endif
+  tolua_pushcppstring(tolua_S,(const char*)self->name);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
 
+/* set function: name of class  TestObject */
+#ifndef TOLUA_DISABLE_tolua_set_TestObject_name
+static int tolua_set_TestObject_name(lua_State* tolua_S)
+{
+  TestObject* self = (TestObject*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'name'",NULL);
+  if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->name = ((std::string)  tolua_tocppstring(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
 /* Open function */
 TOLUA_API int tolua_TestObject_open (lua_State* tolua_S)
 {
@@ -172,6 +206,7 @@ TOLUA_API int tolua_TestObject_open (lua_State* tolua_S)
    tolua_function(tolua_S,".call",tolua_TestObject_TestObject_new00_local);
    tolua_function(tolua_S,"callFunc",tolua_TestObject_TestObject_callFunc00);
    tolua_function(tolua_S,"doFunc",tolua_TestObject_TestObject_doFunc00);
+   tolua_variable(tolua_S,"name",tolua_get_TestObject_name,tolua_set_TestObject_name);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;
