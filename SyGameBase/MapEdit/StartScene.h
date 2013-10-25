@@ -5,7 +5,7 @@
 #include "UIValue.h"
 #include "UIMain.h"
 #include "DebugActionShow.h"
-#include "MyUI.h"
+//#include "MyUI.h"
 /**
  * º”‘ÿ¥¶¿Ì
  */
@@ -47,15 +47,15 @@ public:
 	CREATE_FUNC(StartScene);
 	LineLayer *panel;
 	UIMain *mainUI;
-	myui::Button *image;
-	myui::Panel *container;
+//	myui::Button *image;
+	//myui::Panel *container;
 	void step(float dt);
 private:
 	StartScene()
 	{
-		image = NULL;
+//		image = NULL;
 		panel = NULL;
 		mainUI = NULL;
-		container = NULL;
+//		container = NULL;
 	}
 };

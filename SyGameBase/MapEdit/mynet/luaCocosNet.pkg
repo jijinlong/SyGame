@@ -1,0 +1,26 @@
+struct stReqData:public CCObject{
+   int reqId;
+    stReqData();
+   ~stReqData();
+};
+
+class LuaReqData:public stReqData{
+    void setContent(const char *content); // 发送的内容
+    LuaReqData();
+    ~LuaReqData();
+    static LuaReqData * create();
+};
+/**
+ * 增加网络模块
+ */
+class CocosNet{
+public:
+	CocosNet();
+	~CocosNet();
+	void newClient(int index,const char *ip,unsigned short port);
+	void updateClient(int index);
+   	static CocosNet & getMe();
+	void init();
+	void stop();
+	void sendtoServer(int index,LuaReqData *reqData);
+};

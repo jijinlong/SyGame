@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\actiontree;.\;&quot;$(SolutionDir)ClientBase\editbox&quot;;&quot;$(SolutionDir)ClientBase\uilib&quot;;&quot;$(SolutionDir)ClientBase\ai&quot;;.\pintu;&quot;$(SolutionDir)ClientBase\3d&quot;;&quot;$(SolutionDir)ClientBase\map&quot;;&quot;$(SolutionDir)ClientBase\zlib&quot;;&quot;$(SolutionDir)ClientBase\uibase&quot;;&quot;$(SolutionDir)ClientBase&quot;;&quot;$(SolutionDir)ClientBase\misc&quot;;&quot;$(SolutionDir)ClientBase\action&quot;;&quot;$(SolutionDir)ClientBase\tinyxml&quot;;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;"
+				AdditionalIncludeDirectories=".\cocos2dx_support;.\mynet;.\actiontree;.\;&quot;$(SolutionDir)ClientBase\editbox&quot;;&quot;$(SolutionDir)ClientBase\uilib&quot;;&quot;$(SolutionDir)ClientBase\ai&quot;;.\pintu;&quot;$(SolutionDir)ClientBase\3d&quot;;&quot;$(SolutionDir)ClientBase\map&quot;;&quot;$(SolutionDir)ClientBase\zlib&quot;;&quot;$(SolutionDir)ClientBase\uibase&quot;;&quot;$(SolutionDir)ClientBase&quot;;&quot;$(SolutionDir)ClientBase\misc&quot;;&quot;$(SolutionDir)ClientBase\action&quot;;&quot;$(SolutionDir)ClientBase\tinyxml&quot;;&quot;$(SolutionDir)netcom&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx&quot;;&quot;$(SolutionDir)network&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\kazmath\include&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\win32&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\OGLES&quot;;&quot;$(SolutionDir)Cocos2dEgine\cocos2dx\platform\third_party\win32\pthread&quot;;&quot;$(SolutionDir)Cocos2dEgine\scripting\lua\tolua&quot;;&quot;$(SolutionDir)Cocos2dEgine\scripting\lua\cocos2dx_support&quot;;&quot;$(SolutionDir)Cocos2dEgine\scripting\lua\lua&quot;;&quot;$(SolutionDir)Cocos2dEgine\CocosDenshion\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glew32.lib libcocos2d.lib pthreadVCE2.lib ClientBase.lib"
+				AdditionalDependencies="opengl32.lib glew32.lib libcocos2d.lib pthreadVCE2.lib ClientBase.lib libCocosDenshion.lib liblua.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)Debug.win32&quot;;&quot;$(SolutionDir)Debug&quot;;&quot;$(SolutionDir)ClientBase&quot;"
 				GenerateDebugInformation="true"
@@ -251,18 +251,82 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="myui"
+			Name="mynet"
 			>
 			<File
-				RelativePath=".\MyCartoon.h"
+				RelativePath=".\mynet\cmdobject.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MyUI.cpp"
+				RelativePath=".\mynet\CocosNet.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MyUI.h"
+				RelativePath=".\mynet\CocosNet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\MyNet_mac.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\MyNet_mac.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\MyNet_win.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\MyNet_win.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\mythread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\mythread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mynet\platfrom.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="cocos2dx_support"
+			>
+			<File
+				RelativePath=".\cocos2dx_support\CCLuaEngine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\CCLuaEngine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\Cocos2dxLuaLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\Cocos2dxLuaLoader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\LuaCocos2d.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\LuaCocos2d.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\tolua_fix.c"
+				>
+			</File>
+			<File
+				RelativePath=".\cocos2dx_support\tolua_fix.h"
 				>
 			</File>
 		</Filter>

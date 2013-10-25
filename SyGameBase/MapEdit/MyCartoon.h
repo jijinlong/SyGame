@@ -30,4 +30,12 @@ public:
 	void setFrame(int id,int blockId); // 设置当前帧
 
 	void end(int actionId,int blockId); // 当前一次行为结束了
+
+	void visit();
+	/**
+	 * 数据文件定义
+	 */
+	void read(const char *aniFile);
+	
+	void pushSprite(CCSprite*sprite);
 };

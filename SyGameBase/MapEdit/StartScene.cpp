@@ -16,6 +16,7 @@
 #include "CCEditBox.h"
 #include "CCScale9Sprite.h"
 #include "DebugActionShow.h"
+#include "CocosNet.h"
 USING_NS_CC;
 
 
@@ -75,6 +76,14 @@ CCScene* StartScene::scene()
  */
 bool StartScene::init()
 {
+	// 尝试去连接网络
+	CocosNet::getMe().init();
+	CocosNet::getMe().newClient(1,"112.124.26.245",5050);
+	LuaReqData *data= LuaReqData::create();
+	data->content = "hello,world";
+	data->reqId = 100;
+	CocosNet::getMe().sendtoServer(1,data);
+	CocosNet::getMe().sendFile(1,"bigimage.png");
 /**
  * 展示行为树
  */
@@ -96,13 +105,14 @@ bool StartScene::init()
 	lib.show(100,100); // 展示图形化系统
 
 	lib.execute(NULL); // 执行
-
+#if (0)
 	image = myui::Button::create("newimage_test.png","or.png");
 	if (image)
 	{
 	//	image->show(this);
 	}
 	container = new myui::Panel();
+	container->replacePng("back.png");
 	//this->addChild(container);
 	myui::Button *button = myui::Button::create("newimage_test.png","or.png");
 	
@@ -115,8 +125,13 @@ bool StartScene::init()
 	if (container)
 	{
 		container->addUI(button);
+		myui::Button *tst1 = myui::Button::create("newimage_test.png","or.png");
+		container->addUI(tst1);
+		tst1->setLocation(myui::ALIGN_LEFT,CCSizeMake(3,3),ccp(1,1));
 	}
+
 	this->addChild(window);
+#endif
 	theAILib.initWithFile("monsterai.xml");
 	theUILib.initWithFile("uilib.xml");
 
@@ -189,7 +204,7 @@ void StartScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	MapManager::getMe().doTouch(UIBase::TOUCH_DOWN,pos);
 	panel->doTouch(UIBase::TOUCH_DOWN,pos);
 	//if (image)image->attachTouch(myui::TOUCH_DOWN,touch);
-	if (container) container->attachTouch(myui::TOUCH_DOWN,touch);
+	//if (container) container->attachTouch(myui::TOUCH_DOWN,touch);
 }
 void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -202,7 +217,7 @@ void StartScene::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	MapManager::getMe().doTouch(UIBase::TOUCH_MOVE,pos);
 	panel->doTouch(UIBase::TOUCH_MOVE,pos);
 	//if (image)image->attachTouch(myui::TOUCH_MOVE,touch);
-	if (container) container->attachTouch(myui::TOUCH_MOVE,touch);
+	//if (container) container->attachTouch(myui::TOUCH_MOVE,touch);
 }
 void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -215,7 +230,7 @@ void StartScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	MapManager::getMe().doTouch(UIBase::TOUCH_END,pos);
 	panel->doTouch(UIBase::TOUCH_END,pos);
 	//if (image)image->attachTouch(myui::TOUCH_END,touch);
-	if (container) container->attachTouch(myui::TOUCH_END,touch);
+	//if (container) container->attachTouch(myui::TOUCH_END,touch);
 }
 void StartScene::step(float dt)
 {
